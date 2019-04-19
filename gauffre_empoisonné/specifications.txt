@@ -10,7 +10,7 @@ public class Grille {
 	>>public int[][] initialiser_tab(int l, int c);
 
 	
-	fonction en cours de costruction
+	aggrandi la grille d'une colonne et un ligne
 	>>public int[][] agrandir_tab(int l, int c);
 
 	
