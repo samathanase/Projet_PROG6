@@ -11,6 +11,7 @@ public class Grille {
 
 	
 	aggrandi la grille d'une colonne et un ligne
+	(en cours de construction)
 	>>public int[][] agrandir_tab(int l, int c);
 
 	
