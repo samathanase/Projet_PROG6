@@ -7,6 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		int MAX_l = 80, MAX_c = 80;
 		int l,c;
+		boolean peut_aggrandir=true;
 		
 		///////////////////////////////////////////////////////////////
 		System.out.println("nombre de lignes >1 ?");
@@ -32,15 +33,18 @@ public class Main {
 		int x, y;
 		while(tab[0][1]!=1||tab[1][0]!=1) {
 			System.out.println("Joueur "+player+" à toi de jouer !!");
-			System.out.println("pour aggrandir la grille, tapez -3, sinon donnez les coordonnées d'une case ");
+			if(peut_aggrandir) {
+				System.out.println(">> pour aggrandir la grille, tapez -3 <<");
+			}
+			System.out.println("donnez les coordonnées d'une case ");
 			x=sc.nextInt();
-			/*while(x==-3) {
-				tab=g.agrandir_tab(l, c);
-				s.print_board(l,c,tab);
+			while(x==-3) {
+				g.agrandir_tab(l, c, tab);
+				System.out.println(">> pour aggrandir la grille, tapez -3 <<\n donnez les coordonnées d'une case ");
 				x=sc.nextInt();
-				System.out.println("pour aggrandir la grille, tapez -3, sinon donnez les coordonnées d'une case ");
-			}*/
+			}
 			y=sc.nextInt();
+			peut_aggrandir=false;
 			while(!g.case_jouable(l,c,x,y,tab)) {
 				System.out.println("Joueur "+player+" veuillez entrer des coordonnées valides (une case vide)");
 				x=sc.nextInt();

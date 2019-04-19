@@ -34,14 +34,16 @@ public class Grille {
 	}
 	
 	// fonction en cours de costruction
-	public int[][] agrandir_tab(int l, int c){
+	public void agrandir_tab(int l, int c,int[][] tab){
 		if(l<=55 && c <= 55) {
 			l++;
 			c++;
+		}else {
+			System.out.println("le tableau et trop gros !!!");
 		}
-		int[][] tab= new int[l][c];
 		tab=initialiser_tab(l,c);
-		return tab;
+		Affich_tab s = new Affich_tab(l,c);
+		s.print_board(l,c,tab);
 	}
 	
 	// renvoie "true" si une case peut être joué, "false" sinon
