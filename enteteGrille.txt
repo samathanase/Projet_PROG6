@@ -1,0 +1,72 @@
+
+public Partie();
+
+ //Recommence la partie
+    public void recommencer()
+
+//Retourne vrai si le coup joué est valide
+    public boolean coupValide(int lPion,int cPion, int lDestination, int cDestination)
+
+//Retourne 0 si la partie n'est pas finie
+    // 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
+    public int estFinie()
+
+//Retourne vrai si la case est libre
+public boolean libre (int l,int c)
+
+
+//Retourne vrai si c'est le joueur 1 qui a la main
+    public boolean joueur1()
+
+
+
+
+
+//Retourne vrai si le coup est une percussion
+    public boolean percussion(int lPion,int cPion, int lDestination, int cDestination)
+
+//Retourne vrai si le coup est une aspiration
+    public boolean aspiration(int lPion,int cPion, int lDestination, int cDestination)
+
+//Renvoie vrai s'il y a une aspiration et une percussion
+    public boolean aspirationPercution(int lPion,int cPion, int lDestination, int cDestination)
+
+
+// Retourne la liste des pions capturables avec le coup donné
+    public ArrayList<Coordonnees> pionsCapturables(int lPion,int cPion, int lDestination, int cDestination)
+
+// Retourne la liste des pions capturables par percussion avec le coup donné
+    public ArrayList<Coordonnees> pionsCapturablesPercussion(int lPion,int cPion, int lDestination, int cDestination)
+
+// Retourne la liste des pions capturées avec aspiration avec le coup donné
+    public ArrayList<Coordonnees> pionsCapturablesAspiration(int lPion,int cPion, int lDestination, int cDestination)
+
+//Renvoie la liste des cases accessibles du pion donné
+    public ArrayList<Coordonnees> casesAccessibles(int l, int c)
+
+
+//Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
+    //Cpature: 0 si pas de capture, 1 si percussion, 2 si aspiration
+    public boolean jouer(int lPion,int cPion, int lDestination, int cDestination,int capture)
+
+
+
+
+
+
+public Coordonnees(int l,int c)
+
+Getter:
+public int ligne() 
+public int colonne()
+
+Setter:
+public void l(int l)
+public void c(int c)
+
+    //Addition avec les coordonnées données
+public void plus(Coordonnees C)
+
+
+
+

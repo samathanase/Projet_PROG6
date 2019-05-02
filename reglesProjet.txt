@@ -1,0 +1,32 @@
+Quelques petites informations pour le projet.
+
+**************************************************************************************************
+Pour avoir une bonne cohérence dans le code:
+
+Les noms de classes, variables,... en FRANCAIS.
+Privilégier l'écriture des variables : tout attachée avec des majuscules. Ex: monChatEstBleu (et pas mon_chat_est_bleu).
+Spécification des classes et méthodes: savoir ce qu'elles prennent en paramètres (nom de variables explicites), ce qu'elle retourne, éventuelle effet de bord.
+
+Pour les coordonnées utiliser le système ligne colonne.
+
+**************************************************************************************************
+Découpage du code:
+
+utilisation de MVC.
+penser à faire des tests si possible (nom du fichier: qui testClassTesté). Garder bien les fichiers de test.
+Il faudra automatiser tout cela si possible avec une classe qui lance toutes les autres classes de test.
+
+**************************************************************************************************
+Git:
+
+Ne mettre que des fichiers .java, pas de .class.
+Si possible ne mettre que du code compilable (si c'est pas le cas indiquer le dans le commit).
+
+**************************************************************************************************
+A faire
+
+1) Faire un fichier est une classe de configuration:
+(Noms joueurs, langue, plein écran, score ...)
+
+
+2)
