@@ -41,9 +41,11 @@ public class Coordonnees {
         l += C.l;
     }
 
+    @Override
     //Retourne vrai si l'object coordonnees passé en paramètre est égal à l'objet
-    public boolean equals(Coordonnees C) {
-        return this.l == C.l && this.c == C.c;
+    public boolean equals(Object O) {
+        Coordonnees C = (Coordonnees) O;
+        return O!=null && this.l == C.l && this.c == C.c;
     }
 
     @Override
