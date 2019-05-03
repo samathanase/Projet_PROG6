@@ -2,15 +2,18 @@ package Modele;
 
 import java.util.Scanner;
 
+/*
+Une version ultra basique en console
+*/
+
 public class FanoronaConsole {
     public static void main(String[] args) {
         Partie partie = new Partie();
         Scanner scan = new Scanner(System.in);
 
-        int fin;
         int lPion,cPion,lDestination,cDestination,capture;
         partie.afficher();
-        while((fin=partie.estFinie())==0) {
+        while(!partie.estFinie()) {
             if(partie.joueur1()) {
                 System.out.println("Au joueur 1!");
             }
@@ -31,7 +34,8 @@ public class FanoronaConsole {
             //Jouer le coup
             if(partie.aspirationPercution(lPion,cPion,lDestination,cDestination)) {
                 System.out.println("Percussion:1 , Aspiration:2");
-
+                capture = scan.nextInt();
+                partie.jouer(lPion,cPion,lDestination,cDestination,capture);
             }
             else if(partie.aspiration(lPion,cPion,lDestination,cDestination)) {
                 partie.jouer(lPion,cPion,lDestination,cDestination,2);
@@ -43,7 +47,7 @@ public class FanoronaConsole {
             partie.afficher();
         }
 
-        System.out.println("Le joueur "+fin+" a gagné!");
+        System.out.println("Le joueur "+partie.gagnant()+" a gagné!");
 
     }
 }

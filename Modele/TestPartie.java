@@ -4,14 +4,21 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TestPartie {
+    static boolean verbeux;
     public static void main(String[] args) {
-
+        if(args.length > 0) {
+            verbeux = true;
+        }
+        else {
+            verbeux = false;
+        }
 
         testCasesAccessibles();
         testCasesAdjacentes();
         testCoupValide();
         testPercussion();
         testAspiration();
+        testJouer();
 
 
     }
@@ -194,49 +201,49 @@ public class TestPartie {
 
         listC = partie.pionsCapturablesPercussion(2,4,1,3);
         Coordonnees [] c1 = {new Coordonnees(0,2)};
-        if(!comparerArray(listC,  c1)) {
+        if(!comparerListArray(listC,  c1)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesPercussion(2,4,1,4);
         Coordonnees [] c2 = {new Coordonnees(0,4)};
-        if(!comparerArray(listC,  c2)) {
+        if(!comparerListArray(listC,  c2)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesPercussion(2,4,1,5);
         Coordonnees [] c3 = {new Coordonnees(0,6)};
-        if(!comparerArray(listC,  c3)) {
+        if(!comparerListArray(listC,  c3)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesPercussion(2,4,2,3);
         Coordonnees[] c4 = {new Coordonnees(2,2),new Coordonnees(2,1),new Coordonnees(2,0)};
-        if(!comparerArray(listC,  c4)) {
+        if(!comparerListArray(listC,  c4)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesPercussion(2,4,2,5);
         Coordonnees[] c5 = {new Coordonnees(2,6)};
-        if(!comparerArray(listC,  c5)) {
+        if(!comparerListArray(listC,  c5)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesPercussion(2,4,3,3);
         Coordonnees[] c6 = {new Coordonnees(4,2)};
-        if(!comparerArray(listC,  c6)) {
+        if(!comparerListArray(listC,  c6)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesPercussion(2,4,3,4);
         Coordonnees[] c7 = {new Coordonnees(4,4)};
-        if(!comparerArray(listC, c7)) {
+        if(!comparerListArray(listC, c7)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesPercussion(2,4,3,5);
         Coordonnees[] c8 = {new Coordonnees(4,6)};
-        if(!comparerArray(listC, c8)) {
+        if(!comparerListArray(listC, c8)) {
             b = false;
         }
 
@@ -263,25 +270,25 @@ public class TestPartie {
 
         listC = partie.pionsCapturablesAspiration(2,4,1,3);
         Coordonnees [] c1 = {new Coordonnees(3,5)};
-        if(!comparerArray(listC,  c1)) {
+        if(!comparerListArray(listC,  c1)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesAspiration(2,4,1,4);
         Coordonnees [] c2 = {new Coordonnees(3,4),new Coordonnees(3,4)};
-        if(!comparerArray(listC,  c2)) {
+        if(!comparerListArray(listC,  c2)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesAspiration(2,4,1,5);
         Coordonnees [] c3 = {new Coordonnees(3,3)};
-        if(!comparerArray(listC,  c3)) {
+        if(!comparerListArray(listC,  c3)) {
             b = false;
         }
 
         listC = partie.pionsCapturablesAspiration(2,4,2,3);
         Coordonnees[] c4 = {new Coordonnees(2,5)};
-        if(!comparerArray(listC,  c4)) {
+        if(!comparerListArray(listC,  c4)) {
             b = false;
         }
 
@@ -292,12 +299,84 @@ public class TestPartie {
     }
 
 
+    public static boolean testJouer() {
+        boolean b =true;
+        ArrayList<Coordonnees> listC;
+        Partie partie = new Partie();
+        int [][] t = {
+            {0,0,0,0,0,0,1,0,0},
+            {0,0,0,1,1,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,2,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        };
+        partie.joueur = 2;
+        partie.tab = t;
+
+        //Plusieurs coups dans le même tour
+
+        partie.jouer(3,4,2,4,1);
+        if(partie.joueur1()) {
+            b = false;
+            if (verbeux) System.out.println("Erreur changement joueur:c'est au j2");
+        }
+        partie.jouer(2,4,1,5,1);
+        if(partie.joueur1()) {
+            b = false;
+            if (verbeux) System.out.println("Erreur changement joueur: c'est au j2");
+        }
+        partie.jouer(1,5,1,4,1);
+        if(!partie.estFinie()) {
+            b = false;
+            if (verbeux) System.out.println("Erreur partie est finie");
+        }
+        int [][] tR = {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,2,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        };
+        if(!comparerTab(partie.tab,tR)) {
+            b = false;
+            if (verbeux) System.out.println("Erreur terrain,tR");
+        }
+
+        //
+        
 
 
 
 
-        //Compare la liste avec le tableau
-    public static boolean comparerArray( ArrayList<Coordonnees> listC,Coordonnees [] arrayC) {
+        if(!b) {
+            System.out.println("Erreur jouer");
+        }
+        return b;
+    }
+
+
+
+
+    //Compare 2 tableaux
+    public static boolean comparerTab(int[][] A,int [][] B) {
+        boolean b = true;
+        if(A.length!=B.length || (A.length>0 && A[0].length!=B[0].length)) {
+            b = false;
+        }
+        else {
+            for(int i=0;i< A.length;i++) {
+                for(int j=0;j< A[0].length;j++) {
+                    if(A[i][j]!=B[i][j]) {
+                        b= false;
+                    }
+                }
+            }
+        }
+        return b;
+    }
+
+    //Compare la liste avec le tableau
+    public static boolean comparerListArray( ArrayList<Coordonnees> listC,Coordonnees [] arrayC) {
         boolean b = true;
         if(listC.size()!=arrayC.length) {
             b = false;

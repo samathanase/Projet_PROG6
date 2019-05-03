@@ -31,15 +31,17 @@ public class Partie {
                 tab[i][j] = 1;
             }
         }
-        tab[2][0]=1;
-        tab[2][1]=2;
-        tab[2][2]=1;
-        tab[2][3]=2;
-        tab[2][4]=0;
-        tab[2][5]=1;
-        tab[2][6]=2;
-        tab[2][7]=1;
-        tab[2][8]=2;
+        int p=1;
+        for(int j=0;j<9;j++) {
+            if(j==4) {
+                tab[2][j] = 0;
+            }
+            else {
+                tab[2][j] = p;
+                p = p==1 ? 2 : 1;
+            } 
+        }
+
         for(int i=3;i<5;i++) {
             for(int j=0;j<9;j++) {
                 tab[i][j] = 2;
@@ -61,8 +63,15 @@ public class Partie {
     }
 
     //Retourne 0 si la partie n'est pas finie
-    // 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
-    public int estFinie() {
+    public boolean estFinie() {
+        if(gagnant()==0) {
+            return false;
+        }
+        return true;
+    }
+
+    //0 si la partie n'est pas finie, 1 si le joueur 1 a gagné, 2 si le joueur 2 a gagné
+    public int gagnant() {
         int j1=0,j2=0;
         for(int i=0;i<ligne();i++) { //Compte le nombre de pion de chaque joueur
             for(int j=0;j<colonne();j++) {
@@ -103,6 +112,15 @@ public class Partie {
     //Retourne vrai si la case est un pion du joueur 2
     public boolean pionJoueur2 (int l,int c) {
         return tab[l][c] == 2;
+    }
+    public boolean pionJoueurAdverse(int l,int c) {
+        if(joueur1()) {
+            return pionJoueur2(l, c);
+        }
+        else if(joueur2()) {
+            return pionJoueur1(l, c);
+        }
+        return false;
     }
     //Renvoie vrai la case existe sur le plateau
     public boolean caseExiste (int l,int c) {
@@ -233,7 +251,7 @@ public class Partie {
             cN = listCasesAdj.get(i).colonne();
             dir = directionCoup(l,c,lN,cN);
             if( libre(lN,cN) && !dir.equals(precedenteDirection) && !casesVisitees.contains(listCasesAdj.get(i))
-             && (precedentPion==null || precedentPion.equals(new Coordonnees(l,c))) ) {
+             && (precedentPion==null || (precedentPion.equals(new Coordonnees(l,c)) && peutCapturer(l, c) )))  {
                 listCases.add(new Coordonnees(lN,cN));
             }
         }
@@ -245,7 +263,7 @@ public class Partie {
 
     //Retourne vrai si le coup est valide
     public boolean coupValide(int lPion,int cPion, int lDestination, int cDestination) {
-        if( (joueur1() && pionJoueur2(lPion, cPion)) || (joueur2() && pionJoueur1(lPion, cPion)) || libre(lPion,cPion) )  { //Pion incorrecte
+        if( !caseExiste(lPion, cPion) ||(joueur1() && pionJoueur2(lPion, cPion)) || (joueur2() && pionJoueur1(lPion, cPion)) || libre(lPion,cPion) )  { //Pion incorrecte
             // System.out.println("Pion erreur");
             return false;
         }
@@ -292,13 +310,8 @@ public class Partie {
         Direction dir = directionCoup(lPion, cPion, lDestination, cDestination); //La direction du coup
         Coordonnees C = dir.coordonnees();
         //On regarde si dans la case suivante est un pion adverse
-        if (coupValide(lPion, cPion, lDestination, cDestination)) {
-            if(joueur1() && pionJoueur2(lDestination+C.ligne(), cDestination+C.colonne())) {
-                return true;
-            }
-            else if(joueur2() && pionJoueur1(lDestination+C.ligne(), cDestination+C.colonne())) {
-                return true;
-            }
+        if(caseExiste(lDestination+C.ligne(), cDestination+C.colonne()) && pionJoueurAdverse(lDestination+C.ligne(), cDestination+C.colonne())) {
+            return true;
         }
         return false;
     }
@@ -308,13 +321,8 @@ public class Partie {
         Direction dir = directionCoup(lPion, cPion, lDestination, cDestination); //La direction du coup
         Coordonnees C = dir.coordonnees();
         C.oppose();
-        if (coupValide(lPion, cPion, lDestination, cDestination)) {
-            if(joueur1() && pionJoueur2(lPion+C.ligne(), cPion+C.colonne())) {
-                return true;
-            }
-            else if(joueur2() && pionJoueur1(lPion+C.ligne(), cPion+C.colonne())) {
-                return true;
-            }
+        if(caseExiste(lPion+C.ligne(), cPion+C.colonne()) && pionJoueurAdverse(lPion+C.ligne(), cPion+C.colonne())) {
+            return true;
         }
         return false;
     }
@@ -322,6 +330,22 @@ public class Partie {
     public boolean aspirationPercution(int lPion,int cPion, int lDestination, int cDestination) {
         return percussion(lPion, cPion, lDestination, cDestination) && aspiration(lPion, cPion, lDestination, cDestination);
     }
+
+    //Retourne vrai si le pion peut capturer des pions adverses
+    public boolean peutCapturer(int lPion,int cPion) {
+        boolean b = false;
+        ArrayList<Coordonnees> listeDest;
+        listeDest = casesAdjacentes(lPion, cPion);
+        for (Coordonnees cDest: listeDest) { //Pour chaque destination
+            if(percussion(lPion, cPion, cDest.ligne(), cDest.colonne()) && pionsCapturablesPercussion(lPion, cPion, cDest.ligne(), cDest.colonne()).size()>0) {
+                b = true;
+            }
+            else if (aspiration(lPion, cPion, cDest.ligne(), cDest.colonne()) && pionsCapturablesAspiration(lPion, cPion, cDest.ligne(), cDest.colonne()).size()>0) {
+                b = true;
+            }
+        }
+        return b;
+    }    
 
     // Retourne la liste des pions capturables avec le coup donné
     public ArrayList<Coordonnees> pionsCapturables(int lPion,int cPion, int lDestination, int cDestination) {
@@ -402,7 +426,6 @@ public class Partie {
     // }
 
 
-    //TODO : finir jouer
     //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
     //Cpature: 0 si pas de capture, 1 si percussion, 2 si aspiration
     public boolean jouer(int lPion,int cPion, int lDestination, int cDestination,int capture) {
@@ -440,7 +463,6 @@ public class Partie {
                 changerJoueur(); //On change de joueur si aucun coup n'est possible
             }
         }
-
         return true;
     }
 
