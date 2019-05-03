@@ -14,6 +14,7 @@ public class Partie {
     private Random rand; //Pour le tirage aléatoire du joueur
     private Direction precedenteDirection; //Précédente direction que le joueur a fait dans le tour
     private ArrayList<Coordonnees> casesVisitees; //Cases visitées dans le tour
+    private Coordonnees precedentPion; //le précédent pion joué dans le tour
 
     public Partie() {
         tab = new int[5][9]; //5 lignes, 9 colonnes
@@ -47,13 +48,14 @@ public class Partie {
     }
     //Savoir quel joueur joue en premier de manière aléatoire
     private void joueurAleatoire() {
-        joueur = rand.nextInt()%2+1;
+        joueur = rand.nextInt(2)+1;
     }
 
     //Recommence la partie
     public void recommencer() {
         this.initGrille();
         this.joueurAleatoire();
+        precedentPion = null;
         precedenteDirection.changerDirection(EnumDirection.Inconnue);
         casesVisitees.clear();
     }
@@ -126,9 +128,10 @@ public class Partie {
         else if(joueur2()) {
             joueur = 1;
         }
-        //Remet à 0 les valeurs suivantes
+        //Remet à 0 les valeurs de controle
         precedenteDirection.changerDirection(EnumDirection.Inconnue);
         casesVisitees.clear();
+        precedentPion = null;
     }
 
 
@@ -154,34 +157,61 @@ public class Partie {
         tab[l][c] = 0;
     }
 
-    //TODO: prendre en compte les coordonnées attention aux diagonales
+    //Renvoie la liste des pions du joueur 1
+    public ArrayList<Coordonnees> listePionsJoueur1() {
+        ArrayList<Coordonnees> pions = new ArrayList<Coordonnees>();
+        for(int i=0;i<ligne();i++) { //Compte le nombre de pion de chaque joueur
+            for(int j=0;j<colonne();j++) {
+                if(pionJoueur1(i, j)) {
+                    pions.add(new Coordonnees(i,j));
+                }
+            }
+        }
+        return pions;
+    }
+    //Renvoie la liste des pions du joueur 2
+    public ArrayList<Coordonnees> listePionsJoueur2() {
+        ArrayList<Coordonnees> pions = new ArrayList<Coordonnees>();
+        for(int i=0;i<ligne();i++) { //Compte le nombre de pion de chaque joueur
+            for(int j=0;j<colonne();j++) {
+                if(pionJoueur2(i, j)) {
+                    pions.add(new Coordonnees(i,j));
+                }
+            }
+        }
+        return pions;
+    }
+
+
     //Retourne la liste des cases adjacentes de la case demandée
     public ArrayList<Coordonnees> casesAdjacentes(int l, int c) {
         ArrayList<Coordonnees> listCases = new ArrayList<Coordonnees>();
-
-        if(caseExiste(l+1,c-1)) {
-            listCases.add(new Coordonnees(l+1,c-1));
-        }
+        //Les mouvement en haut, bas ,drotie, gauche
         if(caseExiste(l+1,c)) {
             listCases.add(new Coordonnees(l+1,c));
-        }
-        if(caseExiste(l+1,c+1)) {
-            listCases.add(new Coordonnees(l+1,c+1));
         }
         if(caseExiste(l,c-1)) {
             listCases.add(new Coordonnees(l,c-1));
         }
+        if(caseExiste(l-1,c)) {
+            listCases.add(new Coordonnees(l-1,c));
+        }
         if(caseExiste(l,c+1)) {
             listCases.add(new Coordonnees(l,c+1));
         }
-        if(caseExiste(l-1,c-1)) {
-            listCases.add(new Coordonnees(l,c-1));
-        }
-        if(caseExiste(l-1,c)) {
-            listCases.add(new Coordonnees(l,c));
-        }
-        if(caseExiste(l-1,c+1)) {
-            listCases.add(new Coordonnees(l,c+1));
+        if((l+c)%2==0) { //Cases où les déplacements en diagonales sont possibles
+            if(caseExiste(l+1,c-1)) {
+                listCases.add(new Coordonnees(l+1,c-1));
+            }
+            if(caseExiste(l+1,c+1)) {
+                listCases.add(new Coordonnees(l+1,c+1));
+            }
+            if(caseExiste(l-1,c-1)) {
+                listCases.add(new Coordonnees(l-1,c-1));
+            }
+            if(caseExiste(l-1,c+1)) {
+                listCases.add(new Coordonnees(l-1,c+1));
+            }
         }
         return listCases;
     }
@@ -189,15 +219,21 @@ public class Partie {
         return casesAdjacentes(C.ligne(), C.colonne());
     }
 
-    //Renvoie la liste des cases accessibles du pion donné
+    //Renvoie la liste des cases accessibles du pion donné:
+    //Une case est accessible pour un pion si cette case est:
+    //adjacente et libre et pas déjà visitée et dans une autre direction que le coup précédent
+    //Et si un coup avec capture a déjà été joué, on peut rejouer seulement ce même pion
     public ArrayList<Coordonnees> casesAccessibles(int l, int c) {
         ArrayList<Coordonnees> listCases = new ArrayList<Coordonnees>();
         ArrayList<Coordonnees> listCasesAdj = casesAdjacentes(l,c); //Récupère les cases adjacentes
         int lN,cN;
+        Direction dir;
         for(int i=0;i<listCasesAdj.size();i++) { //Pour chaque case adjacente
             lN = listCasesAdj.get(i).ligne();
             cN = listCasesAdj.get(i).colonne();
-            if( libre(lN,cN) ) {
+            dir = directionCoup(l,c,lN,cN);
+            if( libre(lN,cN) && !dir.equals(precedenteDirection) && !casesVisitees.contains(listCasesAdj.get(i))
+             && (precedentPion==null || precedentPion.equals(new Coordonnees(l,c))) ) {
                 listCases.add(new Coordonnees(lN,cN));
             }
         }
@@ -207,25 +243,15 @@ public class Partie {
         return casesAccessibles(C.ligne(), C.colonne());
     }
 
-    //Retourne vrai si le coup joué est valide
+    //Retourne vrai si le coup est valide
     public boolean coupValide(int lPion,int cPion, int lDestination, int cDestination) {
-        if( (joueur1() && pionJoueur2(lPion, cPion)) || (joueur2() && pionJoueur1(lPion, cPion)) || libre(cPion,lPion) )  { //Pion incorrecte
-            System.out.println("Mouvement erreur");
+        if( (joueur1() && pionJoueur2(lPion, cPion)) || (joueur2() && pionJoueur1(lPion, cPion)) || libre(lPion,cPion) )  { //Pion incorrecte
+            // System.out.println("Pion erreur");
             return false;
         }
         ArrayList<Coordonnees> listCoord = casesAccessibles(lPion,cPion);
         if(!listCoord.contains(new Coordonnees(lDestination,cDestination))) { //Destination incorrecte
-            System.out.println("Destination erreur");
-            System.out.println(listCoord);
-            return false;
-        }
-        Direction dir = directionCoup(lPion, cPion, lDestination, cDestination); //Différente du coup précédent
-        if(dir.equals(precedenteDirection)){
-            System.out.println("Direction erreur");
-            return false;
-        }
-        if(casesVisitees.contains(new Coordonnees(lDestination,cDestination))){
-            System.out.println("Case déjà visitée erreur");
+            // System.out.println("Case pas accessible erreur");
             return false;
         }
         return true;
@@ -234,31 +260,29 @@ public class Partie {
     //Retourne la direction du coup
     public Direction directionCoup(int lPion,int cPion, int lDestination, int cDestination) {
         Direction dir = new Direction(EnumDirection.Inconnue);
-        if (coupValide(lPion, cPion, lDestination, cDestination)) {
-            if(lPion==lDestination-1 && cPion==cDestination-1) {
-                dir.changerDirection(EnumDirection.HautGauche);
-            }
-            else if(lPion==lDestination-1 && cPion==cDestination) {
-                dir.changerDirection(EnumDirection.Haut);
-            }
-            else if(lPion==lDestination-1 && cPion==cDestination+1) {
-                dir.changerDirection(EnumDirection.HautDroite);
-            }
-            else if(lPion==lDestination && cPion==cDestination-1) {
-                dir.changerDirection(EnumDirection.Gauche);
-            }
-            else if(lPion==lDestination && cPion==cDestination+1) {
-                dir.changerDirection(EnumDirection.Droite);
-            }
-            else if(lPion==lDestination+1 && cPion==cDestination-1) {
-                dir.changerDirection(EnumDirection.BasGauche);
-            }
-            else if(lPion==lDestination+1 && cPion==cDestination) {
-                dir.changerDirection(EnumDirection.Bas);
-            }
-            else if(lPion==lDestination+1 && cPion==cDestination+1) {
-                dir.changerDirection(EnumDirection.BasDroite);
-            }
+        if(lPion-1==lDestination && cPion-1==cDestination) {
+            dir.changerDirection(EnumDirection.HautGauche);
+        }
+        else if(lPion-1==lDestination && cPion==cDestination) {
+            dir.changerDirection(EnumDirection.Haut);
+        }
+        else if(lPion-1==lDestination && cPion+1==cDestination) {
+            dir.changerDirection(EnumDirection.HautDroite);
+        }
+        else if(lPion==lDestination && cPion-1==cDestination) {
+            dir.changerDirection(EnumDirection.Gauche);
+        }
+        else if(lPion==lDestination && cPion+1==cDestination) {
+            dir.changerDirection(EnumDirection.Droite);
+        }
+        else if(lPion+1==lDestination && cPion-1==cDestination) {
+            dir.changerDirection(EnumDirection.BasGauche);
+        }
+        else if(lPion+1==lDestination && cPion==cDestination) {
+            dir.changerDirection(EnumDirection.Bas);
+        }
+        else if(lPion+1==lDestination && cPion+1==cDestination) {
+            dir.changerDirection(EnumDirection.BasDroite);
         }
         return dir;
     }
@@ -285,10 +309,10 @@ public class Partie {
         Coordonnees C = dir.coordonnees();
         C.oppose();
         if (coupValide(lPion, cPion, lDestination, cDestination)) {
-            if(joueur1() && pionJoueur2(lDestination+C.ligne(), cDestination+C.colonne())) {
+            if(joueur1() && pionJoueur2(lPion+C.ligne(), cPion+C.colonne())) {
                 return true;
             }
-            else if(joueur2() && pionJoueur1(lDestination+C.ligne(), cDestination+C.colonne())) {
+            else if(joueur2() && pionJoueur1(lPion+C.ligne(), cPion+C.colonne())) {
                 return true;
             }
         }
@@ -329,6 +353,7 @@ public class Partie {
     public ArrayList<Coordonnees> pionsCapturablesAspiration(int lPion,int cPion, int lDestination, int cDestination) {
         ArrayList<Coordonnees> listePions =  new ArrayList<Coordonnees>();
         if(!aspiration(lPion, cPion, lDestination, cDestination)) { //Erreur
+            // System.out.println("erreur, pas d'aspiration");
             return listePions;
         }
         Direction dir = directionCoup(lPion, cPion, lDestination, cDestination); //La direction du coup
@@ -348,7 +373,7 @@ public class Partie {
             lSuivant += cDep.ligne();
             cSuivant += cDep.colonne();
             //Si le pion est un pion de l'adversaire on l'ajoute
-            if(caseExiste(lDestination, cDestination) && ((joueur1() && pionJoueur2(lSuivant, cSuivant))||(joueur2() && pionJoueur1(lSuivant, cSuivant)))) {
+            if(caseExiste(lSuivant, cSuivant) && ((joueur1() && pionJoueur2(lSuivant, cSuivant))||(joueur2() && pionJoueur1(lSuivant, cSuivant)))) {
                 listePions.add(new Coordonnees(lSuivant,cSuivant));
             }
             else { //Plus de pions à explorer
@@ -358,6 +383,24 @@ public class Partie {
         return listePions;
     }
 
+    //TODO
+    //Renvoie la liste des coups possibles
+    // public ArrayList<Coup> listeCoupsValides() {
+    //     ArrayList<Coup> listC = new ArrayList<Coup>();
+    //     ArrayList<Coordonnees> pions = new ArrayList<Coordonnees>();
+    //     if(joueur1()) {
+    //         pions = listePionsJoueur1();
+    //     }
+    //     else if(joueur2()) {
+    //         pions = listePionsJoueur2();
+    //     }
+
+    //     for(Coordonnees pion : pions) { //Pour chaque pions on regarde les cases accessibles
+
+    //     }
+    //     return listC;
+    // }
+
 
     //TODO : finir jouer
     //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
@@ -366,15 +409,14 @@ public class Partie {
         if(!coupValide(lPion, cPion, lDestination, cDestination)) { //Coup invalide
             return false;
         }
-        enleverPion(lPion, cPion); //On enlève le pion joué
-        placerPion(joueur, lDestination, cDestination); //On le place à l'endroit voulu
 
         if(capture==0) {//pas de capture
+            enleverPion(lPion, cPion); //On enlève le pion joué
+            placerPion(joueur, lDestination, cDestination); //On le place à l'endroit voulu
             changerJoueur(); //C'est au joueur suivant
         }
         else { //Capture
             ArrayList<Coordonnees> listePions = new ArrayList<Coordonnees>();
-
             if(capture==1) { //percussion
                 listePions =  pionsCapturablesPercussion(lPion, cPion, lDestination, cDestination);
             }
@@ -384,11 +426,21 @@ public class Partie {
 
             for (Coordonnees pionAEnlever : listePions) { //On enlève les pions du joueur adverse
                 enleverPion(pionAEnlever.l, pionAEnlever.c);
+                System.out.println("Pion tué: "+pionAEnlever.l+" "+pionAEnlever.c);
             }
 
+            enleverPion(lPion, cPion); //On enlève le pion joué
+            placerPion(joueur, lDestination, cDestination); //On le place à l'endroit voulu
+
+            precedentPion = new Coordonnees(lDestination,cDestination); //Sauvegarde le pion qu'on vient de jouer
             precedenteDirection = directionCoup(lPion, cPion, lDestination, cDestination); //On sauvegarde la direction
-            casesVisitees.add(new Coordonnees(lDestination,cDestination));
+            casesVisitees.add(new Coordonnees(lPion,cPion));
+            System.out.println(casesAccessibles(lDestination, cDestination));
+            if(casesAccessibles(lDestination, cDestination).size()==0) { //On regarde si le joueur peut encore le pion
+                changerJoueur(); //On change de joueur si aucun coup n'est possible
+            }
         }
+
         return true;
     }
 
@@ -417,5 +469,6 @@ public class Partie {
             }
             System.out.println();
         }
+        System.out.println();
     }
 }
