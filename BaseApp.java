@@ -9,7 +9,10 @@ import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.beans.*;
 import javafx.scene.paint.Color;
-
+import javafx.scene.input.MouseEvent;
+import Modele.*;
+import View.*;
+import Controller.*;
 public class BaseApp extends Application {
 
 
@@ -23,6 +26,7 @@ public class BaseApp extends Application {
 
 	ResizableCanvas cnv = new ResizableCanvas();
 	GridView gv = new GridView();
+	Controller ctrl = new Controller();
 
 	Pane root = new Pane();
 	root.getChildren().add(cnv);
@@ -32,8 +36,14 @@ public class BaseApp extends Application {
 	cnv.heightProperty().bind(root.heightProperty());	
 	cnv.widthProperty().addListener((Observable o) -> {gv.draw(cnv);});
 	cnv.heightProperty().addListener((Observable o) -> {gv.draw(cnv);});
-
 	gv.draw(cnv);
+
+	cnv.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		@Override
+		public void handle(MouseEvent e){
+			ctrl.click(e,gv);		
+		}
+	});
 
 	//GraphicsContext gc = cnv.getGraphicsContext2D();
 	//gc.setFill(Color.RED);
