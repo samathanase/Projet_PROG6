@@ -7,14 +7,14 @@ import javafx.scene.shape.*;
 import Modele.*;
 public class GridView{
 
-	_Grille m_game;
+	Partie m_game;
 	double tileSizeX,tileSizeY;
 
 	public GridView(){
 		m_game = new _Grille/*Partie*/();
 	}
 
-	public GridView(_Grille/*Partie*/ game){
+	public GridView(Partie game){
 
 		m_game = game;
 	}
@@ -34,29 +34,29 @@ public class GridView{
 		GraphicsContext gc = cnv.getGraphicsContext2D();
 
 
-		tileSizeX = (cnv.getWidth())/m_game.nbC() ;
-		tileSizeY = (cnv.getHeight())/m_game.nbL() ;
+		tileSizeX = (cnv.getWidth())/m_game.colonne() ;
+		tileSizeY = (cnv.getHeight())/m_game.ligne() ;
 
 		gc.clearRect(0,0,cnv.getWidth(),cnv.getHeight());		
 		//gc.setFill(Color.RED);
 
 
 		//Affichage des lignes
-		for(int i = 0; i < m_game.nbC(); i++){
-			gc.strokeLine((i+0.5)*tileSizeX,0.5*tileSizeY,(i+0.5)*tileSizeX,(m_game.nbL()-0.5)*tileSizeY);
+		for(int i = 0; i < m_game.colonne(); i++){
+			gc.strokeLine((i+0.5)*tileSizeX,0.5*tileSizeY,(i+0.5)*tileSizeX,(m_game.ligne()-0.5)*tileSizeY);
 			
 		}
 
-		for(int j = 0; j < m_game.nbL(); j++){
-			gc.strokeLine(0.5*tileSizeX,(j+0.5)*tileSizeY,(m_game.nbC()-0.5)*tileSizeX,(j+0.5)*tileSizeY);
+		for(int j = 0; j < m_game.ligne(); j++){
+			gc.strokeLine(0.5*tileSizeX,(j+0.5)*tileSizeY,(m_game.colonne()-0.5)*tileSizeX,(j+0.5)*tileSizeY);
 		}
-		for(int k = 0; k <= m_game.nbC()/2; k++){
-			for(int m = 0; m < m_game.nbL()/2; m++){
+		for(int k = 0; k <= m_game.colonne()/2; k++){
+			for(int m = 0; m < m_game.ligne()/2; m++){
 				if(k!=0){
 					gc.strokeLine((k*2+0.5)*tileSizeX,(m*2+0.5)*tileSizeY,((k-1)*2+0.5)*tileSizeX,((m+1)*2+0.5)*tileSizeY);
 				}
 			
-				if(k!= m_game.nbC()/2){
+				if(k!= m_game.colonne()/2){
 					gc.strokeLine((k*2+0.5)*tileSizeX,(m*2+0.5)*tileSizeY,((k+1)*2+0.5)*tileSizeX,((m+1)*2+0.5)*tileSizeY);
 				}
 			}
@@ -64,8 +64,8 @@ public class GridView{
 		}
 	
 		//Affichage des pions
-		for(int x = 0; x < m_game.nbC(); x++){
-			for(int y = 0; y < m_game.nbL(); y++){
+		for(int x = 0; x < m_game.colonne(); x++){
+			for(int y = 0; y < m_game.ligne(); y++){
 				if(m_game.pionJoueur1(y,x)){
 					gc.setFill(Color.RED);
 				}
@@ -87,11 +87,13 @@ class _Grille extends Partie {
 	public _Grille(){
 	}
 
-	int nbL(){
+	@Override
+	public int ligne(){
 		return tab.length;
 	}
 
-	int nbC(){
+	@Override
+	public int colonne(){
 		if(tab[0] != null){
 			return tab[0].length;
 		}
