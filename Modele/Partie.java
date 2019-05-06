@@ -276,11 +276,12 @@ public class Partie {
         int lN,cN;
         Direction dir;
         for(int i=0;i<listCasesAdj.size();i++) { //Pour chaque case adjacente
-            lN = listCasesAdj.get(i).ligne();
+            lN = listCasesAdj.get(i).ligne(); //Coordonnées des cases adjacentes
             cN = listCasesAdj.get(i).colonne();
             dir = directionCoup(l,c,lN,cN);
             if( libre(lN,cN) && !dir.equals(precedenteDirection) && !casesVisitees.contains(listCasesAdj.get(i))
-             && (precedentPion==null || (precedentPion.equals(new Coordonnees(l,c)) && peutCapturer(l, c) )))  {
+             && (precedentPion==null || (precedentPion.equals(new Coordonnees(l,c)) && 
+             ( aspiration(l,c,lN,cN) && pionsCapturablesAspiration(l, c, lN, cN).size()>0 || percussion(l,c,lN,cN) && pionsCapturablesPercussion(l, c, lN, cN).size()>0    )))) {
                 listCases.add(new Coordonnees(lN,cN));
             }            
         }
@@ -293,12 +294,26 @@ public class Partie {
     //Retourne vrai si le coup est valide
     public boolean coupValide(int lPion,int cPion, int lDestination, int cDestination) {
         if( !caseExiste(lPion, cPion) ||(joueur1() && pionJoueur2(lPion, cPion)) || (joueur2() && pionJoueur1(lPion, cPion)) || libre(lPion,cPion) )  { //Pion incorrecte
-            // System.out.println("Pion erreur");
+            Configuration.instance().logger().info("Partie:coupValide - Le coup "+lPion+","+cPion+"->"+lDestination+","+cDestination+", pas un pion valide");
             return false;
         }
         ArrayList<Coordonnees> listCoord = casesAccessibles(lPion,cPion);
         if(!listCoord.contains(new Coordonnees(lDestination,cDestination))) { //Destination incorrecte
-            // System.out.println("Case pas accessible erreur");
+            //Code ci dessous seulement pour avoir des informations
+            Direction dir = directionCoup(lPion,cPion,lDestination,cDestination);
+            if(dir.equals(precedenteDirection)) {
+                Configuration.instance().logger().info("Partie:coupValide - Le coup "+lPion+","+cPion+"->"+lDestination+","+cDestination+", même direction que le coup précédent");
+            }
+            else if(casesVisitees.contains(new Coordonnees(lDestination, cDestination))) {
+                Configuration.instance().logger().info("Partie:coupValide - Le coup "+lPion+","+cPion+"->"+lDestination+","+cDestination+", case déjà visitée");
+            }
+            else if( precedentPion!=null && !precedentPion.equals(new Coordonnees(lPion,cPion))) {
+                Configuration.instance().logger().info("Partie:coupValide - Le coup "+lPion+","+cPion+"->"+lDestination+","+cDestination+", vous devez rejouer le même pion ou finir le tour");
+            }
+            else if( (precedentPion!=null && (precedentPion.equals(new Coordonnees(lPion,cPion)) && 
+            ( !percussion(lPion,cPion,lDestination,cDestination) ||  !aspiration(lPion, cPion, lDestination, cDestination))))) {
+                Configuration.instance().logger().info("Partie:coupValide - Le coup "+lPion+","+cPion+"->"+lDestination+","+cDestination+", le coup doit être une capture, ou vous pouvez finir le tour");
+            }
             return false;
         }
         return true;
@@ -379,6 +394,7 @@ public class Partie {
     // Retourne la liste des pions capturables avec le coup donné
     public ArrayList<Coordonnees> pionsCapturables(int lPion,int cPion, int lDestination, int cDestination) {
         if(aspirationPercution(lPion, cPion, lDestination, cDestination)) { //Erreur, il faut choisir une des 2 captures
+            Configuration.instance().logger().warning("Partie:pionsCapturables - Le coup est un aspiration et une percution, il faut choisir un des deux");
             return new ArrayList<Coordonnees>();
         }
         else if(percussion(lPion, cPion, lDestination, cDestination)) {
@@ -394,7 +410,7 @@ public class Partie {
     public ArrayList<Coordonnees> pionsCapturablesPercussion(int lPion,int cPion, int lDestination, int cDestination) {
         ArrayList<Coordonnees> listePions =  new ArrayList<Coordonnees>();
         if(!percussion(lPion, cPion, lDestination, cDestination)) { //Erreur
-            Configuration.instance().logger().warning("Partie: pas de percussion");
+            Configuration.instance().logger().warning("Partie:pionsCapturablesPercussion - pas de percussion");
             return listePions;
         }
         Direction dir = directionCoup(lPion, cPion, lDestination, cDestination); //La direction du coup
@@ -406,7 +422,7 @@ public class Partie {
     public ArrayList<Coordonnees> pionsCapturablesAspiration(int lPion,int cPion, int lDestination, int cDestination) {
         ArrayList<Coordonnees> listePions =  new ArrayList<Coordonnees>();
         if(!aspiration(lPion, cPion, lDestination, cDestination)) { //Erreur
-            Configuration.instance().logger().warning("Partie: pas d'aspiration");
+            Configuration.instance().logger().warning("Partie:pionsCapturablesPercussion - pas d'aspiration");
             return listePions;
         }
         Direction dir = directionCoup(lPion, cPion, lDestination, cDestination); //La direction du coup
@@ -436,33 +452,15 @@ public class Partie {
         return listePions;
     }
 
-    //TODO
-    //Renvoie la liste des coups possibles
-    // public ArrayList<Coup> listeCoupsValides() {
-    //     ArrayList<Coup> listC = new ArrayList<Coup>();
-    //     ArrayList<Coordonnees> pions = new ArrayList<Coordonnees>();
-    //     if(joueur1()) {
-    //         pions = listePionsJoueur1();
-    //     }
-    //     else if(joueur2()) {
-    //         pions = listePionsJoueur2();
-    //     }
-
-    //     for(Coordonnees pion : pions) { //Pour chaque pions on regarde les cases accessibles
-
-    //     }
-    //     return listC;
-    // }
-
 
     //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
     //Cpature: 0 si pas de capture, 1 si percussion, 2 si aspiration
     public boolean jouer(int lPion,int cPion, int lDestination, int cDestination,int capture) {
         if(!coupValide(lPion, cPion, lDestination, cDestination)) { //Coup invalide
-            Configuration.instance().logger().warning("Partie:jouer - Coup impossible: "+lPion+","+cPion+"->"+lDestination+","+cDestination);
+            // Configuration.instance().logger().warning("Partie:jouer - Coup impossible: "+lPion+","+cPion+"->"+lDestination+","+cDestination);
             return false;
         }
-
+        Configuration.instance().logger().info("Partie:jouer - Coup effectué: "+lPion+","+cPion+"->"+lDestination+","+cDestination);
         if(capture==0) {//pas de capture
             enleverPion(lPion, cPion); //On enlève le pion joué
             placerPion(joueur(), lDestination, cDestination); //On le place à l'endroit voulu
@@ -479,7 +477,7 @@ public class Partie {
 
             for (Coordonnees pionAEnlever : listePions) { //On enlève les pions du joueur adverse
                 enleverPion(pionAEnlever.l, pionAEnlever.c);
-                Configuration.instance().logger().info("Pion tué: "+pionAEnlever.l+" "+pionAEnlever.c);
+                Configuration.instance().logger().info("Partie:jouer - Pion tué: "+pionAEnlever.l+" "+pionAEnlever.c);
             }
 
             enleverPion(lPion, cPion); //On enlève le pion joué
@@ -488,8 +486,7 @@ public class Partie {
             precedentPion = new Coordonnees(lDestination,cDestination); //Sauvegarde le pion qu'on vient de jouer
             precedenteDirection = directionCoup(lPion, cPion, lDestination, cDestination); //On sauvegarde la direction
             casesVisitees.add(new Coordonnees(lPion,cPion));
-            System.out.println(casesAccessibles(lDestination, cDestination));
-            if(casesAccessibles(lDestination, cDestination).size()==0) { //On regarde si le joueur peut encore le pion
+            if(casesAccessibles(lDestination, cDestination).size()==0) { //On regarde si le joueur peut encore jouer le pion
                 changerJoueur(); //On change de joueur si aucun coup n'est possible
             }
         }

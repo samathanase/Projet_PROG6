@@ -21,6 +21,7 @@ public class TestPartie {
         testJouerCoupsMultiples();
         testJouer();
         partie35();
+        testJouerChaineInutile();
 
 
     }
@@ -356,6 +357,39 @@ public class TestPartie {
         return b;
     }
 
+    public static boolean testJouerChaineInutile() {
+        boolean b = true;
+        Partie partie = new Partie();
+        int [][] t = {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,1,0,2,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,2,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        };
+        partie.joueur = 1;
+        partie.tab = t;
+        partie.jouer(1,2,1,3,1);
+        partie.jouer(1,3,0,3,0);
+
+        int [][] tR = {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,1,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,2,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        };
+        if(!comparerTab(partie.tab,tR)) {
+            b = false;
+        }
+
+        if(!b) {
+            System.out.println("Erreur testJouerChaineInutile");
+        }
+        return b;
+    }
+
+
     public static boolean testJouer() {
         boolean b =true;
         ArrayList<Coordonnees> listC;
@@ -383,7 +417,6 @@ public class TestPartie {
         };
         if(!comparerTab(partie.tab,tR)) {
             b = false;
-            if (verbeux) System.out.println("Erreur terrain,tR");
         }
 
         if(!b) {

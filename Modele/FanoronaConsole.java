@@ -8,17 +8,27 @@ Une version ultra basique en console
 
 public class FanoronaConsole {
     public static void main(String[] args) {
-        Partie partie = new Partie(3,5);
         Scanner scan = new Scanner(System.in);
 
-        
-        int [][] t = {
-            {1,2,1,1,1},
-            {0,0,0,1,2},
-            {2,2,1,2,2},
+        // Partie partie = new Partie(3,5);
+        // int [][] t = {
+        //     {1,2,1,1,1},
+        //     {0,0,0,1,2},
+        //     {2,2,1,2,2},
 
+        // };
+        // partie.joueur = 2;
+        // partie.tab = t;
+
+        Partie partie = new Partie();
+        int [][] t = {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,1,0,2,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,2,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
         };
-        partie.joueur = 2;
+        partie.joueur = 1;
         partie.tab = t;
 
 
