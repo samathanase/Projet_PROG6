@@ -1,0 +1,4 @@
+INFOS : java.util.logging.LogManager$RootLogger log : Fichier de propriétés option.cfg chargé
+INFOS : java.util.logging.LogManager$RootLogger log : Test
+AVERTISSEMENT : java.util.logging.LogManager$RootLogger log : Test
+GRAVE : java.util.logging.LogManager$RootLogger log : Test

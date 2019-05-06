@@ -9,6 +9,10 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.FileHandler;
+
 
 public class Configuration {
     static Configuration instance = null;
@@ -17,7 +21,7 @@ public class Configuration {
 
     protected Configuration() {
 		// On charge les propriétés
-		InputStream in = charge("option.cfg");
+		InputStream in = charge("Configuration/option.cfg");
 		Properties defaut = new Properties();
 		chargerProprietes(defaut, in, "option.cfg");
 		// Il faut attendre le dernier moment pour utiliser le logger
@@ -63,8 +67,8 @@ public class Configuration {
 			}
     }
     
-    //Lis la propriété
-    public String lis(String nom) {
+	//Lis la propriété demandée
+	public String lis(String nom) {
 		String value = prop.getProperty(nom);
 		if (value != null) {
 			return value;
@@ -73,14 +77,36 @@ public class Configuration {
 		}
 	}
 
-    //Renvoie le logger
-    public Logger logger() {
-		if (logger == null) {
-			System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s : %5$s%n");
-			logger = Logger.getLogger("Fanorona.Logger");
-			logger.setLevel(Level.parse(lis("LogLevel")));
-        }
-		return logger;
-	}
+	//Renvoie le logger
+	public Logger logger() {
+		if (log == null) {
+			log = Logger.getLogger(""); //Création du logger
+			Handler[] handlers = log.getHandlers();
+			if (handlers.length > 0 && handlers[0] instanceof ConsoleHandler) { //On enlève l'affichage par défaut dans la console
+				log.removeHandler(handlers[0]);
+			}
 
+			log.setLevel(Level.parse(lis("logLevel"))); //Met le niveau du logger
+
+			String sortieLog = lis("sortieLog");
+			if(!sortieLog.equals("console")) { //Affichage dans un fichier
+				try {
+					FileHandler logFichier = new FileHandler(sortieLog);
+					logFichier.setFormatter(new FormatLogFichier()); //Formatage simple
+					
+					log.addHandler(logFichier); //Ajoute le fichier au logger
+				}
+				catch (IOException e) { //On ne peut pas chager le fichier de log
+					System.err.println("Impossible de charger le fichier de sortie de log");
+					System.err.println(e.toString());
+				}
+			}
+			else  { //Affichage dans la console
+				ConsoleHandler consoleHandler = new ConsoleHandler();
+				consoleHandler.setFormatter(new FormatLog());
+				log.addHandler(consoleHandler);
+			}
+		}
+		return log;
+	}
 }
