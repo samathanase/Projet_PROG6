@@ -24,10 +24,13 @@ public class BaseApp extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Hello World!");
 
+	Partie game = new Partie();
 	ResizableCanvas cnv = new ResizableCanvas();
-	GridView gv = new GridView();
-	Controller ctrl = new Controller();
+	GridView gv = new GridView(game);
+	Controller ctrl = new Controller(1,game);
+	IA_Controller ia = new IA_Controller(-1,game);
 
+	System.out.println(game.joueur());
 	Pane root = new Pane();
 	root.getChildren().add(cnv);
 
@@ -41,7 +44,13 @@ public class BaseApp extends Application {
 	cnv.setOnMouseClicked(new EventHandler<MouseEvent>(){
 		@Override
 		public void handle(MouseEvent e){
-			ctrl.click(e,gv);		
+			if(game.joueur1()){
+				ctrl.click(e,gv);
+			}
+			else{
+				ia.jouer(ia.think());
+			}		
+			gv.draw(cnv);
 		}
 	});
 
