@@ -8,8 +8,19 @@ Une version ultra basique en console
 
 public class FanoronaConsole {
     public static void main(String[] args) {
-        Partie partie = new Partie();
+        Partie partie = new Partie(3,5);
         Scanner scan = new Scanner(System.in);
+
+        
+        int [][] t = {
+            {1,2,1,1,1},
+            {0,0,0,1,2},
+            {2,2,1,2,2},
+
+        };
+        partie.joueur = 2;
+        partie.tab = t;
+
 
         int lPion,cPion,lDestination,cDestination,capture;
         partie.afficher();
@@ -42,6 +53,9 @@ public class FanoronaConsole {
             }
             else if(partie.percussion(lPion,cPion,lDestination,cDestination)) {
                 partie.jouer(lPion,cPion,lDestination,cDestination,1);
+            }
+            else {
+                partie.jouer(lPion,cPion,lDestination,cDestination,0);
             }
 
             partie.afficher();

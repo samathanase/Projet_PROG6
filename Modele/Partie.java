@@ -3,13 +3,16 @@ package Modele;
 
 import java.util.Random;
 import java.util.ArrayList;
+import Configuration.Configuration;
 
 /*
     La base du jeu 
 */
 
+
 public class Partie {
-    public int[][] tab; //Le tableau: 0:case libre, 1:pion joueur 1, 2:pion joueur 2
+    public Grille grille; //Le tableau: 0:case libre, 1:pion joueur 1, 2:pion joueur 2
+    int [][] tab;
     public int joueur; //Le joueur qui doit jouer
     private Random rand; //Pour le tirage aléatoire du joueur
     private Direction precedenteDirection; //Précédente direction que le joueur a fait dans le tour
@@ -17,7 +20,20 @@ public class Partie {
     private Coordonnees precedentPion; //le précédent pion joué dans le tour
 
     public Partie() {
-        tab = new int[5][9]; //5 lignes, 9 colonnes
+        grille = new Grille(5,9); //5 lignes, 9 colonnes
+        tab = grille.tab();
+        rand = new Random();
+        precedenteDirection = new Direction(EnumDirection.Inconnue);
+        casesVisitees = new ArrayList<Coordonnees>();
+        recommencer();
+    }
+
+    public Partie(int l,int c) {
+        if(l%2==0 || c%2==0) { //Erreur
+            System.exit(1);
+        }
+        grille = new Grille(l,c);
+        tab = grille.tab();
         rand = new Random();
         precedenteDirection = new Direction(EnumDirection.Inconnue);
         casesVisitees = new ArrayList<Coordonnees>();
@@ -26,24 +42,24 @@ public class Partie {
 
     //Initialiser la grille
     private void initGrille() {
-        for(int i=0;i<2;i++) {
-            for(int j=0;j<9;j++) {
+        for(int i=0;i<ligne()/2;i++) {
+            for(int j=0;j<colonne();j++) {
                 tab[i][j] = 1;
             }
         }
         int p=1;
-        for(int j=0;j<9;j++) {
-            if(j==4) {
-                tab[2][j] = 0;
+        for(int j=0;j<colonne();j++) {
+            if(j==colonne()/2) {
+                tab[ligne()/2][j] = 0;
             }
             else {
-                tab[2][j] = p;
+                tab[ligne()/2][j] = p;
                 p = p==1 ? 2 : 1;
             } 
         }
 
-        for(int i=3;i<5;i++) {
-            for(int j=0;j<9;j++) {
+        for(int i=ligne()/2+1;i<ligne();i++) {
+            for(int j=0;j<colonne();j++) {
                 tab[i][j] = 2;
             }
         }
@@ -94,11 +110,11 @@ public class Partie {
 
     //Retourne le nombre de ligne
     public int ligne() {
-        return 5;
+        return grille.ligne();
     }
     //Retourne le nombre de colonne
     public int colonne() {
-        return 9;
+        return grille.colonne();
     }
 
     //Retourne vrai si la case est libre
@@ -112,6 +128,15 @@ public class Partie {
     //Retourne vrai si la case est un pion du joueur 2
     public boolean pionJoueur2 (int l,int c) {
         return tab[l][c] == 2;
+    }
+    public boolean pionJoueur (int joueur,int l,int c) {
+        if(joueur==1) {
+            return pionJoueur1(l, c);
+        }
+        else if(joueur==2) {
+            return pionJoueur2(l, c);
+        }
+        return false;
     }
     public boolean pionJoueurAdverse(int l,int c) {
         if(joueur1()) {
@@ -152,7 +177,11 @@ public class Partie {
         precedentPion = null;
     }
 
-
+    //Pour mettre fin au tour
+    // Le joueur peut-il passer son tour sans avoir joué?
+    public void finTour() {
+        changerJoueur();
+    }
 
     //Placer le pion pour le joueur
     private void placerPionJouer1(int l,int c) {
@@ -253,7 +282,7 @@ public class Partie {
             if( libre(lN,cN) && !dir.equals(precedenteDirection) && !casesVisitees.contains(listCasesAdj.get(i))
              && (precedentPion==null || (precedentPion.equals(new Coordonnees(l,c)) && peutCapturer(l, c) )))  {
                 listCases.add(new Coordonnees(lN,cN));
-            }
+            }            
         }
         return listCases;
     }
@@ -364,8 +393,8 @@ public class Partie {
     // Retourne la liste des pions capturables avec le coup donné
     public ArrayList<Coordonnees> pionsCapturablesPercussion(int lPion,int cPion, int lDestination, int cDestination) {
         ArrayList<Coordonnees> listePions =  new ArrayList<Coordonnees>();
-
         if(!percussion(lPion, cPion, lDestination, cDestination)) { //Erreur
+            Configuration.instance().logger().warning("Partie: pas de percussion");
             return listePions;
         }
         Direction dir = directionCoup(lPion, cPion, lDestination, cDestination); //La direction du coup
@@ -377,7 +406,7 @@ public class Partie {
     public ArrayList<Coordonnees> pionsCapturablesAspiration(int lPion,int cPion, int lDestination, int cDestination) {
         ArrayList<Coordonnees> listePions =  new ArrayList<Coordonnees>();
         if(!aspiration(lPion, cPion, lDestination, cDestination)) { //Erreur
-            // System.out.println("erreur, pas d'aspiration");
+            Configuration.instance().logger().warning("Partie: pas d'aspiration");
             return listePions;
         }
         Direction dir = directionCoup(lPion, cPion, lDestination, cDestination); //La direction du coup
@@ -430,12 +459,13 @@ public class Partie {
     //Cpature: 0 si pas de capture, 1 si percussion, 2 si aspiration
     public boolean jouer(int lPion,int cPion, int lDestination, int cDestination,int capture) {
         if(!coupValide(lPion, cPion, lDestination, cDestination)) { //Coup invalide
+            Configuration.instance().logger().warning("Partie:jouer - Coup impossible: "+lPion+","+cPion+"->"+lDestination+","+cDestination);
             return false;
         }
 
         if(capture==0) {//pas de capture
             enleverPion(lPion, cPion); //On enlève le pion joué
-            placerPion(joueur, lDestination, cDestination); //On le place à l'endroit voulu
+            placerPion(joueur(), lDestination, cDestination); //On le place à l'endroit voulu
             changerJoueur(); //C'est au joueur suivant
         }
         else { //Capture
@@ -449,11 +479,11 @@ public class Partie {
 
             for (Coordonnees pionAEnlever : listePions) { //On enlève les pions du joueur adverse
                 enleverPion(pionAEnlever.l, pionAEnlever.c);
-                System.out.println("Pion tué: "+pionAEnlever.l+" "+pionAEnlever.c);
+                Configuration.instance().logger().info("Pion tué: "+pionAEnlever.l+" "+pionAEnlever.c);
             }
 
             enleverPion(lPion, cPion); //On enlève le pion joué
-            placerPion(joueur, lDestination, cDestination); //On le place à l'endroit voulu
+            placerPion(joueur(), lDestination, cDestination); //On le place à l'endroit voulu
 
             precedentPion = new Coordonnees(lDestination,cDestination); //Sauvegarde le pion qu'on vient de jouer
             precedenteDirection = directionCoup(lPion, cPion, lDestination, cDestination); //On sauvegarde la direction

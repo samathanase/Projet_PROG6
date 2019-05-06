@@ -18,7 +18,9 @@ public class TestPartie {
         testCoupValide();
         testPercussion();
         testAspiration();
+        testJouerCoupsMultiples();
         testJouer();
+        partie35();
 
 
     }
@@ -299,7 +301,7 @@ public class TestPartie {
     }
 
 
-    public static boolean testJouer() {
+    public static boolean testJouerCoupsMultiples() {
         boolean b =true;
         ArrayList<Coordonnees> listC;
         Partie partie = new Partie();
@@ -349,7 +351,75 @@ public class TestPartie {
 
 
         if(!b) {
-            System.out.println("Erreur jouer");
+            System.out.println("Erreur testJouerCoupsMultiples");
+        }
+        return b;
+    }
+
+    public static boolean testJouer() {
+        boolean b =true;
+        ArrayList<Coordonnees> listC;
+        Partie partie = new Partie();
+        int [][] t = {
+            {1,1,1,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1,1,1},
+            {1,2,1,2,0,1,2,1,2},
+            {2,2,2,2,2,2,2,2,2},
+            {2,2,2,2,2,2,2,2,2},
+        };
+        partie.joueur = 1;
+        partie.tab = t;
+
+
+        partie.jouer(1,4,2,4,1);
+        partie.jouer(4,3,4,4,0);
+
+        int [][] tR = {
+            {1,1,1,1,1,1,1,1,1},
+            {1,1,1,1,0,1,1,1,1},
+            {1,2,1,2,1,1,2,1,2},
+            {2,2,2,2,0,2,2,2,2},
+            {2,2,2,0,2,2,2,2,2},
+        };
+        if(!comparerTab(partie.tab,tR)) {
+            b = false;
+            if (verbeux) System.out.println("Erreur terrain,tR");
+        }
+
+        if(!b) {
+            System.out.println("Erreur testJouer");
+        }
+        return b;
+    }
+
+
+    public static boolean partie35() {
+        boolean b =true;
+        ArrayList<Coordonnees> listC;
+        Partie partie = new Partie(3,5);
+        int [][] t = {
+            {1,2,1,1,1},
+            {0,0,0,1,2},
+            {2,2,1,2,2},
+
+        };
+        partie.joueur = 2;
+        partie.tab = t;
+        partie.jouer(2,0,1,0,1);
+
+        int [][] tR = {
+            {0,2,1,1,1},
+            {2,0,0,1,2},
+            {0,2,1,2,2},
+        };
+        if(!comparerTab(partie.tab,tR)) {
+            b = false;
+            if (verbeux) System.out.println("Erreur terrain,tR");
+        }
+
+
+        if(!b) {
+            System.out.println("Erreur partie35");
         }
         return b;
     }
