@@ -14,5 +14,10 @@ public class TestConfig {
 
         //Pour récupérer un paramètre: Configuration.instance().lis("l'option")
         System.out.println("Nom joueur 1: "+Configuration.instance().lis("nomJoueur1"));
+
+        Configuration.instance().changerPropriete("nomJoueur1", "Djoko");
+        System.out.println("Nom joueur 1: "+Configuration.instance().lis("nomJoueur1"));
+        Configuration.instance().sauvegarderPropriete();
+
     }
 }

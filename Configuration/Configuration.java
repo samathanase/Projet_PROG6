@@ -1,19 +1,23 @@
 package Configuration;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.NoSuchElementException;
 import java.util.Properties;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.FileHandler;
 
 
+
+//TODO Sauvegarder les options
 public class Configuration {
     static Configuration instance = null;
     Properties prop;
@@ -27,7 +31,7 @@ public class Configuration {
 		// Il faut attendre le dernier moment pour utiliser le logger
 		// car celui-ci s'initialise avec les propriétés
 		String message = "Fichier de propriétés option.cfg chargé";
-		String nom = System.getProperty("user.home") + "/.Fanorona";
+		String nom = System.getProperty("user.home") + "/.fanorona/option.cfg";
 		try {
 			in = new FileInputStream(nom);
 			prop = new Properties(defaut);
@@ -48,11 +52,10 @@ public class Configuration {
         return instance;
     }
 
-
+	// La méthode de chargement suivante ne dépend pas du système de fichier et sera
+	// donc utilisable pour un .jar
+	// Attention, par contre, le fichier doit se trouver dans le CLASSPATH
     public static InputStream charge(String nom) {
-		// La méthode de chargement suivante ne dépend pas du système de fichier et sera
-		// donc utilisable pour un .jar
-		// Attention, par contre, le fichier doit se trouver dans le CLASSPATH
 		return ClassLoader.getSystemClassLoader().getResourceAsStream(nom);
 	}
 
@@ -65,8 +68,8 @@ public class Configuration {
 				System.err.println(e.toString());
 				System.exit(1);
 			}
-    }
-    
+	}
+	    
 	//Lis la propriété demandée
 	public String lis(String nom) {
 		String value = prop.getProperty(nom);
@@ -89,24 +92,87 @@ public class Configuration {
 			log.setLevel(Level.parse(lis("logLevel"))); //Met le niveau du logger
 
 			String sortieLog = lis("sortieLog");
-			if(!sortieLog.equals("console")) { //Affichage dans un fichier
-				try {
-					FileHandler logFichier = new FileHandler(sortieLog);
-					logFichier.setFormatter(new FormatLogFichier()); //Formatage simple
-					
-					log.addHandler(logFichier); //Ajoute le fichier au logger
-				}
-				catch (IOException e) { //On ne peut pas chager le fichier de log
-					System.err.println("Impossible de charger le fichier de sortie de log");
-					System.err.println(e.toString());
-				}
-			}
-			else  { //Affichage dans la console
+			if (sortieLog.equals("console"))  { //Affichage dans la console
 				ConsoleHandler consoleHandler = new ConsoleHandler();
 				consoleHandler.setFormatter(new FormatLog());
 				log.addHandler(consoleHandler);
 			}
+			else if (sortieLog.equals("defaut"))  { //Affichage dans un fichier présent dans le répertoire courant/.fanorona/fanorona.log
+				try {
+					repertoireCourant(); //Création du répertoire s'il n'existe pas
+					String chemin = System.getProperty("user.home")+"/.fanorona/fanorona.log";
+					FileHandler logFichier = new FileHandler(chemin);
+					logFichier.setFormatter(new FormatLogFichier()); //Formatage simple du texte
+					log.addHandler(logFichier); //Ajoute le fichier au logger
+				}
+				catch (IOException e) { //On ne peut pas charger le fichier de log
+					System.err.println("Impossible de charger le fichier de sortie de log du répertoire courant");
+					System.err.println(e.toString());
+				}
+
+			}
+			else { //Affichage dans un fichier
+				//ATTENTION quand on utilise le .JAR il faut un fichier qui soit en dehors du .JAR 
+				try {
+					FileHandler logFichier = new FileHandler(sortieLog);
+					logFichier.setFormatter(new FormatLogFichier()); //Formatage simple du texte
+					log.addHandler(logFichier); //Ajoute le fichier au logger
+				}
+				catch (IOException e) { //On ne peut pas charger le fichier de log
+					System.err.println("Impossible de charger le fichier de sortie de log");
+					System.err.println(e.toString());
+				}
+			}
+
 		}
 		return log;
+	}
+
+	//Changer une propriété 
+	public void changerPropriete(String nomPropriete, String nouvelleValeur) {
+		if (!prop.containsKey(nomPropriete)) {
+			logger().warning("Configuration:changerPropriete - Propriété "+nomPropriete+" n'existe pas!");
+		}
+		else { //On change la valeur
+			prop.put(nomPropriete, nouvelleValeur);
+		}
+	}
+
+	//Création de .fanorona dans le répertoire courant
+	private void repertoireCourant() {
+		String chemin = System.getProperty("user.home");
+		File dossier = new File(chemin+"/.fanorona");
+		if(!dossier.exists()) {
+			dossier.mkdir(); //Création du répertoire
+		}
+	} 
+
+	//Impossible de sauvegarder directement dans le fichier JAR
+	//On sauvegarde donc dans un fichier en dehors (on crée un dossier fanorona dans le home)
+	public void sauvegarderPropriete() {
+		String chemin = System.getProperty("user.home");
+		repertoireCourant();
+		File fichier = new File(chemin+"/.fanorona"+"/option.cfg");
+		try {
+			fichier.createNewFile(); //Création du fichier
+			FileWriter ecrFichier = new FileWriter(fichier);
+
+			String contenu = "#Niveau d'affichage des logs: OFF INFO WARNING SEVERE\n"+
+			"logLevel="+lis("logLevel")+"\n\n"+
+			"#Définit la sortie du log: console | defaut | ou un nom de fichier (Configuration/log.txt)\n"+
+			"sortieLog="+lis("sortieLog")+"\n\n"+
+			"#faux | vrai\npleineEcran="+lis("pleineEcran")+"\n\n"+
+			"#Option joueur\nnomJoueur1="+lis("nomJoueur1")+"\n"+
+			"nomJoueur2="+lis("nomJoueur2")+"\n"+
+			"#facile moyen difficile\n\n"+
+			"difficulteIA="+lis("difficulteIA")+"\n";
+			;
+			ecrFichier.write(contenu);
+			ecrFichier.close();
+			// FileWriter fichier = new FileWriter("Configuration/option.cfg");				
+		} catch (Exception e) {
+			logger().warning("Impossible de sauvegarder les propriétés: "+e);
+		}
+			
 	}
 }

@@ -26,7 +26,7 @@ public class FormatLogFichier extends Formatter {
         }
 
         Date date = new Date();
-        SimpleDateFormat dateFormat= new SimpleDateFormat ("dd/MM/YYYY à HH:mm:ss:SS");
+        SimpleDateFormat dateFormat= new SimpleDateFormat ("[HH:mm:ss:SS]");
         s.append(dateFormat.format(date)+" - "); //Affichage de la date
         s.append(record.getMessage()+"\n"); //Affichage du message
 
@@ -35,7 +35,9 @@ public class FormatLogFichier extends Formatter {
 
     // entête du fichier de log
     public String getHead(Handler h) {
-        return "Début session de log\n";
+        Date date = new Date();
+        SimpleDateFormat dateFormat= new SimpleDateFormat ("dd/MM/YYYY à HH:mm:ss:SS");
+        return "Début session de log le"+ dateFormat.format(date) +"\n";
     }
 
     // fin du fichier de log
