@@ -10,6 +10,7 @@ import Configuration.Configuration;
 */
 
 
+
 public class Partie {
     public Grille grille; //Le tableau: 0:case libre, 1:pion joueur 1, 2:pion joueur 2
     public int [][] tab;
@@ -18,6 +19,8 @@ public class Partie {
     private Direction precedenteDirection; //Précédente direction que le joueur a fait dans le tour
     private ArrayList<Coordonnees> casesVisitees; //Cases visitées dans le tour
     private Coordonnees precedentPion; //le précédent pion joué dans le tour
+    public Coordonnees pionSelectionne;
+
 
     public Partie() {
         grille = new Grille(5,9); //5 lignes, 9 colonnes
@@ -76,6 +79,7 @@ public class Partie {
         precedentPion = null;
         precedenteDirection.changerDirection(EnumDirection.Inconnue);
         casesVisitees.clear();
+        pionSelectionne = null;
     }
 
     //Retourne 0 si la partie n'est pas finie
@@ -115,6 +119,14 @@ public class Partie {
     //Retourne le nombre de colonne
     public int colonne() {
         return grille.colonne();
+    }
+    //Retourne la grille
+    public Grille grille() {
+        return grille;
+    }
+    //Retourne la valeur de la case de la grille (de préférence utiliser les méthodes ci dessous)
+    public int at(int l, int c) {
+        return grille.at(l,c);
     }
 
     //Retourne vrai si la case est libre
@@ -202,6 +214,15 @@ public class Partie {
     //Enlève le pion
     private void enleverPion(int l,int c) {
         tab[l][c] = 0;
+    }
+
+    //Retourne le pion selectionne
+    public Coordonnees pionSelectionne() {
+        return pionSelectionne;
+    }
+    //Selection d'un pion
+    public void selectionnerPion (Coordonnees C) {
+        pionSelectionne = C;
     }
 
     //Renvoie la liste des pions du joueur 1
