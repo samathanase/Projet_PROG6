@@ -10,29 +10,30 @@ public class FanoronaConsole {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
-        // Partie partie = new Partie(3,5);
+        Partie partie = new Partie();
         // int [][] t = {
         //     {1,2,1,1,1},
         //     {0,0,0,1,2},
         //     {2,2,1,2,2},
 
         // };
-        // partie.joueur = 2;
+        partie.joueur = 1;
         // partie.tab = t;
 
-        Partie partie = new Partie();
-        int [][] t = {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,2,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,2,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-        };
-        partie.joueur = 1;
-        partie.tab = t;
+        // Partie partie = new Partie();
+        // int [][] t = {
+        //     {0,0,0,0,0,0,0,0,0},
+        //     {0,0,1,0,2,0,0,0,0},
+        //     {0,0,0,0,0,0,0,0,0},
+        //     {0,0,0,0,0,2,0,0,0},
+        //     {0,0,0,0,0,0,0,0,0},
+        // };
+        // partie.joueur = 1;
+        // partie.tab = t;
 
 
         int lPion,cPion,lDestination,cDestination,capture;
+        Coup coup;
         partie.afficher();
         while(!partie.estFinie()) {
             if(partie.joueur1()) {
@@ -49,23 +50,28 @@ public class FanoronaConsole {
                 cPion = scan.nextInt();
                 lDestination = scan.nextInt();
                 cDestination = scan.nextInt();
-            } while(!partie.coupValide(lPion,cPion,lDestination,cDestination));
+                coup = new Coup(lPion, cPion,lDestination,cDestination);
+            } while(!partie.coupValide(coup));
 
             
             //Jouer le coup
-            if(partie.aspirationPercution(lPion,cPion,lDestination,cDestination)) {
+            if(partie.aspirationPercution(coup)) {
                 System.out.println("Percussion:1 , Aspiration:2");
                 capture = scan.nextInt();
-                partie.jouer(lPion,cPion,lDestination,cDestination,capture);
+                coup.changerAction(capture);
+                partie.jouer(coup);
             }
-            else if(partie.aspiration(lPion,cPion,lDestination,cDestination)) {
-                partie.jouer(lPion,cPion,lDestination,cDestination,2);
+            else if(partie.aspiration(coup)) {
+                coup.actionAspiration();
+                partie.jouer(coup);
             }
-            else if(partie.percussion(lPion,cPion,lDestination,cDestination)) {
-                partie.jouer(lPion,cPion,lDestination,cDestination,1);
+            else if(partie.percussion(coup)) {
+                coup.actionPercussion();
+                partie.jouer(coup);
             }
             else {
-                partie.jouer(lPion,cPion,lDestination,cDestination,0);
+                coup.actionPasCapture();
+                partie.jouer(coup);
             }
 
             partie.afficher();
