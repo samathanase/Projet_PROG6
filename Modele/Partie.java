@@ -12,7 +12,7 @@ import Configuration.Configuration;
 
 public class Partie {
     public Grille grille; //Le tableau: 0:case libre, 1:pion joueur 1, 2:pion joueur 2
-    int [][] tab;
+    public int [][] tab;
     public int joueur; //Le joueur qui doit jouer
     private Random rand; //Pour le tirage aléatoire du joueur
     private Direction precedenteDirection; //Précédente direction que le joueur a fait dans le tour
