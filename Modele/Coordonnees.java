@@ -41,6 +41,11 @@ public class Coordonnees {
         l += C.l;
     }
 
+    //Renvoie une nouvelle coordonnées et ne modifie pas la coordonnée
+    public Coordonnees somme(Coordonnees C) {
+        return new Coordonnees(l+C.l, c+C.c);
+    }
+
     @Override
     //Retourne vrai si l'object coordonnees passé en paramètre est égal à l'objet
     public boolean equals(Object O) {

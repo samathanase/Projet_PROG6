@@ -407,7 +407,7 @@ public class Partie {
         return percussion(coup) && aspiration(coup);
     }
 
-    //Retourne vrai si le pion peut capturer des pions adverses
+    // // Retourne vrai si le pion peut capturer des pions adverses
     // public boolean peutCapturer(int lPion,int cPion) {
     //     boolean b = false;
     //     ArrayList<Coordonnees> listeDest;
@@ -484,28 +484,36 @@ public class Partie {
     }
 
     //TODO FINIR
-    //Retourne la liste des coups possibles pour le joueur courant
-    // public ArrayList<Coup> coupsPossibles() {
-    //     ArrayList<Coordonnees> pions;
-    //     ArrayList<Coup> coups = new ArrayList<Coup>(); //La liste des coups
-    //     ArrayList<Coordonnees> casesAccess;
-    //     if(joueur1()) {
-    //         pions = listePionsJoueur1();
-    //     }
-    //     else {
-    //         pions = listePionsJoueur1();
-    //     }
+    // Retourne la liste des coups possibles pour le joueur courant
+    public ArrayList<Coup> listeCoupsValides() {
+        ArrayList<Coordonnees> pions;
+        ArrayList<Coup> coups = new ArrayList<Coup>(); //La liste des coups
+        Coup coup ; 
+        ArrayList<Coordonnees> casesAccess;
+        if(joueur1()) {
+            pions = listePionsJoueur1(); //Récupère la liste des pions du joueur courant
+        }
+        else {
+            pions = listePionsJoueur2();
+        }
 
-    //     for(Coordonnees p : pions) { //Pour tous les pions
-    //         casesAccess = casesAccessibles(p); //On récupère les cases accessibles
-    //         for(Coordonnees caseS : casesAccess) { //Pour chaque case accessible
-    //             coups.add(new Coup);
-    //         }
-    //     }
-
-    //     return coups;
-    // }
-
+        for(Coordonnees p : pions) { //Pour tous les pions
+            casesAccess = casesAccessibles(p); //On récupère les cases accessibles
+            for(Coordonnees caseS : casesAccess) { //Pour chaque case accessible
+                coup = new Coup(p,caseS);
+                if(percussion(coup)) {
+                    coups.add(new Coup(p,caseS,1));
+                }
+                if(aspiration(coup)) {
+                    coups.add(new Coup(p,caseS,2));
+                }
+                if(pasCapture(coup)) {
+                    coups.add(new Coup(p,caseS,0));
+                }
+            }
+        }
+        return coups;
+    }
 
     //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
     //Cpature: 0 si pas de capture, 1 si percussion, 2 si aspiration
