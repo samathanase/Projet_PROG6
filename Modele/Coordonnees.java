@@ -11,6 +11,12 @@ public class Coordonnees {
         this.l = l;
         this.c = c;
     }
+	//---------------------------------
+	public Coordonnees(Coordonnees copy){
+		c = copy.c;
+		l = copy.l;
+	}
+	//---------------------------------
 
     public int ligne() {
         return l;

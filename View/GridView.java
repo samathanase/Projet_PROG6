@@ -11,7 +11,7 @@ public class GridView{
 	double tileSizeX,tileSizeY;
 
 	public GridView(){
-		m_game = new _Grille/*Partie*/();
+		m_game = new Partie();
 	}
 
 	public GridView(Partie game){
@@ -62,6 +62,20 @@ public class GridView{
 			}
 			
 		}
+
+		//Affichage des select 
+		if(m_game.pionSelectionne() != null){
+			for(int x = 0; x < m_game.colonne(); x++){
+				for(int y = 0; y < m_game.ligne(); y++){
+					if(m_game.pionSelectionne().equals(new Coordonnees(y,x))){
+						double thickness = 5;
+						gc.setFill(Color.BLACK);
+						gc.fillOval((x+0.25)*tileSizeX-thickness,(y+0.25)*tileSizeY-thickness,tileSizeX/2+2*thickness,tileSizeY/2+2*thickness);
+
+					}
+				}
+			}
+		}
 	
 		//Affichage des pions
 		for(int x = 0; x < m_game.colonne(); x++){
@@ -81,7 +95,7 @@ public class GridView{
 	}
 
 }
-
+/*
 class _Grille extends Partie {
 
 	public _Grille(){
@@ -107,4 +121,4 @@ class _Grille extends Partie {
 		return tab[x][y];
 	}
 
-}
+}*/
