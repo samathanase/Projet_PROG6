@@ -103,7 +103,7 @@ class _Grille extends Partie {
 
 	}
 
-	int at(int x, int y){
+	public int at(int x, int y){
 		return tab[x][y];
 	}
 

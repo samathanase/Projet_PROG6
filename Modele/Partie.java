@@ -483,7 +483,6 @@ public class Partie {
         return listePions;
     }
 
-    //TODO FINIR
     // Retourne la liste des coups possibles pour le joueur courant
     public ArrayList<Coup> listeCoupsValides() {
         ArrayList<Coordonnees> pions;

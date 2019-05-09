@@ -25,10 +25,8 @@ public class Controller{
 	}
 
 
-	public boolean jouer(Action a){
-		Coordonnees pos = a.getPos();
-		return m_game.jouer(pos.ligne(),pos.colonne(),pos.ligne() + a.getDir().ligne(),pos.colonne() + a.getDir().colonne(),a.getAction());
-
+	public boolean jouer(Coup coup){
+		return m_game.jouer(coup);
 	}
 	
 	//Gestion du click dans la zone de jeu
@@ -38,13 +36,12 @@ public class Controller{
 		//printCoord(coord);
 		clickHist.add(coord);
 		if(clickHist.size() == 3){
-			Action a = new Action(clickHist.get(0),new Coordonnees(clickHist.get(1).ligne() - clickHist.get(0).ligne(), clickHist.get(1).colonne() - clickHist.get(0).colonne()), getCapture(clickHist));
-			jouer(a);
+			Coup coup = new Coup(clickHist.get(0),clickHist.get(1), getCapture(clickHist));
+			jouer(coup);
 				
 			System.out.println(getCapture(clickHist));
 			m_game.afficher();
 			clickHist.clear();
-
 		}
 	}
 

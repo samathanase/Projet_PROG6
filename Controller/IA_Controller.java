@@ -68,8 +68,8 @@ public class IA_Controller extends Controller {
 		return (nbJ1*1.0)/nbJ2;
 	}*/
 
-	public Action think(){
-		List<Action> ret = getAvailableActions() ;
+	public Coup think(){
+		List<Coup> ret = m_game.listeCoupsValides() ; //La liste des coups valides
 		Random gen = new Random();
 		if(ret.size() > 0){
 			return ret.get(gen.nextInt(ret.size()));
