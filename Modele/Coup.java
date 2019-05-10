@@ -60,6 +60,10 @@ public class Coup {
         action = 0;
     }
 
+    //Retourne l'action
+    public int action() {
+        return this.action;
+    }
 
     //Si le coup ne capture pas de pions
     public boolean pasCapture() {
