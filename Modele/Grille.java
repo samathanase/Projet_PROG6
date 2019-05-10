@@ -11,6 +11,19 @@ public class Grille {
         this.l=l;
         this.c=c;
     }
+	//----------------------------------
+	public Grille(Grille copy){
+		l = copy.l;
+		c = copy.c;
+		
+		tab = new int[l][c];
+		for(int i = 0; i < l; i++){
+			for(int j = 0; j < c; j++){
+				tab[i][j] = copy.tab[i][j];
+			}
+		}
+	}
+	//----------------------------------
 
 
     public int ligne() {
@@ -20,7 +33,15 @@ public class Grille {
     public int colonne() {
         return c;
     }
+	//-------------------------------------------
+    public boolean caseExiste (int l,int c) {
+        return l>=0 && l< ligne() && c>=0 && c< colonne();
+    }
 
+    public boolean caseExiste (Coordonnees C) {
+        return caseExiste(C.ligne(),C.colonne());
+    }
+	//-----------------------------------------
     public int at(int l,int c) {
         if(l<0 || l>ligne() || c<0 || c>colonne()) {
             return -1;
@@ -29,6 +50,11 @@ public class Grille {
             return tab[l][c];
         }
     }
+
+
+	public int at(Coordonnees coord){
+		return at(coord.ligne(),coord.colonne());
+	}
 
     public int[][] tab() {
         return tab;

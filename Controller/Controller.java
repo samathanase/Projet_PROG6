@@ -6,9 +6,9 @@ import java.util.*;
 import javafx.scene.input.MouseEvent;
 public class Controller{
 
-	Partie m_game;
-	List<Coordonnees> clickHist;	
-	int m_player;
+	protected Partie m_game;
+	protected List<Coordonnees> clickHist;	
+	protected int m_player;
 
 
 	public Controller(int player){
@@ -25,23 +25,36 @@ public class Controller{
 	}
 
 
-	public boolean jouer(Coup coup){
-		return m_game.jouer(coup);
+	public boolean jouer(Coup a){
+		if(a != null){
+			return m_game.jouer(a);
+		}
+		else{
+			return false;
+		}
 	}
-	
+
 	//Gestion du click dans la zone de jeu
 	public void click(MouseEvent e, GridView gv){
 		Coordonnees coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY()), (int)(e.getSceneX()/gv.getTileSizeX()));
 		System.out.println(m_game.joueur());
 		//printCoord(coord);
-		clickHist.add(coord);
-		if(clickHist.size() == 3){
-			Coup coup = new Coup(clickHist.get(0),clickHist.get(1), getCapture(clickHist));
-			jouer(coup);
-				
-			System.out.println(getCapture(clickHist));
-			m_game.afficher();
+		if(m_game.grille().at(coord) == m_player){
 			clickHist.clear();
+			clickHist.add(coord);
+			m_game.selectionnerPion(coord);
+		}else{
+			clickHist.add(coord);
+			if(clickHist.size() == 3){
+				Coup a = new Coup(clickHist.get(0),clickHist.get(1), getCapture(clickHist));
+				jouer(a);
+
+				System.out.println(getCapture(clickHist));
+				m_game.afficher();
+				clickHist.clear();
+				m_game.selectionnerPion(null);
+
+			}
 		}
 	}
 
@@ -66,7 +79,7 @@ public class Controller{
 		else{
 			return 2;
 		}
-		
+
 	}
 
 	public int _at(int l, int c){
@@ -91,10 +104,14 @@ public class Controller{
 		return (m_game.joueur1() && m_player == 1) || (m_game.joueur2() && m_player == -1);
 	}
 
-	public boolean at(int l, int c){
+	public boolean _at_(Coordonnees coo){
+		return _at_(coo.ligne(),coo.colonne());
+	}
+
+	public boolean _at_(int l, int c){
 		return (m_game.pionJoueur1(l,c) && m_player == 1) || (m_game.pionJoueur2(l,c) && m_player == -1);
 	}
-	public boolean nat(int l, int c){
+	public boolean _nat_(int l, int c){
 		return (m_game.pionJoueur1(l,c) && m_player == -1) || (m_game.pionJoueur2(l,c) && m_player == 1);
 	}
 

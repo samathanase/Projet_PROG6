@@ -6,6 +6,11 @@ public class Direction {
     public Direction(EnumDirection d) {
         direction = d;
     }
+	//-------------------------------
+	public Direction(Direction copy){
+		direction = copy.direction;
+	}
+	//-------------------------------
 
     public void changerDirection(EnumDirection dir) {
         direction = dir;

@@ -14,14 +14,14 @@ import Controller.Action;
 //TODO retourner les actions disponibles
 
 public class Partie {
-    public Grille grille; //Le tableau: 0:case libre, 1:pion joueur 1, 2:pion joueur 2
-    public int [][] tab;
-    public int joueur; //Le joueur qui doit jouer
+    private Grille grille; //Le tableau: 0:case libre, 1:pion joueur 1, 2:pion joueur 2
+    private int [][] tab;
+    private int joueur; //Le joueur qui doit jouer
     private Random rand; //Pour le tirage aléatoire du joueur
     private Direction precedenteDirection; //Précédente direction que le joueur a fait dans le tour
     private ArrayList<Coordonnees> casesVisitees; //Cases visitées dans le tour
     private Coordonnees precedentPion; //le précédent pion joué dans le tour
-    public Coordonnees pionSelectionne;
+    private Coordonnees pionSelectionne;
 
 
     public Partie() {
@@ -44,6 +44,30 @@ public class Partie {
         casesVisitees = new ArrayList<Coordonnees>();
         recommencer();
     }
+
+	//-------------------------------
+	public Partie(Partie copy){
+		grille = new Grille(copy.grille);
+	 	tab = grille.tab();
+    		joueur = copy.joueur; 
+    		rand = new Random(); 
+    		precedenteDirection = new Direction(copy.precedenteDirection); 
+   		casesVisitees = new ArrayList<Coordonnees>();
+		for(int i = 0; i < copy.casesVisitees.size(); i++){
+			casesVisitees.add(new Coordonnees(copy.casesVisitees.get(i)));
+		} 
+		if(copy.precedentPion != null){
+    			precedentPion = new Coordonnees(copy.precedentPion); 
+		}
+		if(copy.pionSelectionne != null){
+    			pionSelectionne = new Coordonnees(copy.pionSelectionne);
+		}
+	}
+	public void setGrille(Grille grid){
+		grille = grid;
+		tab = grille.tab();
+	}
+	//-------------------------------
 
     //Initialiser la grille
     private void initGrille() {
