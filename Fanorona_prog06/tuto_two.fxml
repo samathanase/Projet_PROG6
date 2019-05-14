@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tuto_scene2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.Tuto_two">
+<AnchorPane fx:id="tuto_scene2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_two">
    <children>
       <Rectangle fx:id="rect_tuto2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="334.0" layoutX="139.0" layoutY="168.0" stroke="BLACK" strokeType="INSIDE" width="672.0" />
       <Button fx:id="return_to_tuto" layoutX="28.0" layoutY="624.0" mnemonicParsing="false" onAction="#return_to_tuto" prefHeight="42.0" prefWidth="107.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="sortir">
