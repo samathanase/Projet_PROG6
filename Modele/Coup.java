@@ -1,10 +1,14 @@
 package Modele;
 
+import java.io.Serializable;
+
 /*
 Classe pour représenter les coups
 */
 
-public class Coup {
+public class Coup implements Serializable{
+    private static final long serialVersionUID = 324916122093584715L;
+
     Coordonnees depart;
     Coordonnees arrivee;
     int action;

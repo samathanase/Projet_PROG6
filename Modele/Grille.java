@@ -1,8 +1,12 @@
 package Modele;
+import java.io.Serializable;
+
 //La grille
 
-public class Grille {
-    int [][]tab;
+public class Grille implements Serializable{
+    private static final long serialVersionUID = -3453671131229703786L;
+
+    int[][] tab;
     int l;
     int c;
 

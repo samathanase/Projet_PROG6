@@ -2,6 +2,7 @@ package Modele;
 
 
 import java.util.Random;
+import java.io.Serializable;
 import java.util.ArrayList;
 import Configuration.Configuration;
 
@@ -9,15 +10,9 @@ import Configuration.Configuration;
     La base du jeu 
 */
 
-//TODO historique:
-/*
-Tableau de coup,
-Pouvoir faire et annuler
-Indice dans le tableau
-*/
+public class Partie implements Serializable {
+    private static final long serialVersionUID = 696479903953286766L;
 
-
-public class Partie {
     private Grille grille;
     public int [][] tab; //Le tableau: 0:case libre, 1:pion joueur 1, 2:pion joueur 2
     public int joueur; //Le joueur qui doit jouer

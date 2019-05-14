@@ -1,6 +1,5 @@
 package Configuration;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,8 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-
-//TODO Sauvegarder les options
 public class Configuration {
     static Configuration instance = null;
     Properties prop;
@@ -99,8 +96,8 @@ public class Configuration {
 			}
 			else if (sortieLog.equals("defaut"))  { //Affichage dans un fichier présent dans le répertoire courant/.fanorona/fanorona.log
 				try {
-					repertoireCourant(); //Création du répertoire s'il n'existe pas
-					String chemin = System.getProperty("user.home")+"/.fanorona/fanorona.log";
+					//Création du répertoire s'il n'existe pas
+					String chemin = repertoireCourant()+"/fanorona.log";
 					FileHandler logFichier = new FileHandler(chemin);
 					logFichier.setFormatter(new FormatLogFichier()); //Formatage simple du texte
 					log.addHandler(logFichier); //Ajoute le fichier au logger
@@ -139,37 +136,42 @@ public class Configuration {
 	}
 
 	//Création de .fanorona dans le répertoire courant
-	private void repertoireCourant() {
+	public String repertoireCourant() {
 		String chemin = System.getProperty("user.home");
-		File dossier = new File(chemin+"/.fanorona");
+		String repertoire = chemin+"/.fanorona";
+		File dossier = new File(repertoire);
 		if(!dossier.exists()) {
 			dossier.mkdir(); //Création du répertoire
+			File dossierSave = new File(repertoire+"/sauvegarde"); //Création du répertoire de sauvegarde
+			dossierSave.mkdir();
 		}
+		return repertoire;
 	} 
 
 	//Impossible de sauvegarder directement dans le fichier JAR
-	//On sauvegarde donc dans un fichier en dehors (on crée un dossier fanorona dans le home)
+	//On sauvegarde donc dans un fichier en dehors (on crée un dossier ./fanorona dans le home)
 	public void sauvegarderPropriete() {
-		String chemin = System.getProperty("user.home");
-		repertoireCourant();
-		File fichier = new File(chemin+"/.fanorona"+"/option.cfg");
+		String chemin = repertoireCourant();
+
+		File fichier = new File(chemin+"/option.cfg");
 		try {
 			fichier.createNewFile(); //Création du fichier
 			FileWriter ecrFichier = new FileWriter(fichier);
 
 			String contenu = "#Niveau d'affichage des logs: OFF INFO WARNING SEVERE\n"+
 			"logLevel="+lis("logLevel")+"\n\n"+
-			"#Définit la sortie du log: console | defaut | ou un nom de fichier (Configuration/log.txt)\n"+
+			"#Définit la sortie du log: console | defaut | ou un nom de fichier\n"+
 			"sortieLog="+lis("sortieLog")+"\n\n"+
-			"#faux | vrai\npleineEcran="+lis("pleineEcran")+"\n\n"+
+			"#faux | vrai\npleineEcran="+lis("pleinEcran")+"\n\n"+
 			"#Option joueur\nnomJoueur1="+lis("nomJoueur1")+"\n"+
 			"nomJoueur2="+lis("nomJoueur2")+"\n"+
 			"#facile moyen difficile\n\n"+
 			"difficulteIA="+lis("difficulteIA")+"\n";
-			;
+
 			ecrFichier.write(contenu);
 			ecrFichier.close();
-			// FileWriter fichier = new FileWriter("Configuration/option.cfg");				
+			logger().info("Sauvegarde des propriétés réussiee");
+			// FileWriter fichier = new FileWriter("Configuration/option.cfg");
 		} catch (Exception e) {
 			logger().warning("Impossible de sauvegarder les propriétés: "+e);
 		}

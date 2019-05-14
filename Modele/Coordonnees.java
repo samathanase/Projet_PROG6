@@ -1,10 +1,14 @@
 package Modele;
 
+import java.io.Serializable;
+
 /*
 Classe pour représenter les coordonnées d'une case
 */
 
-public class Coordonnees {
+public class Coordonnees implements Serializable {
+    private static final long serialVersionUID = 3392738748753990380L;
+    
     int c;
     int l;
     public Coordonnees(int l,int c) {

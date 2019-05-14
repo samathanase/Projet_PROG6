@@ -1,7 +1,10 @@
 package Modele;
+import java.io.Serializable;
 
 
-public class Direction {
+public class Direction implements Serializable{
+    private static final long serialVersionUID = -6471455606652848584L;
+
     EnumDirection direction;
     public Direction(EnumDirection d) {
         direction = d;

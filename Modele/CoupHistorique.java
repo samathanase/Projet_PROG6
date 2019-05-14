@@ -6,6 +6,8 @@ Rajoute le nombre de pions capturés, le joueur qui a joué le coup
 */
 
 public class CoupHistorique extends Coup{
+    private static final long serialVersionUID = 5945574586292838844L;
+
     private int nbPionsCaptures;
     private int joueur;
     private Direction precedenteDirection;

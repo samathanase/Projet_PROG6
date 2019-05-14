@@ -1,10 +1,12 @@
 package Modele;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Historique {
+public class Historique implements Serializable {
+    private static final long serialVersionUID = -4797871433390956257L;
 
-    ArrayList<CoupHistorique> tabAnnuler; //tableau des coups annulés
+    ArrayList<CoupHistorique> tabAnnuler; // tableau des coups annulés
     ArrayList<CoupHistorique> tabRefaire; //tableau des coups a refaire
 
     Historique() {
