@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="main_menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.FXMLDocumentController">
+   <children>
+      <Button fx:id="quit_btn" layoutX="807.0" layoutY="648.0" mnemonicParsing="false" onAction="#quit_btn" prefHeight="30.0" prefWidth="96.0" style="-fx-background-color: #C9C9C9; -fx-background-radius: 1px; -fx-background-color: e47cdc;" text="quitter">
+         <font>
+            <Font name="Berlin Sans FB" size="15.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="game_name" fitHeight="91.0" fitWidth="439.0" layoutX="256.0" layoutY="31.0">
+         <image>
+            <Image url="@icônes/fan_logo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="PvP_btn" fitHeight="121.0" fitWidth="390.0" layoutX="281.0" layoutY="145.0" onMouseClicked="#PvP_btn">
+         <image>
+            <Image url="@buttons/btn_pvp2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="PvA_btn" fitHeight="121.0" fitWidth="390.0" layoutX="280.0" layoutY="276.0" onMouseClicked="#PvA_btn">
+         <image>
+            <Image url="@buttons/btn_pva2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="opt_btn" fitHeight="121.0" fitWidth="390.0" layoutX="281.0" layoutY="535.0" onMouseClicked="#opt_btn">
+         <image>
+            <Image url="@buttons/btn_opt2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="tuto_btn" fitHeight="121.0" fitWidth="390.0" layoutX="280.0" layoutY="407.0" onMouseClicked="#tuto_btn">
+         <image>
+            <Image url="@buttons/btn_tuto2.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

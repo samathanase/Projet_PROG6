@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="tuto_menu_toggle" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="693.0" style="-fx-background-color: #FCFFC9; -fx-background-position: center; -fx-border-radius: 0 0 0 0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.Tuto1_toggle">
+   <children>
+      <Text fx:id="tuto_title_toggle" fill="#e94033" layoutX="276.0" layoutY="53.0" stroke="#874545" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-background-position: center; -fx-background-color: #E94033; -fx-background-size: cover, auto; -fx-background-repeat: stretch;" text="Tutoriel" textAlignment="CENTER" wrappingWidth="141.33682250976562">
+         <font>
+            <Font name="Bauhaus 93" size="30.0" />
+         </font>
+      </Text>
+      <Button fx:id="return_to_main_toggle" layoutX="299.0" layoutY="442.0" mnemonicParsing="false" onAction="#return_to_main" prefHeight="34.0" prefWidth="95.0" style="-fx-background-radius: 1px; -fx-background-color: #c1c0c0;" text="fermer">
+         <font>
+            <Font name="Berlin Sans FB" size="17.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="img_tuto_toggle1" fitHeight="347.0" fitWidth="582.0" layoutX="56.0" layoutY="74.0">
+         <image>
+            <Image url="@images%20tuto/tuto_tog1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="prec_toggle_disabled" disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="6.0" layoutY="222.0" opacity="0.5">
+         <image>
+            <Image url="@buttons/btn_lft.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="next_toggle" fitHeight="50.0" fitWidth="50.0" layoutX="638.0" layoutY="222.0" onMouseClicked="#next_toggle">
+         <image>
+            <Image url="@buttons/btn_ryt.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
