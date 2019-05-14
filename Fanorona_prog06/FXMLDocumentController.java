@@ -8,15 +8,15 @@
 
 
 
-package fanorona_prog06;
+package Fanorona_prog06;
 
 import Controller.Controller;
 import Controller.IA_Controller;
 import Modele.Partie;
 import View.GridView;
 import View.ResizableCanvas;
-//import static fanorona_prog06.PvP_board.canv;
-//import static fanorona_prog06.PvP_board.r;
+//import static Fanorona_prog06.PvP_board.canv;
+//import static Fanorona_prog06.PvP_board.r;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

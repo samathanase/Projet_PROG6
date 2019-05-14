@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="main_menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.FXMLDocumentController">
+<AnchorPane fx:id="main_menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.FXMLDocumentController">
    <children>
       <Button fx:id="quit_btn" layoutX="807.0" layoutY="648.0" mnemonicParsing="false" onAction="#quit_btn" prefHeight="30.0" prefWidth="96.0" style="-fx-background-color: #C9C9C9; -fx-background-radius: 1px; -fx-background-color: e47cdc;" text="quitter">
          <font>

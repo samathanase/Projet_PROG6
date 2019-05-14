@@ -1,4 +1,4 @@
-package fanorona_prog06;
+package Fanorona_prog06;
 
 import Controller.Controller;
 import Controller.IA_Controller;
@@ -164,7 +164,7 @@ public class PvA_board implements Initializable {
                 ctrl.click(e,gv);
                 //ia.jouer(ia.think());
             }else{
-                ia.jouer(ia.think());
+                ia.jouer(ia.think(1));
                 //ctrl.click(e,gv);
             }
             gv.draw(cnv);
