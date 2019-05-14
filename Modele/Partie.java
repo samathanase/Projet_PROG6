@@ -22,7 +22,7 @@ public class Partie implements Serializable {
     private Coordonnees precedentPion; //le précédent pion joué dans le tour
     private Coordonnees pionSelectionne;
 
-    Historique historique;
+    private Historique historique;
 
     public Partie() {
         grille = new Grille(5,9); //5 lignes, 9 colonnes
@@ -61,7 +61,8 @@ public class Partie implements Serializable {
 		}
 		if(copy.pionSelectionne != null){
     			pionSelectionne = new Coordonnees(copy.pionSelectionne);
-		}
+        }
+        historique = new Historique(copy.historique());
 	}
 	public void setGrille(Grille grid){
 		grille = grid;
