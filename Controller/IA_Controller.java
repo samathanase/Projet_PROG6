@@ -44,6 +44,9 @@ public class IA_Controller extends Controller {
 		return 5*(1/Math.exp(nbADV)) + nbPL + 0 /* 0.5*(1/Math.exp(nbCapADV)) + 0.25*nbCapPL*/;
 	}
 
+	static double h23(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+		return 2*h0(nbPL,nbADV,nbCapPL,nbCapADV) + 2*(nbPL/nbADV);
+	}
 	public double heuristique(String hname,int nbPL, int nbADV, int nbCapPL, int nbCapADV){
 		Method m;
 		double ret = -1;
@@ -178,14 +181,14 @@ public class IA_Controller extends Controller {
 			}
 
 			///delete next, use state instead
-			Partie next = new Partie(state);
-			next.jouer(actions.get(i)); 
-			double value = minimax(next,horizon-1,next.joueur()==1?1:-1,strtree,alpha,beta).getKey();
+			//Partie next = new Partie(state);
+			state.jouer(actions.get(i)); 
+			double value = minimax(state,horizon-1,state.joueur()==1?1:-1,strtree,alpha,beta).getKey();
 			//System.out.println("ret : " + ret + "\tvalue : " + value);
-			///state.annuler();
+			state.annuler();
 			if(player == m_player){
 
-				if((next.joueur()==1?1:-1) != player){
+				if((state.joueur()==1?1:-1) != player){
 					if(value > beta.getValue()){
 						break;
 					}
@@ -195,7 +198,7 @@ public class IA_Controller extends Controller {
 				}
 				ret = Math.max(ret,value);
 			}else{
-				if((next.joueur()==1?1:-1) != player){
+				if((state.joueur()==1?1:-1) != player){
 					if(value < alpha.getValue()){
 						break;
 					}
@@ -243,7 +246,7 @@ public class IA_Controller extends Controller {
 			if(id.getValue() <0){
 				System.out.println("IA : No actions");
 			}
-			System.out.println("p : " + m_player +"  max : " + id.getKey());
+			//System.out.println("p : " + m_player +"  max : " + id.getKey());
 			return ret.get(id.getValue());
 		}
 		return null;
