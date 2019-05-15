@@ -5,6 +5,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import Modele.*;
+import javafx.scene.image.Image;
 public class GridView{
 
 	Partie m_game;
@@ -70,24 +71,30 @@ public class GridView{
 					if(m_game.pionSelectionne().equals(new Coordonnees(y,x))){
 						double thickness = 5;
 						gc.setFill(Color.BLACK);
+                                                //gc.setFill(Color.web("06ff00"));
 						gc.fillOval((x+0.25)*tileSizeX-thickness,(y+0.25)*tileSizeY-thickness,tileSizeX/2+2*thickness,tileSizeY/2+2*thickness);
 
 					}
 				}
 			}
 		}
-	
+
+		Image pb = new Image(getClass().getResourceAsStream("pions/pion_b.png"));
+                Image pg = new Image(getClass().getResourceAsStream("pions/pion_g.png"));
+
 		//Affichage des pions
 		for(int x = 0; x < m_game.colonne(); x++){
 			for(int y = 0; y < m_game.ligne(); y++){
 				if(m_game.pionJoueur1(y,x)){
-					gc.setFill(Color.RED);
+					gc.drawImage(pg,(x+0.25)*tileSizeX,(y+0.25)*tileSizeY, tileSizeX/2, tileSizeY/2);
+					//gc.setFill(Color.RED);
 				}
 				if(m_game.pionJoueur2(y,x)){
-					gc.setFill(Color.BLUE);
+					//gc.setFill(Color.BLUE);
+					gc.drawImage(pb,(x+0.25)*tileSizeX,(y+0.25)*tileSizeY, tileSizeX/2, tileSizeY/2);
 				}
 				if(!m_game.libre(y,x)){
-					gc.fillOval((x+0.25)*tileSizeX,(y+0.25)*tileSizeY,tileSizeX/2,tileSizeY/2);
+					//gc.fillOval((x+0.25)*tileSizeX,(y+0.25)*tileSizeY,tileSizeX/2,tileSizeY/2);
 				}
 			}
 		}
