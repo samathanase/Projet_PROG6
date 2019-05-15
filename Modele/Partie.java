@@ -2,21 +2,20 @@ package Modele;
 
 
 import java.util.Random;
+import java.io.Serializable;
 import java.util.ArrayList;
 import Configuration.Configuration;
-import Controller.Action;
 
 /*
     La base du jeu 
 */
 
-//TODO jouer avec les actions
-//TODO retourner les actions disponibles
+public class Partie implements Serializable {
+    private static final long serialVersionUID = 696479903953286766L;
 
-public class Partie {
-    private Grille grille; //Le tableau: 0:case libre, 1:pion joueur 1, 2:pion joueur 2
-    private int [][] tab;
-    private int joueur; //Le joueur qui doit jouer
+    private Grille grille;
+    public int [][] tab; //Le tableau: 0:case libre, 1:pion joueur 1, 2:pion joueur 2
+    public int joueur; //Le joueur qui doit jouer
     private Random rand; //Pour le tirage aléatoire du joueur
     private Direction precedenteDirection; //Précédente direction que le joueur a fait dans le tour
     private ArrayList<Coordonnees> casesVisitees; //Cases visitées dans le tour
@@ -24,6 +23,7 @@ public class Partie {
     private Coordonnees pionSelectionne;
 	private Partie parent;
 
+    private Historique historique;
 
     public Partie() {
         grille = new Grille(5,9); //5 lignes, 9 colonnes
@@ -63,7 +63,8 @@ public class Partie {
 		}
 		if(copy.pionSelectionne != null){
     			pionSelectionne = new Coordonnees(copy.pionSelectionne);
-		}
+        }
+        historique = new Historique(copy.historique());
 	}
 	
 	public Partie getParent(){
@@ -113,6 +114,7 @@ public class Partie {
         precedenteDirection.changerDirection(EnumDirection.Inconnue);
         casesVisitees.clear();
         pionSelectionne = null;
+        historique = new Historique();
     }
 
     //Retourne 0 si la partie n'est pas finie
@@ -160,6 +162,15 @@ public class Partie {
     //Retourne la valeur de la case de la grille (de préférence utiliser les méthodes ci dessous)
     public int at(int l, int c) {
         return grille.at(l,c);
+    }
+
+    //Retourne l'historique
+    public Historique historique() {
+        return historique;
+    }
+
+    public void mettreHistorique(Historique hist) {
+        historique = hist;
     }
 
     //Retourne vrai si la case est libre
@@ -549,17 +560,19 @@ public class Partie {
     //Cpature: 0 si pas de capture, 1 si percussion, 2 si aspiration
     public boolean jouer(Coup coup) {
         if(!coupValide(coup)) { //Coup invalide
-            // Configuration.instance().logger().warning("Partie:jouer - Coup impossible: "+lPion+","+cPion+"->"+lDestination+","+cDestination);
+            Configuration.instance().logger().warning("Partie:jouer - Coup impossible: "+coup);
             return false;
         }
         Configuration.instance().logger().info("Partie:jouer - Coup effectué: "+coup);
         if(pasCapture(coup)) {//pas de capture
+            historique.ajouter(new CoupHistorique(coup,0,joueur,precedenteDirection,precedentPion));
             enleverPion(coup.pion()); //On enlève le pion joué
             placerPion(joueur(), coup.destination()); //On le place à l'endroit voulu
             changerJoueur(); //C'est au joueur suivant
         }
         else { //Capture
             ArrayList<Coordonnees> listePions = new ArrayList<Coordonnees>();
+
             if(coup.percussion()) { //percussion
                 listePions = pionsCapturablesPercussion(coup);
             }
@@ -574,19 +587,81 @@ public class Partie {
                 enleverPion(pionAEnlever.l, pionAEnlever.c);
                 Configuration.instance().logger().info("Partie:jouer - Pion tué: "+pionAEnlever.l+" "+pionAEnlever.c);
             }
+            historique.ajouter(new CoupHistorique(coup,listePions.size(),joueur,precedenteDirection,precedentPion)); //Ajout du coup dans l'historique
 
             enleverPion(coup.pion()); //On enlève le pion joué
             placerPion(joueur(), coup.destination()); //On le place à l'endroit voulu
 
             precedentPion = coup.destination(); //Sauvegarde le pion qu'on vient de jouer
             precedenteDirection = coup.direction(); //On sauvegarde la direction
+
             casesVisitees.add(coup.pion());
             if(casesAccessibles(coup.destination()).size()==0) { //On regarde si le joueur peut encore jouer le pion
                 changerJoueur(); //On change de joueur si aucun coup n'est possible
             }
+
         }
         return true;
     }
+
+    // retourne vrai si le joueur peut annuler son coup
+    // A définir jusqu'a quel point les joueurs peuvent annuler les coup
+    public boolean peutAnnuler() {
+        return historique.peutAnnuler();
+    }
+
+    //Annule le dernier coup joué
+    //Modifie directement la partie
+    public void annuler(){
+        if (historique.peutAnnuler()) {
+            CoupHistorique coup = historique.coupAnnuler(); //On récupère le coup
+            Configuration.instance().logger().info("Annulation du coup: "+coup);
+
+            enleverPion(coup.destination()); //On déplace le pion joué
+            placerPion(coup.joueur(), coup.pion());
+
+            //Change le joueur si besoin
+            if( joueur()!=coup.joueur()) {
+                joueur = coup.joueur();
+            }
+            else { //C'était le même joueur
+                precedentPion = coup.precedentPion();
+                precedenteDirection = coup.precedenteDirection();
+                casesVisitees.remove(coup.pion()); //Enlève la case visitée
+            }
+
+            Direction dir = coup.direction();
+            Coordonnees coor = dir.coordonnees();
+            Coordonnees coorPion = null;
+            if(coup.aspiration()) {
+                coorPion = new Coordonnees(coup.pion());
+                coor.oppose();
+            }
+            else {
+                coorPion = new Coordonnees(coup.destination());
+            }
+            for(int i=0;i<coup.pionsCaptures();i++) { //Pour chaque pion capturé
+                coorPion.plus(coor); //Les coordonnées du pion à placer
+                placerPion(joueur==1 ? 2:1, coorPion); //On replace le pion adverse
+            }
+        }
+        else {
+            Configuration.instance().logger().warning("Impossible d'annuler le coup");
+        }
+    }
+
+    //Refaire le dernier coup annulé
+    public void refaire() {
+        if (historique.peutRefaire()) {
+            Coup coup = historique.coupRefaire();
+            Configuration.instance().logger().info("Refait le coup: "+coup);
+            jouer(coup);
+        }
+        else {
+            Configuration.instance().logger().warning("Impossible de refaire le coup");
+        }
+    }
+
 
 
     //Affiche la grille dans la console

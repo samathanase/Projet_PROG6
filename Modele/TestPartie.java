@@ -23,6 +23,9 @@ public class TestPartie {
         partie35();
         testJouerChaineInutile();
         testListeCoupsValides();
+
+        testAnnuler();
+        testRefaire();
     }
 
 
@@ -384,7 +387,7 @@ public class TestPartie {
         partie.joueur = 1;
         partie.tab = t;
         partie.jouer(new Coup(1,2,1,3,1));
-        partie.jouer(new Coup(1,3,0,3,0));
+        partie.jouer(new Coup(1,3,0,3,0)); //Coup impossible
 
         int [][] tR = {
             {0,0,0,0,0,0,0,0,0},
@@ -533,6 +536,96 @@ public class TestPartie {
     }
 
 
+    public static boolean testAnnuler() {
+        System.out.println("testAnnuler");
+
+        boolean b = true;
+        Partie partie = new Partie();
+        int [][] t = {
+            {0,0,0,0,0,0,0,0,0},
+            {0,2,1,0,2,2,0,1,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,2,0,0,0,2,0,0,0},
+            {0,0,0,0,0,0,2,0,0},
+        };
+        int [][] tR = {
+            {0,0,0,0,0,0,0,0,0},
+            {0,2,1,0,2,2,0,1,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,2,0,0,0,2,0,0,0},
+            {0,0,0,0,0,0,2,0,0},
+        };
+        partie.joueur = 1;
+        partie.tab = t;
+        for(Coup c:partie.listeCoupsValides()) {
+            partie.jouer(c);
+            partie.annuler();
+            if(!comparerTab(tR, partie.tab)) {
+                b = false;
+            }
+        }
+
+        partie.jouer(new Coup(1,2,1,3,1));
+        partie.jouer(new Coup(1,3,2,4,1));
+        partie.jouer(new Coup(3,1,2,1,0));
+
+        partie.annuler();
+        partie.annuler();
+        partie.annuler();
+        if(!comparerTab(tR, partie.tab)) {
+            b = false;
+        }
+
+        if(!b) {
+            System.out.println("Erreur annuler");
+        }
+        return b;
+    }
+
+
+
+    public static boolean testRefaire() {
+        System.out.println("testRefaire");
+
+        boolean b = true;
+        Partie partie = new Partie();
+        int [][] t = {
+            {0,0,0,0,0,0,0,0,0},
+            {0,2,1,0,2,2,0,1,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,2,0,0,0,2,0,0,0},
+            {0,0,0,0,0,0,2,0,0},
+        };
+        int [][] tR = {
+            {0,0,0,0,0,0,0,0,0},
+            {0,2,1,0,2,2,0,1,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,2,0,0,0,2,0,0,0},
+            {0,0,0,0,0,0,2,0,0},
+        };
+        partie.joueur = 1;
+        partie.tab = t;
+
+        for(Coup c:partie.listeCoupsValides()) {
+            partie.jouer(c);
+            partie.annuler();
+            partie.refaire();
+            partie.annuler();
+            if(!comparerTab(tR, partie.tab)) {
+                b = false;
+            }
+        }
+
+
+        if(!b) {
+            System.out.println("Erreur refaire");
+        }
+        return b;
+    }
+
+
+
+
     // Compare 2 tableaux
     public static boolean comparerTab(int[][] A,int [][] B) {
         boolean b = true;
@@ -550,6 +643,7 @@ public class TestPartie {
         }
         return b;
     }
+
 
     //Compare la liste avec le tableau
     public static boolean comparerListArray( ArrayList<Coordonnees> listC,Coordonnees [] arrayC) {
@@ -580,6 +674,15 @@ public class TestPartie {
             }
         }
         return b;
+    }
+
+    public static void aff(int [][]t) {
+        for(int i=0;i<5;i++) {
+            for(int j=0;j<9;j++) {
+                System.out.print(t[i][j]);
+            }
+            System.out.println();
+        }
     }
 
 }

@@ -1,10 +1,14 @@
 package Modele;
 
+import java.io.Serializable;
+
 /*
 Classe pour représenter les coups
 */
 
-public class Coup {
+public class Coup implements Serializable{
+    private static final long serialVersionUID = 324916122093584715L;
+
     Coordonnees depart;
     Coordonnees arrivee;
     int action;
@@ -35,6 +39,13 @@ public class Coup {
         directionCoup(); //Calcule la direction du coup
     }
 
+    public Coup(Coup C) { //Copie le coup
+        depart = new Coordonnees(C.pion());
+        arrivee = new Coordonnees(C.destination());
+        action = C.action();//Direction inconnue
+        directionCoup(); //Calcule la direction du coup
+    }
+
     //Retourne le pion d'origine
     public Coordonnees pion() {
         return depart;
@@ -60,6 +71,10 @@ public class Coup {
         action = 0;
     }
 
+    //Retourne l'action
+    public int action() {
+        return this.action;
+    }
 
     //Si le coup ne capture pas de pions
     public boolean pasCapture() {
