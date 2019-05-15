@@ -1,18 +1,64 @@
 package Controller;
 import java.util.Random;
 import java.util.*;
+
+import java.lang.reflect.*;
 import javafx.util.Pair;
 import Modele.*;
 import java.lang.Character;
 public class IA_Controller extends Controller {
 
 	double rootFitness;
-	
-	public IA_Controller(int player){
+	String m_hname;
+	private final int m_depth = 3;
+	Random r;
+
+	public IA_Controller(int player,String hname){
 		super(player);
+		m_hname = hname;
+		r = new Random();
 	}
-	public IA_Controller(int player, Partie game){
+	public IA_Controller(int player, Partie game,String hname){
 		super(player,game);
+		m_hname = hname;
+		r = new Random();
+	}
+
+	static double h0(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+		return 1/Math.exp(nbADV);
+	}
+	
+	static double h4(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+		return 2*h0(nbPL,nbADV,nbCapPL,nbCapADV);
+	}
+
+	static double h20(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+		return 5/Math.exp(nbADV)-2/Math.exp(nbPL-1);
+	}
+
+	static double h21(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+		return 5/Math.exp(nbADV)-3/Math.exp(nbPL-2);
+	}
+	
+	static double h22(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+		return 5*(1/Math.exp(nbADV)) + nbPL + 0 /* 0.5*(1/Math.exp(nbCapADV)) + 0.25*nbCapPL*/;
+	}
+
+	public double heuristique(String hname,int nbPL, int nbADV, int nbCapPL, int nbCapADV){
+		Method m;
+		double ret = -1;
+		try{
+			m = IA_Controller.class.getDeclaredMethod(hname,int.class,int.class,int.class,int.class);
+			ret= (double)m.invoke(this,nbPL,nbADV,nbCapPL,nbCapADV);
+		}
+		catch(NoSuchMethodException e){
+		}
+		catch(IllegalAccessException e){
+		}
+		catch(InvocationTargetException e){
+		}
+		//System.out.println("fit : " + ret);
+		return ret;
 	}
 	
 	@Override
@@ -28,6 +74,7 @@ public class IA_Controller extends Controller {
 	public double fitness(Partie state,int player){
 		Grille config = state.grille();
 		int nbPL = 0, nbADV = 0, nbCapturablePL = 0,nbCapturableADV = 0;
+		
 		for(int i = 0; i < config.ligne(); i++){
 			for(int j =0; j < config.colonne(); j++){
 				if(config.at(i,j) == (player==1?1:2)){
@@ -86,17 +133,30 @@ public class IA_Controller extends Controller {
 		if(nbADV ==0){
 			return Double.MAX_VALUE;
 		}
-		double fit = (nbCapturablePL)*0.5 + 1*((nbPL*1.0)-(nbADV*1.0)) + 2*((1/Math.exp(nbADV)));
 
-		//return fit + ((player==m_player&&rootFitness!=0)?(5*(fit/rootFitness)):1);
+		double fit = heuristique(m_hname,nbPL,nbADV,nbCapturablePL,nbCapturableADV);
+		//double fit = 3/Math.exp(nbADV) + 5*(nbADVPre-nbADV);
+		//double fit = /*(nbCapturablePL-nbCapturableADV)*2  + 3*((nbPL*1.0)-(nbADV*1.0)) +*/ 1*((5/Math.exp(nbADV))-(3/Math.exp(nbPL-2)));
+
+		//return fit + ((player==m_player&&rootFitness!=0)?(2*(fit/rootFitness)):1);
 		return fit;
 	}
 
-	public Pair<Double,Integer> minimax(Partie state,int horizon,int player,String tree){
+	public Pair<Double,Integer> minimax(Partie state,int horizon,int player){
+		MutableDouble alpha = new MutableDouble(Double.MIN_VALUE); //val MAX
+		MutableDouble beta = new MutableDouble(Double.MAX_VALUE);//val MIN
+		return minimax(state,horizon,player,"R",alpha,beta);
+	}
+
+	private Pair<Double,Integer> minimax(Partie state,int horizon,int player,String tree,MutableDouble alpha, MutableDouble beta){
+
 		if(state.gagnant() != 0 || horizon == 0){
 			return new Pair<Double,Integer>(fitness(state,player),-2);
 		}
 		List<Coup> actions = state.listeCoupsValides() ;
+		if(actions.size() == 0){
+			return new Pair<Double,Integer>(Double.MIN_VALUE+1,-3);
+		}
 		double ret;
 		if(player == m_player){
 			ret = Double.MIN_VALUE;
@@ -104,7 +164,8 @@ public class IA_Controller extends Controller {
 			ret = Double.MAX_VALUE; 
 		}
 		int id = 0;
-		
+		List<Integer> possibilities = new ArrayList<Integer>();		
+
 		for(int i = 0; i < actions.size(); i++){
 			double oldret = ret;
 
@@ -115,19 +176,47 @@ public class IA_Controller extends Controller {
 			else{
 				strtree += (char)('A'+i);
 			}
+
+			///delete next, use state instead
 			Partie next = new Partie(state);
 			next.jouer(actions.get(i)); 
-			//next.afficher();
+			double value = minimax(next,horizon-1,next.joueur()==1?1:-1,strtree,alpha,beta).getKey();
+			//System.out.println("ret : " + ret + "\tvalue : " + value);
+			///state.annuler();
 			if(player == m_player){
-				ret = Math.max(ret,minimax(next,horizon-1,next.joueur()==1?1:-1,strtree).getKey());
+
+				if((next.joueur()==1?1:-1) != player){
+					if(value > beta.getValue()){
+						break;
+					}
+					if(value > alpha.getValue()){
+						alpha.setValue(value);
+					}
+				}
+				ret = Math.max(ret,value);
 			}else{
-				ret = Math.min(ret,minimax(next,horizon-1,next.joueur()==1?1:-1,strtree).getKey());
+				if((next.joueur()==1?1:-1) != player){
+					if(value < alpha.getValue()){
+						break;
+					}
+					if(value < beta.getValue()){
+						beta.setValue(value);
+					}	
+				}
+				ret = Math.min(ret,value);
+				
 			}
 			if(ret != oldret){
-				System.out.println(strtree);
-				System.out.println("FIT: " + ret);
 				id = i;
+				possibilities.clear();
+				possibilities.add(id);
 			}
+			else if(ret == value){
+				possibilities.add(i);
+			}
+		}
+		if(possibilities.size() > 1){
+			id = possibilities.get(r.nextInt(possibilities.size()));
 		}
 		return new Pair<Double,Integer>(ret,id);
 	}
@@ -141,15 +230,20 @@ public class IA_Controller extends Controller {
 			}
 			else{
 				System.out.println("No actions");
+				m_game.finTour();
 				return null;
 			}
 		}
 		if(level == 1){
 			rootFitness = fitness(m_game,m_player);
 			List<Coup> ret = m_game.listeCoupsValides() ;
-			System.out.println("BMM");
-			Pair<Double,Integer> id = minimax(new Partie(m_game),3,m_player,"R");
-			System.out.println("EMM " +id.getValue() +  " " + ret.size() );
+			//System.out.println("BMM");
+			Pair<Double,Integer> id = minimax(new Partie(m_game),m_depth,m_player);
+			//System.out.println("EMM " +id.getValue() +  " " + ret.size() );
+			if(id.getValue() <0){
+				System.out.println("IA : No actions");
+			}
+			System.out.println("p : " + m_player +"  max : " + id.getKey());
 			return ret.get(id.getValue());
 		}
 		return null;
@@ -158,6 +252,21 @@ public class IA_Controller extends Controller {
 
 }
 
+class MutableDouble {
+  private double value;
 
+	public MutableDouble(double v){
+		value = v;
+	}
+
+  public double getValue() {
+    return value;
+  }
+
+  public void setValue(double value) {
+    this.value = value;
+  }
+
+}
 
 

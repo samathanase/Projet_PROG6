@@ -22,6 +22,7 @@ public class Partie {
     private ArrayList<Coordonnees> casesVisitees; //Cases visitées dans le tour
     private Coordonnees precedentPion; //le précédent pion joué dans le tour
     private Coordonnees pionSelectionne;
+	private Partie parent;
 
 
     public Partie() {
@@ -49,6 +50,7 @@ public class Partie {
 	public Partie(Partie copy){
 		grille = new Grille(copy.grille);
 	 	tab = grille.tab();
+		parent = copy;
     		joueur = copy.joueur; 
     		rand = new Random(); 
     		precedenteDirection = new Direction(copy.precedenteDirection); 
@@ -63,6 +65,11 @@ public class Partie {
     			pionSelectionne = new Coordonnees(copy.pionSelectionne);
 		}
 	}
+	
+	public Partie getParent(){
+		return parent;
+	}
+
 	public void setGrille(Grille grid){
 		grille = grid;
 		tab = grille.tab();
