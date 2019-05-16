@@ -27,6 +27,9 @@ public class Grille implements Serializable{
 			}
 		}
 	}
+	public void _set(int v,int l, int c){
+		tab[l][c] = v;
+	}
 	//----------------------------------
 
 
