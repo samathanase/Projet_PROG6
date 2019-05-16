@@ -24,43 +24,52 @@ public class IA_Controller extends Controller {
 		r = new Random();
 	}
 
-	static double h0(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+	static double h0(int nbPL,int nbADV){
 		return 1/Math.exp(nbADV);
 	}
-	
-	static double h4(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
-		return 2*h0(nbPL,nbADV,nbCapPL,nbCapADV);
+	static double h4(int nbPL,int nbADV){
+		return 2*h0(nbPL,nbADV);
 	}
-
-	static double h20(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+	static double h10(int nbPL,int nbADV){
+		return 4*h0(nbPL,nbADV);
+	}
+	static double h17(int nbPL,int nbADV){
+		return h0(nbPL,nbADV) - 1/Math.exp(nbPL);
+	}
+	static double h18(int nbPL,int nbADV){
+		return h0(nbPL,nbADV) - 1/Math.exp(nbPL-2);
+	}
+ 	static double h19(int nbPL,int nbADV){
+		return h0(nbPL,nbADV) - 1/Math.exp(nbPL-1);
+	}
+	static double h20(int nbPL,int nbADV){
 		return 5/Math.exp(nbADV)-2/Math.exp(nbPL-1);
 	}
-
-	static double h21(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+	static double h21(int nbPL,int nbADV){
 		return 5/Math.exp(nbADV)-3/Math.exp(nbPL-2);
 	}
-	
-	static double h22(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+	static double h22(int nbPL,int nbADV){
 		return 5*(1/Math.exp(nbADV)) + nbPL + 0 /* 0.5*(1/Math.exp(nbCapADV)) + 0.25*nbCapPL*/;
 	}
-
-	static double h23(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
-
-		return 2*h0(nbPL,nbADV,nbCapPL,nbCapADV) + 2*(nbPL/nbADV);
+	static double h23(int nbPL,int nbADV){
+		return 2*h0(nbPL,nbADV) + 2*(nbPL/nbADV);
 	}
-	static double h24(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
-		return 20*h0(nbPL,nbADV,nbCapPL,nbCapADV) + 2*(nbPL/nbADV);
+	static double h24(int nbPL,int nbADV){
+		return 20*h0(nbPL,nbADV) + 2*(nbPL/nbADV);
 	}
-
-	static double h25(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
-		return 100*h0(nbPL,nbADV,nbCapPL,nbCapADV) + 10*((nbPL-1.3)/(nbADV+0.4));
+	static double h25(int nbPL,int nbADV){
+		return 100*h0(nbPL,nbADV) + 100*(nbPL/nbADV);
 	}
-	public double heuristique(String hname,int nbPL, int nbADV, int nbCapPL, int nbCapADV){
+	static double h26(int nbPL,int nbADV){
+		return 100*h0(nbPL,nbADV) + 10*((nbPL-1.3)/(nbADV+0.4));
+	}
+	
+	public double heuristique(String hname,int nbPL, int nbADV){
 		Method m;
 		double ret = -1;
 		try{
-			m = IA_Controller.class.getDeclaredMethod(hname,int.class,int.class,int.class,int.class);
-			ret= (double)m.invoke(this,nbPL,nbADV,nbCapPL,nbCapADV);
+			m = IA_Controller.class.getDeclaredMethod(hname,int.class,int.class);
+			ret= (double)m.invoke(this,nbPL,nbADV);
 		}
 		catch(NoSuchMethodException e){
 		}
@@ -84,7 +93,7 @@ public class IA_Controller extends Controller {
 	//Note une configuration	
 	public double fitness(Partie state,int player){
 		Grille config = state.grille();
-		int nbPL = 0, nbADV = 0, nbCapturablePL = 0,nbCapturableADV = 0;
+		int nbPL = 0, nbADV = 0;//, nbCapturablePL = 0,nbCapturableADV = 0;
 		
 		for(int i = 0; i < config.ligne(); i++){
 			for(int j =0; j < config.colonne(); j++){
@@ -154,7 +163,7 @@ public class IA_Controller extends Controller {
 			return Double.MIN_VALUE+1;
 		}
 
-		double fit = heuristique(m_hname,nbPL,nbADV,nbCapturablePL,nbCapturableADV);
+		double fit = heuristique(m_hname,nbPL,nbADV);
 		//double fit = 3/Math.exp(nbADV) + 5*(nbADVPre-nbADV);
 		//double fit = /*(nbCapturablePL-nbCapturableADV)*2  + 3*((nbPL*1.0)-(nbADV*1.0)) +*/ 1*((5/Math.exp(nbADV))-(3/Math.exp(nbPL-2)));
 
