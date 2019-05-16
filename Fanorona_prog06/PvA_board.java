@@ -1,4 +1,4 @@
-package Fanorona_prog06;
+package fanorona_prog06;
 
 import Controller.Controller;
 import Controller.IA_Controller;
@@ -143,12 +143,13 @@ public class PvA_board implements Initializable {
     }
     
     public void start_cnv() throws IOException{
-
+        
         Partie game = new Partie();
 	ResizableCanvas cnv = new ResizableCanvas();
 	GridView gv = new GridView(game);
 	Controller ctrl = new Controller(1,game);
-	IA_Controller ia = new IA_Controller(-1,game);
+	//IA_Controller ia = new IA_Controller(-1,game);
+        IA_Controller tia = new IA_Controller(1,game,"h22");
 
 	System.out.println(game.joueur());
 	//Pane root = new Pane();
@@ -162,9 +163,9 @@ public class PvA_board implements Initializable {
 	cnv.setOnMouseClicked((MouseEvent e) -> {
             if(game.joueur1()){
                 ctrl.click(e,gv);
-                //ia.jouer(ia.think());
+                //tia.jouer(tia.think(1));
             }else{
-                ia.jouer(ia.think(1));
+                tia.jouer(tia.think(1));
                 //ctrl.click(e,gv);
             }
             gv.draw(cnv);

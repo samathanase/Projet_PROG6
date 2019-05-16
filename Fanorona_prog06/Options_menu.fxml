@@ -10,14 +10,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="opt_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Options_menuController">
+<AnchorPane fx:id="opt_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.Options_menuController">
    <children>
-      <RadioButton fx:id="j_radio1" layoutX="274.0" layoutY="102.0" mnemonicParsing="false" text="Joueur 1" textFill="#545454">
+      <RadioButton fx:id="j_radio1" layoutX="274.0" layoutY="102.0" mnemonicParsing="false" onAction="#j1_select" text="Joueur 1" textFill="#545454">
          <font>
             <Font name="Berlin Sans FB Bold" size="22.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="j_radio2" layoutX="550.0" layoutY="102.0" mnemonicParsing="false" text="Joueur 2" textFill="#545454">
+      <RadioButton fx:id="j_radio2" layoutX="550.0" layoutY="102.0" mnemonicParsing="false" onAction="#j2_select" text="Joueur 2" textFill="#545454">
          <font>
             <Font name="Berlin Sans FB Bold" size="22.0" />
          </font>
@@ -38,7 +38,7 @@
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <TextField layoutX="367.0" layoutY="178.0" prefHeight="38.0" prefWidth="310.0" />
+      <TextField fx:id="text_bar" layoutX="367.0" layoutY="178.0" prefHeight="38.0" prefWidth="310.0" />
       <ImageView fx:id="color_red" fitHeight="60.0" fitWidth="60.0" layoutX="271.0" layoutY="322.0">
          <image>
             <Image url="@red.png" />
@@ -75,32 +75,32 @@
          </font>
       </Text>
       <Rectangle fx:id="rect_opt1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="124.0" layoutX="138.0" layoutY="467.0" stroke="BLACK" strokeType="INSIDE" width="693.0" />
-      <ImageView fitHeight="85.0" fitWidth="85.0" layoutX="164.0" layoutY="487.0">
+      <ImageView fx:id="ic1" fitHeight="85.0" fitWidth="85.0" layoutX="164.0" layoutY="487.0" onMouseClicked="#ic1_selected">
          <image>
             <Image url="@icônes/profile1.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="85.0" fitWidth="85.0" layoutX="279.0" layoutY="487.0">
+      <ImageView fx:id="ic2" fitHeight="85.0" fitWidth="85.0" layoutX="279.0" layoutY="487.0" onMouseClicked="#ic2_selected">
          <image>
             <Image url="@icônes/profile2.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="85.0" fitWidth="85.0" layoutX="391.0" layoutY="487.0">
+      <ImageView fx:id="ic3" fitHeight="85.0" fitWidth="85.0" layoutX="391.0" layoutY="487.0" onMouseClicked="#ic3_selected">
          <image>
             <Image url="@icônes/profile3.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="85.0" fitWidth="85.0" layoutX="500.0" layoutY="487.0">
+      <ImageView fx:id="ic4" fitHeight="85.0" fitWidth="85.0" layoutX="500.0" layoutY="487.0" onMouseClicked="#ic4_selected">
          <image>
             <Image url="@icônes/profile4.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="85.0" fitWidth="85.0" layoutX="610.0" layoutY="487.0">
+      <ImageView fx:id="ic5" fitHeight="85.0" fitWidth="85.0" layoutX="610.0" layoutY="487.0" onMouseClicked="#ic5_selected">
          <image>
             <Image url="@icônes/profile5.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="85.0" fitWidth="85.0" layoutX="721.0" layoutY="487.0">
+      <ImageView fx:id="ic6" fitHeight="85.0" fitWidth="85.0" layoutX="721.0" layoutY="487.0" onMouseClicked="#ic6_selected">
          <image>
             <Image url="@icônes/profile6.jpg" />
          </image>

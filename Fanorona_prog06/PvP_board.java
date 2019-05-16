@@ -1,4 +1,4 @@
-package Fanorona_prog06;
+package fanorona_prog06;
 
 import Controller.Controller;
 import Controller.IA_Controller;
@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -91,7 +92,7 @@ public class PvP_board implements Initializable {
 
     @FXML
     private Text pvp_title;
-    
+
     
     @FXML
     void restart_btn(ActionEvent event) throws IOException {
@@ -167,11 +168,32 @@ public class PvP_board implements Initializable {
     }
     
     @FXML
+    private ImageView icone_j1;
+
+    @FXML
+    private ImageView icone_j2;
+    
+    @FXML
+    private ImageView icone_j_encours;
+    
+    public void set_icons(){
+        //if(j1==j2){}
+        Image icon1 = new Image(getClass().getResourceAsStream("icônes/profile1.jpg"));
+        Image icon2 = new Image(getClass().getResourceAsStream("icônes/profile2.jpg"));
+        Image icon3 = new Image(getClass().getResourceAsStream("icônes/profile1.jpg"));
+        icone_j1.setImage(icon1);
+        icone_j2.setImage(icon2);
+        icone_j_encours.setImage(icon3);
+    }
+    
+    @FXML
     private Pane r;
     
     @FXML
     private Canvas canv;
    
+
+    
     public void start_cnv() throws IOException{
 
         //Stage stage = (Stage)options_board.getScene().getWindow();
@@ -199,6 +221,7 @@ public class PvP_board implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        set_icons();
         try {
             start_cnv();
         } catch (IOException ex) {

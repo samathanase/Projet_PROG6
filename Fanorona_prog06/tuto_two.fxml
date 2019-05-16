@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tuto_scene2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_two">
+<AnchorPane fx:id="tuto_scene2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_two">
    <children>
-      <Rectangle fx:id="rect_tuto2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="334.0" layoutX="139.0" layoutY="168.0" stroke="BLACK" strokeType="INSIDE" width="672.0" />
-      <Button fx:id="return_to_tuto" layoutX="28.0" layoutY="624.0" mnemonicParsing="false" onAction="#return_to_tuto" prefHeight="42.0" prefWidth="107.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="sortir">
+      <Rectangle fx:id="rect_tuto2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="334.0" layoutX="139.0" layoutY="168.0" stroke="BLACK" strokeType="INSIDE" width="682.0" />
+      <Button fx:id="return_to_tuto" layoutX="829.0" layoutY="637.0" mnemonicParsing="false" onAction="#return_to_tuto" prefHeight="42.0" prefWidth="107.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="quitter">
          <font>
             <Font name="Berlin Sans FB" size="21.0" />
          </font>
       </Button>
-      <Button fx:id="next_btn" layoutX="800.0" layoutY="623.0" mnemonicParsing="false" onAction="#next_btn" prefHeight="42.0" prefWidth="123.0" style="-fx-background-color: #3a9fff; -fx-background-radius: 1px;" text="suivant">
+      <Button fx:id="next_btn" layoutX="813.0" layoutY="574.0" mnemonicParsing="false" onAction="#next_btn" prefHeight="42.0" prefWidth="123.0" style="-fx-background-color: #3a9fff; -fx-background-radius: 1px;" text="suivant">
          <font>
             <Font name="Berlin Sans FB" size="21.0" />
          </font>
       </Button>
-      <Text fx:id="tuto2_r1" layoutX="161.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Une fois les pierres ennemies capturées, le joueur ayant le trait peut capturer d'autres séries de pierres au même tour si d'autres possibilités de capture se présentent à lui, à condition que ses captures se fassent :" wrappingWidth="627.7199096679688">
+      <Text fx:id="tuto2_r1" layoutX="158.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Une fois les pierres ennemies capturées, le joueur ayant la main peut capturer d'autres séries de pierres au même tour si d'autres possibilités de capture se présentent à lui, à condition que ses captures se fassent :" wrappingWidth="643.7199096679688">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -29,22 +34,22 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Button fx:id="prec_btn" layoutX="800.0" layoutY="560.0" mnemonicParsing="false" onAction="#prec_btn" prefHeight="42.0" prefWidth="123.0" style="-fx-background-color: #3a9fff; -fx-background-radius: 1px;" text="precedent">
+      <Button fx:id="prec_btn" layoutX="14.0" layoutY="574.0" mnemonicParsing="false" onAction="#prec_btn" prefHeight="42.0" prefWidth="123.0" style="-fx-background-color: #3a9fff; -fx-background-radius: 1px;" text="precedent">
          <font>
             <Font name="Berlin Sans FB" size="21.0" />
          </font>
       </Button>
-      <Text fx:id="tuto2_r2" layoutX="180.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-Dans un sens différent à celui joué précédemment" wrappingWidth="461.31988525390625">
+      <Text fx:id="tuto2_r2" layoutX="180.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-Dans un sens différent à celui joué précédemment" wrappingWidth="461.31988525390625">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <Text fx:id="tuto2_r3" layoutX="181.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-Par un point par lequel le joueur n'est pas passé ce tour ci" wrappingWidth="461.31988525390625">
+      <Text fx:id="tuto2_r3" layoutX="180.0" layoutY="394.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-Par un point par lequel le joueur n'est pas passé ce tour ci" wrappingWidth="461.31988525390625">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <Text fx:id="tuto2_r4" layoutX="161.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Une fois ses captures effectuées, le joueur laisse le trait à son adversaire." wrappingWidth="627.7199096679688">
+      <Text fx:id="tuto2_r4" layoutX="161.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Une fois ses captures effectuées, le joueur laisse la main à son adversaire." wrappingWidth="627.7199096679688">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
