@@ -35,9 +35,9 @@ public class BaseApp extends Application {
 		game.setGrille(grid);
 		ResizableCanvas cnv = new ResizableCanvas();
 		GridView gv = new GridView(game);
-		//Controller ctrl = new Controller(1,game);
-		IA_Controller tia = new IA_Controller(1,game,"h22");
-		IA_Controller ia = new IA_Controller(-1,game,"h0");
+		Controller ctrl = new Controller(1,game);
+		IA_Controller tia = new IA_Controller(1,game,"h25");
+		IA_Controller ia = new IA_Controller(-1,game,"h25");
 
 		System.out.println(game.joueur());
 		Pane root = new Pane();
@@ -55,8 +55,8 @@ public class BaseApp extends Application {
 			public void handle(MouseEvent e){
 				if(game.gagnant() == 0){
 					if(game.joueur1()){
-						//ctrl.click(e,gv);
-						tia.jouer(tia.think(1));
+						ctrl.click(e,gv);
+						//tia.jouer(tia.think(1));
 					}
 					else{
 						ia.jouer(ia.think(1));

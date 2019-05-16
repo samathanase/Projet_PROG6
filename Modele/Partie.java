@@ -597,7 +597,9 @@ public class Partie implements Serializable {
 
             casesVisitees.add(coup.pion());
             if(casesAccessibles(coup.destination()).size()==0) { //On regarde si le joueur peut encore jouer le pion
-                changerJoueur(); //On change de joueur si aucun coup n'est possible
+		if(gagnant() == 0){
+               		changerJoueur(); //On change de joueur si aucun coup n'est possible
+		}
             }
 
         }

@@ -18,7 +18,7 @@ public class IAStats {
 
 	public static void main(String[] args) {
 		Partie game = new Partie(5,9);
-		IA_Controller tia = new IA_Controller(1,game,"h23");
+		IA_Controller tia = new IA_Controller(1,game,"h25");
 		IA_Controller ia = new IA_Controller(-1,game,"h0");
 
 		int vict = 0, total = 0;

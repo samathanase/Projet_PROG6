@@ -10,7 +10,7 @@ public class IA_Controller extends Controller {
 
 	double rootFitness;
 	String m_hname;
-	private final int m_depth = 3;
+	private final int m_depth = 4;
 	Random r;
 
 	public IA_Controller(int player,String hname){
@@ -45,7 +45,15 @@ public class IA_Controller extends Controller {
 	}
 
 	static double h23(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+
 		return 2*h0(nbPL,nbADV,nbCapPL,nbCapADV) + 2*(nbPL/nbADV);
+	}
+	static double h24(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+		return 20*h0(nbPL,nbADV,nbCapPL,nbCapADV) + 2*(nbPL/nbADV);
+	}
+
+	static double h25(int nbPL,int nbADV, int nbCapPL, int nbCapADV){
+		return 100*h0(nbPL,nbADV,nbCapPL,nbCapADV) + 10*((nbPL-1.3)/(nbADV+0.4));
 	}
 	public double heuristique(String hname,int nbPL, int nbADV, int nbCapPL, int nbCapADV){
 		Method m;
@@ -82,7 +90,7 @@ public class IA_Controller extends Controller {
 			for(int j =0; j < config.colonne(); j++){
 				if(config.at(i,j) == (player==1?1:2)){
 					nbPL++;	
-					List<Coordonnees> adjs = state.casesAccessibles(i,j);
+					/*List<Coordonnees> adjs = state.casesAccessibles(i,j);
 
 					for(int id = 0; id < adjs.size(); id++){
 						Coordonnees dir = new Coordonnees(adjs.get(id).ligne()-i,adjs.get(id).colonne()-j);
@@ -101,14 +109,14 @@ public class IA_Controller extends Controller {
 							is -= dir.ligne();
 							js -= dir.colonne();
 						}
-					}
+					}*/
 
 
 						
 				}
 				if(config.at(i,j) == (player==1?2:1)){
 					nbADV++;
-					List<Coordonnees> adjs = state.casesAccessibles(i,j);
+					/*List<Coordonnees> adjs = state.casesAccessibles(i,j);
 
 					for(int id = 0; id < adjs.size(); id++){
 						Coordonnees dir = new Coordonnees(adjs.get(id).ligne()-i,adjs.get(id).colonne()-j);
@@ -127,14 +135,23 @@ public class IA_Controller extends Controller {
 							is -= dir.ligne();
 							js -= dir.colonne();
 						}
-					}
+					}*/
 
 				}
 				
 			}
 		}
+			
+		//state.afficher();
+		//System.out.println("p : " + player + "\t" +nbPL +  "\t"+ nbADV );
+		
 		if(nbADV ==0){
-			return Double.MAX_VALUE;
+			//System.out.println("p : " + player + "\t" +nbPL +  "\t"+ nbADV );
+		
+			return Double.MAX_VALUE-1;
+		}
+		if(nbPL == 0){
+			return Double.MIN_VALUE+1;
 		}
 
 		double fit = heuristique(m_hname,nbPL,nbADV,nbCapturablePL,nbCapturableADV);
@@ -180,11 +197,8 @@ public class IA_Controller extends Controller {
 				strtree += (char)('A'+i);
 			}
 
-			///delete next, use state instead
-			//Partie next = new Partie(state);
 			state.jouer(actions.get(i)); 
 			double value = minimax(state,horizon-1,state.joueur()==1?1:-1,strtree,alpha,beta).getKey();
-			//System.out.println("ret : " + ret + "\tvalue : " + value);
 			state.annuler();
 			if(player == m_player){
 
@@ -240,9 +254,7 @@ public class IA_Controller extends Controller {
 		if(level == 1){
 			rootFitness = fitness(m_game,m_player);
 			List<Coup> ret = m_game.listeCoupsValides() ;
-			//System.out.println("BMM");
 			Pair<Double,Integer> id = minimax(new Partie(m_game),m_depth,m_player);
-			//System.out.println("EMM " +id.getValue() +  " " + ret.size() );
 			if(id.getValue() <0){
 				System.out.println("IA : No actions");
 			}
