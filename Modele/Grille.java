@@ -27,8 +27,35 @@ public class Grille implements Serializable{
 			}
 		}
 	}
-	public void _set(int v,int l, int c){
+	public void set(int v,int l, int c){
 		tab[l][c] = v;
+	}
+
+	public void set(int v,Coordonnees c){
+		set(v,c.ligne(),c.colonne());
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}	
+	
+		if(!(o instanceof Grille)){
+			return false;
+		}
+		Grille other = (Grille)o;
+		if(l != other.l || c != other.c){
+			return false;
+		}
+		for(int i = 0; i < l; i++){
+			for(int j = 0; j < c; j++){
+				if(tab[i][j] != other.at(i,j)){
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	//----------------------------------
 
