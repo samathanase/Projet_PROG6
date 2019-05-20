@@ -31,13 +31,22 @@ public class BaseApp extends Application {
 			for(int j = 1; j < grid.colonne()-1; j++){
 			//	grid._set(0,i,j);
 			}
-		}
+		}/*
+		grid.set(0,0,0);
+		grid.set(0,1,0);
+		grid.set(0,2,0);
+		grid.set(0,2,2);
+		grid.set(0,1,5);
+		grid.set(2,0,4);
+		grid.set(1,1,1);
+		grid.set(1,1,2);
+		grid.set(1,1,3);*/
 		game.setGrille(grid);
 		ResizableCanvas cnv = new ResizableCanvas();
 		GridView gv = new GridView(game);
-		//Controller ctrl = new Controller(1,game);
-		IA_Controller tia = new IA_Controller(1,game,"h22");
-		IA_Controller ia = new IA_Controller(-1,game,"h0");
+		Controller ctrl = new Controller(1,game);
+		IA_Controller tia = new IA_Controller(1,game,"h27");
+		IA_Controller ia = new IA_Controller(-1,game,"h27");
 
 		System.out.println(game.joueur());
 		Pane root = new Pane();
@@ -55,8 +64,8 @@ public class BaseApp extends Application {
 			public void handle(MouseEvent e){
 				if(game.gagnant() == 0){
 					if(game.joueur1()){
-						//ctrl.click(e,gv);
-						tia.jouer(tia.think(1));
+						ctrl.click(e,gv);
+						//tia.jouer(tia.think(1));
 					}
 					else{
 						ia.jouer(ia.think(1));

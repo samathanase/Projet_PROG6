@@ -5,7 +5,7 @@ import View.*;
 import java.util.*;
 import javafx.scene.input.MouseEvent;
 public class Controller{
-        protected int i=1;
+        protected int i=0;
 	protected Partie m_game;
 	protected List<Coordonnees> clickHist;	
 	protected int m_player;
@@ -37,13 +37,16 @@ public class Controller{
 	//Gestion du click dans la zone de jeu
 	public void click(MouseEvent e, GridView gv){
                 Coordonnees coord;
-                if(i==1){
+                /*if(i==1){
                     coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY())-1, (int)(e.getSceneX()/gv.getTileSizeX())-1);
                 }else{// if(i>1){
                     coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY())-1, (int)(e.getSceneX()/gv.getTileSizeX()));
                 //}else{
                     //coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY()), (int)(e.getSceneX()/gv.getTileSizeX()));
-                }
+                }*/
+
+
+                coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY()), (int)(e.getSceneX()/gv.getTileSizeX()));
                 System.out.println(m_game.joueur());
                 //coord.c--;
 		//printCoord(coord);
@@ -54,14 +57,14 @@ public class Controller{
 		}
 		else{
 			clickHist.add(coord);
-                	System.out.println("***************");//+coord.toString());
-                	printCoord(coord);
+                	//System.out.println("***************");//+coord.toString());
+                	//printCoord(coord);
 			if(clickHist.size() == 3){
 				Coup coup = new Coup(clickHist.get(0),clickHist.get(1), getCapture(clickHist));
 				jouer(coup);
 				
-				System.out.println(getCapture(clickHist));
-				m_game.afficher();
+				//System.out.println(getCapture(clickHist));
+				//m_game.afficher();
 				clickHist.clear();
 				m_game.selectionnerPion(null);
 			}

@@ -80,6 +80,30 @@ public class Partie implements Serializable {
 		grille = grid;
 		tab = grille.tab();
 	}
+
+	public Grille getUniqueState(){
+		Grille ret = new Grille(grille);
+		for(int i = 0; i < ret.ligne(); i++){
+			for(int j = 0; j < ret.colonne(); j++){
+				if(ret.at(i,j) == joueur){
+					ret.set(1,i,j);
+					if(precedentPion != null && pionJoueur(joueur,precedentPion)){
+						ret.set(2,i,j);
+						ArrayList<Coordonnees> adjs = casesAccessibles(i,j);
+						for(int k = 0; k < adjs.size(); k++){
+							if(casesVisitees.contains(adjs.get(k))){
+								ret.set(3,adjs.get(k));
+							}
+						}
+					}
+				}
+				else if(ret.at(i,j) != 0){
+					ret.set(-1,i,j);
+				}	
+			}
+		}
+		return ret;
+	}
 	//-------------------------------
 
     //Initialiser la grille
@@ -613,7 +637,9 @@ public class Partie implements Serializable {
 
             casesVisitees.add(coup.pion());
             if(casesAccessibles(coup.destination()).size()==0) { //On regarde si le joueur peut encore jouer le pion
-                changerJoueur(); //On change de joueur si aucun coup n'est possible
+		if(gagnant() == 0){
+               		changerJoueur(); //On change de joueur si aucun coup n'est possible
+		}
             }
 
         }
