@@ -1,5 +1,6 @@
 package View;
 
+import Controller.Controller;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
@@ -44,30 +45,8 @@ public class GridView{
 		tileSizeY = (cnv.getHeight())/m_game.ligne() ;
 
 		gc.clearRect(0,0,cnv.getWidth(),cnv.getHeight());		
-		//gc.setFill(Color.RED);
 
-
-		//Affichage des lignes
-		/*for(int i = 0; i < m_game.colonne(); i++){
-			gc.strokeLine((i+0.5)*tileSizeX,0.5*tileSizeY,(i+0.5)*tileSizeX,(m_game.ligne()-0.5)*tileSizeY);
-			
-		}
-
-		for(int j = 0; j < m_game.ligne(); j++){
-			gc.strokeLine(0.5*tileSizeX,(j+0.5)*tileSizeY,(m_game.colonne()-0.5)*tileSizeX,(j+0.5)*tileSizeY);
-		}
-		for(int k = 0; k <= m_game.colonne()/2; k++){
-			for(int m = 0; m < m_game.ligne()/2; m++){
-				if(k!=0){
-					gc.strokeLine((k*2+0.5)*tileSizeX,(m*2+0.5)*tileSizeY,((k-1)*2+0.5)*tileSizeX,((m+1)*2+0.5)*tileSizeY);
-				}
-			
-				if(k!= m_game.colonne()/2){
-					gc.strokeLine((k*2+0.5)*tileSizeX,(m*2+0.5)*tileSizeY,((k+1)*2+0.5)*tileSizeX,((m+1)*2+0.5)*tileSizeY);
-				}
-			}
-			
-		}*/
+                
                 //Affichage du nom du joueur qui a la main
                 if (m_game.joueur==1){
                     en_cours.setText(p1);
@@ -91,16 +70,36 @@ public class GridView{
 				}
 			}
 		}
-                //Affichages des cases accessibles
                 Coordonnees crd = new Coordonnees(l_p,l_c);
+                
+                //Affichage des pions qui peuvent etres mangés
+                Image mgp = new Image(getClass().getResourceAsStream("pions/mangeable_perc.png"));
+                Image mga = new Image(getClass().getResourceAsStream("pions/mangeable_asp.png"));
+                
+                if(Controller.case_clique==1){
+                    for(int x = 0; x < m_game.colonne(); x++){
+                        for(int y = 0; y < m_game.ligne(); y++){
+                            if(m_game.pionsCapturablesPercussion(new Coup(crd,Controller.cra,-1)).contains(new Coordonnees(y,x))){
+                                gc.drawImage(mgp,(x+0.25)*tileSizeX-5,(y+0.25)*tileSizeY-5, tileSizeX/2+2*5, tileSizeY/2+2*5);
+                            }
+                            if(m_game.pionsCapturablesAspiration(new Coup(crd,Controller.cra,-1)).contains(new Coordonnees(y,x))){
+                                gc.drawImage(mga,(x+0.25)*tileSizeX-5,(y+0.25)*tileSizeY-5, tileSizeX/2+2*5, tileSizeY/2+2*5);
+                            }
+                        }         
+                    }
+                }
+                //Affichages des cases accessibles
                 Image ac = new Image(getClass().getResourceAsStream("pions/accessible.png"));
                 for(int x = 0; x < m_game.colonne(); x++){
                     for(int y = 0; y < m_game.ligne(); y++){
                         if(m_game.casesAccessibles(crd).contains(new Coordonnees(y,x))){
-                            gc.drawImage(ac,(x+0.25)*tileSizeX,(y+0.25)*tileSizeY, tileSizeX/2, tileSizeY/2);
+                                //System.out.println("-----------x: "+x+"    y: "+y);
+                                gc.drawImage(ac,(x+0.25)*tileSizeX,(y+0.25)*tileSizeY, tileSizeX/2, tileSizeY/2);
                         }
                     }         
                 }
+                
+                //public ArrayList<Coordonnees> pionsCapturables(int lPion,int cPion, int lDestination, int cDestination)
                 
 
 		Image pb = new Image(getClass().getResourceAsStream("pions/pion_b.png"));
@@ -127,3 +126,30 @@ public class GridView{
 	}
 
 }
+/*
+class _Grille extends Partie {
+
+	public _Grille(){
+	}
+
+	@Override
+	public int ligne(){
+		return tab.length;
+	}
+
+	@Override
+	public int colonne(){
+		if(tab[0] != null){
+			return tab[0].length;
+		}
+		else{
+			return 0;
+		}
+
+	}
+
+	public int at(int x, int y){
+		return tab[x][y];
+	}
+
+}*/
