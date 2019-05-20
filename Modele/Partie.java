@@ -10,6 +10,11 @@ import Configuration.Configuration;
     La base du jeu 
 */
 
+/*
+    TODO: ne plus changer de joueur automatique à la fin du tour, demander au joueur de mettre fin au tour
+    Pouvoir annuler les coups qu'on fait uniquement durant son tour
+*/
+
 public class Partie implements Serializable {
     private static final long serialVersionUID = 696479903953286766L;
 
@@ -256,6 +261,18 @@ public class Partie implements Serializable {
     // Le joueur peut-il passer son tour sans avoir joué?
     public void finTour() {
         changerJoueur();
+    }
+
+    //retourne vrai si le joueur peut mettre fin à son tour
+    public boolean peutFinTour() {
+        boolean b=false;
+        if(listeCoupsValides().size()==0) { //Plus de coup possibles
+            b = true;
+        }
+        else if(precedentPion!=null) { //Le joueur arrète un enchainement de coups
+            b = true;
+        }
+        return b;
     }
 
     //Placer le pion pour le joueur
@@ -557,7 +574,6 @@ public class Partie implements Serializable {
     }
 
     //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
-    //Cpature: 0 si pas de capture, 1 si percussion, 2 si aspiration
     public boolean jouer(Coup coup) {
         if(!coupValide(coup)) { //Coup invalide
             Configuration.instance().logger().warning("Partie:jouer - Coup impossible: "+coup);
@@ -605,9 +621,12 @@ public class Partie implements Serializable {
     }
 
     // retourne vrai si le joueur peut annuler son coup
-    // A définir jusqu'a quel point les joueurs peuvent annuler les coup
     public boolean peutAnnuler() {
         return historique.peutAnnuler();
+    }
+
+    public boolean peutRefaire() {
+        return historique.peutRefaire();
     }
 
     //Annule le dernier coup joué
@@ -651,11 +670,15 @@ public class Partie implements Serializable {
     }
 
     //Refaire le dernier coup annulé
+    //Modifie directement la partie
     public void refaire() {
         if (historique.peutRefaire()) {
             Coup coup = historique.coupRefaire();
             Configuration.instance().logger().info("Refait le coup: "+coup);
-            jouer(coup);
+            @SuppressWarnings("unchecked") //TODO régler plus proprement la gestion de refaire
+            ArrayList<CoupHistorique> c = (ArrayList<CoupHistorique>) historique.tabRefaire.clone(); //Alerte c'est du code dégueulasse
+            jouer(coup); //Joue le coup a refaire
+            historique().tabRefaire = c;
         }
         else {
             Configuration.instance().logger().warning("Impossible de refaire le coup");
@@ -664,30 +687,119 @@ public class Partie implements Serializable {
 
 
 
-    //Affiche la grille dans la console
-    public void afficher() {
+
+    public String toString() {
+        if(Configuration.instance().lis("affichageConsole").equals("simple")) {
+            return toStringSimple();
+        }
+        else {
+            return toStringComplet();
+        }
+    }
+
+    //Convertit la grille en chaine de caractère
+    public String toStringSimple() {
+        String str = new String();
         int l=0;
         System.out.print("  ");
         for(int i=0;i<colonne();i++) { 
-            System.out.print(i+" ");
+            str+=i+" ";
         }
-        System.out.print("\n");
+        str+="\n";
         for(int i=0;i<ligne();i++) { 
-            System.out.print(l+" ");
+            str+=l+" ";
             l++;
             for(int j=0;j<colonne();j++) {
                 if(pionJoueur1(i, j)) {
-                    System.out.print("● ");
+                    str+="● ";
                 }
                 else if(pionJoueur2(i, j)) {
-                    System.out.print("○ ");
+                    str+="○ ";
                 }
                 else {
-                    System.out.print(". ");
+                    str+=". ";
                 } 
             }
-            System.out.println();
+            str+="\n";
         }
-        System.out.println();
+        str+="\n";        
+        return str;
+    }
+
+    //Affiche la grille dans la console
+    public void afficher() {
+        System.out.print(toString());
+    }
+
+    //Convertit la grille en chaine de caractère plus complexe
+    public String toStringComplet() {
+        String str = new String();
+        int l=0;
+        System.out.print("  ");
+        for(int i=0;i<colonne();i++) { 
+            str+=i+" ";
+        }
+        str+="\n";
+        for(int i=0;i<ligne();i++) { 
+            str+=l+" ";
+            l++;
+            for(int j=0;j<colonne();j++) {
+                if(pionJoueur1(i, j)) {
+                    str+="●";
+                    if(j<colonne()-1)
+                        str+="─";
+                }
+                else if(pionJoueur2(i, j)) {
+                    str+="○";
+                    if(j!=colonne()-1)
+                        str+="─";
+                }
+                else { //case vide
+                    if(i==0 && j==0)
+                        str+="┌─";
+                    else if(i==0 && j==colonne()-1)
+                        str+="┐";
+                    else if(i==ligne()-1 && j==0)
+                        str+="└─";
+                    else if(i==ligne()-1 && j==colonne()-1)
+                        str+="┘";
+                    else if(i==0)
+                        str+="┬─";
+                    else if(i==ligne()-1)
+                        str+="┴─";
+                    else if(j==colonne()-1)
+                        str+="┤";
+                    else if(j==0)
+                        str+="├─";
+                    else
+                        str+="┼─";
+
+                } 
+            }
+            if(i<ligne()-1) {//Affichage de l'interligne
+                str+="\n  ";
+                for(int j=0;j<colonne();j++) {
+                    if(i%2==0) {
+                        if(j%2==0 && j<colonne()-1)
+                            str+="│\\";
+                        else if(j%2==1 && j<colonne()-1)
+                            str+="│/";
+                        else
+                            str+="│";
+                    }
+                    else {
+                        if(j%2==0 && j<colonne()-1)
+                            str+="│/";
+                        else if(j%2==1 && j<colonne()-1)
+                            str+="│\\";
+                        else
+                            str+="│";
+                    }
+                }
+            }
+            str+="\n";        
+        }
+        str+="\n";        
+        return str;
     }
 }

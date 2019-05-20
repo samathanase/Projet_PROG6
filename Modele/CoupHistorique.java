@@ -54,5 +54,8 @@ public class CoupHistorique extends Coup{
         return new Coup(pion(),destination(),action());
     }
 
+    public String toString() {
+        return "Joueur:"+joueur+": "+pion()+"->"+destination();
+    }
 
 }
