@@ -166,8 +166,8 @@ public class Configuration {
 			"#Option joueur\nnomJoueur1="+lis("nomJoueur1")+"\n"+
 			"nomJoueur2="+lis("nomJoueur2")+"\n"+
 			"#facile moyen difficile\n\n"+
-			"difficulteIA="+lis("difficulteIA")+"\n";
-
+			"difficulteIA="+lis("difficulteIA")+"\n"+
+			"affichageConsole="+lis("affichageConsole")+"\n";
 			ecrFichier.write(contenu);
 			ecrFichier.close();
 			logger().info("Sauvegarde des propriétés réussiee");
