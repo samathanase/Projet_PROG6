@@ -5,12 +5,14 @@ import View.*;
 import java.util.*;
 import javafx.scene.input.MouseEvent;
 public class Controller{
-        protected int i=0;
+        protected int i=1;
 	protected Partie m_game;
 	protected List<Coordonnees> clickHist;	
 	protected int m_player;
 
-
+        public static Coordonnees cra;
+        public static int case_clique=0;
+        
 	public Controller(int player){
 		m_game = new Partie();
 		m_player = player;
@@ -36,39 +38,39 @@ public class Controller{
 	
 	//Gestion du click dans la zone de jeu
 	public void click(MouseEvent e, GridView gv){
+                case_clique=0;
                 Coordonnees coord;
-                /*if(i==1){
-                    coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY())-1, (int)(e.getSceneX()/gv.getTileSizeX())-1);
-                }else{// if(i>1){
-                    coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY())-1, (int)(e.getSceneX()/gv.getTileSizeX()));
-                //}else{
-                    //coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY()), (int)(e.getSceneX()/gv.getTileSizeX()));
-                }*/
-
-
-                coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY()), (int)(e.getSceneX()/gv.getTileSizeX()));
+                coord = new Coordonnees((int)(e.getSceneY()/gv.getTileSizeY())-1, (int)(e.getSceneX()/gv.getTileSizeX())-1);
                 System.out.println(m_game.joueur());
-                //coord.c--;
 		//printCoord(coord);
-		if(m_game.grille().at(coord) == m_player){
+                
+		if(m_game.grille().at(coord) == m_game.joueur()){
 			clickHist.clear();
 			clickHist.add(coord);
 			m_game.selectionnerPion(coord);
+                        case_clique=0;
 		}
 		else{
+                        case_clique=0;
 			clickHist.add(coord);
-                	//System.out.println("***************");//+coord.toString());
-                	//printCoord(coord);
+                        if(m_game.libre(coord)){
+                            case_clique=1;
+                            cra=coord;
+                        }
+                	System.out.println("***************");
+                	printCoord(coord);
 			if(clickHist.size() == 3){
+                            case_clique=0;
 				Coup coup = new Coup(clickHist.get(0),clickHist.get(1), getCapture(clickHist));
 				jouer(coup);
 				
-				//System.out.println(getCapture(clickHist));
-				//m_game.afficher();
+				System.out.println(getCapture(clickHist));
+				m_game.afficher();
 				clickHist.clear();
 				m_game.selectionnerPion(null);
 			}
 		}
+                
 	}
 
 	private void printCoord(Coordonnees coord){
