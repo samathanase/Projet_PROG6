@@ -2,10 +2,13 @@ package fanorona_prog06;
 
 import Controller.Controller;
 import Controller.IA_Controller;
+import Modele.ChargerPartie;
 import Modele.Partie;
+import Modele.SauvegarderPartie;
 import View.GridView;
 import View.ResizableCanvas;
 import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -29,8 +32,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class PvA_board implements Initializable {
+    
+    
+    public static String p1="joueur 1",p2="joueur 2";
 
     @FXML
     private AnchorPane pva_scene;
@@ -76,6 +83,25 @@ public class PvA_board implements Initializable {
 
     @FXML
     private Button save_board;
+    
+    @FXML
+    void save_game(ActionEvent event) throws IOException, InterruptedException {
+        SauvegarderPartie s = new SauvegarderPartie(FXMLDocumentController.game,"testSave.txt");
+        s.sauvegarder();
+        Stage stage= new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("save.fxml"));
+        //System.out.println("root");
+        //stage.initStyle(StageStyle.UNDECORATED);
+        //stage.initStyle(StageStyle.UTILITY);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        scene.getWindow().centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
+        sleep(2400);
+        stage.hide();
+
+    }
 
     @FXML
     private Button options_board;
@@ -97,6 +123,8 @@ public class PvA_board implements Initializable {
     
     @FXML
     void restart_btn(ActionEvent event) throws IOException {
+        
+        FXMLDocumentController.game = new Partie();
         Stage stage = (Stage)restart_board.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("board_PvA.fxml"));
         Scene scene = new Scene(root);
@@ -132,26 +160,40 @@ public class PvA_board implements Initializable {
 
     @FXML
     void toggle_opt(ActionEvent event) throws IOException {
-        Stage stage= new Stage();
+        Partie partieCharge = null;
+        ChargerPartie load = new ChargerPartie("testSave.txt");
+        partieCharge = load.charger();
+        FXMLDocumentController.game = partieCharge;
+        
+        Stage stage = (Stage)options_board.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("PvA_board.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        scene.getWindow().centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
+        
+       
+        /*Stage stage= new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("Options_toggle.fxml"));
         //System.out.println("root");
         Scene scene = new Scene(root);
         stage.setScene(scene);
         scene.getWindow().centerOnScreen();
         stage.setResizable(false);
-        stage.show();
+        stage.show();*/
     }
     
     public void start_cnv() throws IOException{
         
-        Partie game = new Partie();
+        
 	ResizableCanvas cnv = new ResizableCanvas();
-	GridView gv = new GridView(game);
-	Controller ctrl = new Controller(1,game);
+	GridView gv = new GridView(FXMLDocumentController.game);
+	Controller ctrl = new Controller(1,FXMLDocumentController.game);
 	//IA_Controller ia = new IA_Controller(-1,game);
-        IA_Controller tia = new IA_Controller(1,game,"h22");
+        IA_Controller tia = new IA_Controller(1,FXMLDocumentController.game,"h22");
 
-	System.out.println(game.joueur());
+	System.out.println(FXMLDocumentController.game.joueur());
 	//Pane root = new Pane();
 	r.getChildren().add(cnv);
 	cnv.widthProperty().bind(r.widthProperty());
@@ -161,7 +203,7 @@ public class PvA_board implements Initializable {
 	gv.draw(cnv);
         
 	cnv.setOnMouseClicked((MouseEvent e) -> {
-            if(game.joueur1()){
+            if(FXMLDocumentController.game.joueur1()){
                 ctrl.click(e,gv);
                 //tia.jouer(tia.think(1));
             }else{
@@ -176,6 +218,8 @@ public class PvA_board implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        player1_txt.setText(p1);
+        player2_txt.setText(p2);
         try {
             start_cnv();
         } catch (IOException ex) {

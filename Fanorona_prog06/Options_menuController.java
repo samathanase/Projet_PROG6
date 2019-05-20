@@ -88,13 +88,25 @@ public class Options_menuController implements Initializable {
     
     @FXML
     void sauvegarder_opt_btn(ActionEvent event) throws IOException {
+        Text p1_txt;
+        Text p2_txt;
+        p1_txt=new Text();
+        p2_txt=new Text();
         
         System.out.println("joueur1: "+j1+"joueur2: "+j2);
-        if(text_bar.getText().trim().isEmpty()){
-            System.out.println("null");
-        }else{
-            System.out.println(text_bar.getText());
+        if(!text_bar.getText().trim().isEmpty()){
+            if(j1==1){
+                PvP_board.p1=text_bar.getText();
+                PvA_board.p1=text_bar.getText();
+            }
+            if(j2==1){
+                PvP_board.p2=text_bar.getText();
+                PvA_board.p2=text_bar.getText();
+            }
+           
         }
+        
+        
         System.out.println("j1:"+i1+"-j2:"+i2+"-j3:"+i3+"-j4:"+i4+"-j5:"+i5+"-j6:-"+i5);
         
         /*

@@ -28,18 +28,6 @@
             <Font name="Berlin Sans FB" size="31.0" />
          </font>
       </Text>
-      <Rectangle fx:id="board_rect12" arcHeight="5.0" arcWidth="5.0" fill="#e94033" height="42.0" layoutX="932.0" layoutY="252.0" stroke="BLACK" strokeType="INSIDE" width="157.0" />
-      <Rectangle fx:id="board_rect111" arcHeight="5.0" arcWidth="5.0" fill="#ffd0d0" height="42.0" layoutX="932.0" layoutY="294.0" stroke="BLACK" strokeType="INSIDE" width="157.0" />
-      <Text fx:id="turn_txt" layoutX="951.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="tour du joueur">
-         <font>
-            <Font name="Berlin Sans FB" size="20.0" />
-         </font>
-      </Text>
-      <Text fx:id="player_turn_txt" layoutX="984.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueuer 1 ">
-         <font>
-            <Font name="Berlin Sans FB" size="17.0" />
-         </font>
-      </Text>
       <Button fx:id="restart_board" layoutX="932.0" layoutY="424.0" mnemonicParsing="false" onAction="#restart_btn" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="recommencer">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
@@ -55,12 +43,12 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="return_to_main" layoutX="932.0" layoutY="615.0" mnemonicParsing="false" onAction="#return_to_main" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="quitter">
+      <Button fx:id="return_to_main" layoutX="932.0" layoutY="615.0" mnemonicParsing="false" onAction="#return_to_main" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="quitter la partie">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Button>
-      <Text fx:id="pvp_title" fill="#e94033" layoutX="198.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur VS Joueur" wrappingWidth="553.3367462158203">
+      <Text fx:id="pvp_title" fill="#e94033" layoutX="197.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur VS Joueur" wrappingWidth="553.3367462158203">
          <font>
             <Font name="Bauhaus 93" size="61.0" />
          </font>
@@ -70,14 +58,24 @@
             <Image url="@board_pics/help.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="board_img" fitHeight="602.0" fitWidth="874.0" layoutX="37.0" layoutY="78.0">
-         <image>
-            <Image url="@board_pics/board4.png" />
-         </image>
-      </ImageView>
-      <Pane fx:id="r" layoutX="66.0" layoutY="99.0" prefHeight="559.0" prefWidth="814.0" />
       <ImageView fx:id="icone_j1" fitHeight="26.0" fitWidth="26.0" layoutX="948.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="icone_j2" fitHeight="26.0" fitWidth="26.0" layoutX="948.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="icone_j_encours" fitHeight="26.0" fitWidth="26.0" layoutX="948.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="602.0" fitWidth="874.0" layoutX="44.0" layoutY="80.0">
+         <image>
+            <Image url="@board_pics/wood1_board.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="42.0" fitWidth="253.0" layoutX="38.0" layoutY="71.0">
+         <image>
+            <Image url="@board_pics/wood.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="pion_encours" fitHeight="34.0" fitWidth="36.0" layoutX="246.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="602.0" fitWidth="874.0" layoutX="53.0" layoutY="82.0">
+         <image>
+            <Image url="@board_pics/lines.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="r" layoutX="75.0" layoutY="101.0" prefHeight="559.0" prefWidth="812.0" />
    </children>
 </AnchorPane>
