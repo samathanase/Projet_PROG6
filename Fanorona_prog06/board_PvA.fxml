@@ -48,7 +48,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="save_board" layoutX="932.0" layoutY="480.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="sauvegarder">
+      <Button fx:id="save_board" layoutX="932.0" layoutY="480.0" mnemonicParsing="false" onAction="#save_game" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="sauvegarder">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -58,7 +58,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="return_to_main" layoutX="932.0" layoutY="615.0" mnemonicParsing="false" onAction="#return_to_main" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="quitter">
+      <Button fx:id="return_to_main" layoutX="932.0" layoutY="615.0" mnemonicParsing="false" onAction="#return_to_main" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="quitter la partie">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -73,11 +73,21 @@
             <Image url="@board_pics/help.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="board_img" fitHeight="602.0" fitWidth="874.0" layoutX="38.0" layoutY="83.0">
+      <ImageView fitHeight="602.0" fitWidth="874.0" layoutX="54.0" layoutY="93.0">
          <image>
-            <Image url="@board_pics/board4.png" />
+            <Image url="@board_pics/wood1_board.png" />
          </image>
       </ImageView>
-      <Pane fx:id="r" layoutX="69.0" layoutY="104.0" prefHeight="559.0" prefWidth="812.0" />
+      <ImageView fitHeight="42.0" fitWidth="253.0" layoutX="50.0" layoutY="83.0">
+         <image>
+            <Image url="@board_pics/wood.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="602.0" fitWidth="874.0" layoutX="63.0" layoutY="95.0">
+         <image>
+            <Image url="@board_pics/lines.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="r" layoutX="85.0" layoutY="114.0" prefHeight="559.0" prefWidth="812.0" />
    </children>
 </AnchorPane>
