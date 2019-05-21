@@ -10,10 +10,7 @@ import Configuration.Configuration;
     La base du jeu 
 */
 
-/*
-    TODO: ne plus changer de joueur automatique à la fin du tour, demander au joueur de mettre fin au tour
-    Pouvoir annuler les coups qu'on fait uniquement durant son tour
-*/
+
 
 public class Partie implements Serializable {
     private static final long serialVersionUID = 696479903953286766L;
@@ -663,9 +660,15 @@ public class Partie implements Serializable {
 
 
 
-    // retourne vrai si le joueur peut annuler son coup
+    // retourne vrai s'il y a un coup à annuler
     public boolean peutAnnuler() {
         return historique.peutAnnuler();
+    }
+
+    //Retourne vrai le joueur donné peut annuler le coup //Utilisé pour les parties réseaux
+    //Peut annuler si c'est son tour et qu'il a déjà joué un coup (ne peut pas annuler les coups de son adversaire)
+    public boolean peutAnnuler(int joueur) {
+        return historique.peutAnnuler() && joueur()==joueur && precedentPion!=null;
     }
 
     public boolean peutRefaire() {

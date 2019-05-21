@@ -214,8 +214,7 @@ public abstract class Commande {
         }
     }
 
-    public void interpreterJouerCoup(int l,int c,int lD,int cD,int action) {
-        System.out.println(cmd);
+    public Coup interpreterJouerCoup(int l,int c,int lD,int cD,int action) {
         typeCmd = 8;
         pion = new Coordonnees(l,c);
         destination = new Coordonnees(lD,cD);
@@ -247,7 +246,9 @@ public abstract class Commande {
         }
         else {
             System.out.println("Coup impossible!");
+            return null;
         }
+        return coup;
     }
 
     public void interpreterRecommencer() {
@@ -334,5 +335,7 @@ public abstract class Commande {
     public boolean estValide() {
         return valide;
     }
+
+    
 
 }
