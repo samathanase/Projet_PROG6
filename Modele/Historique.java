@@ -35,7 +35,7 @@ public class Historique implements Serializable {
     //Retourne le coup demandé
     public CoupHistorique accederCoup(int i) {
         CoupHistorique c = null;
-        if(tabAnnuler.size()<i) {
+        if(tabAnnuler.size()>i) {
             c = tabAnnuler.get(i);
         }
         return c;
