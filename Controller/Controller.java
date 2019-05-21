@@ -58,7 +58,19 @@ public class Controller{
 		else{
 			clickHist.add(coord);
                 	//System.out.println("***************");//+coord.toString());
-                	//printCoord(coord);
+					//printCoord(coord);
+			if(clickHist.size() == 2){
+				int capt = getCapture(clickHist);
+				if(capt!=-1) { //Il n'y a pas le choix entre percution aspiration
+					Coup coup = new Coup(clickHist.get(0),clickHist.get(1), capt);
+					jouer(coup);
+					
+					//System.out.println(getCapture(clickHist));
+					//m_game.afficher();
+					clickHist.clear();
+					m_game.selectionnerPion(null);
+				}
+			}
 			if(clickHist.size() == 3){
 				Coup coup = new Coup(clickHist.get(0),clickHist.get(1), getCapture(clickHist));
 				jouer(coup);
@@ -77,22 +89,23 @@ public class Controller{
 
 	//determine la capture adequat 
 	protected int getCapture(List<Coordonnees> cHist){
-		int dx1,dy1, dx2,dy2;
-		dx1 = cHist.get(1).colonne() - cHist.get(0).colonne();
-		dy1 = cHist.get(1).ligne() - cHist.get(0).ligne();
-		dx2 = cHist.get(2).colonne() - cHist.get(0).colonne();
-		dy2 = cHist.get(2).ligne() - cHist.get(0).ligne();
-
-		if(cHist.get(1) == cHist.get(2)){
-			return 0;
+		Coup c = new Coup(cHist.get(0),cHist.get(1));
+		if(m_game.aspirationPercution(c)&& cHist.size()==3){
+			if(cHist.get(2).equals(cHist.get(1).somme(c.direction().coordonnees())))
+				return 1;
+			else
+				return 2;
 		}
-		else if((dx1 > 0)==(dx2 > 0) && (dy1 >0)==(dy2>0)){
-			return 1;
+		else if (m_game.aspirationPercution(c)&& cHist.size()==2) { //Besoin de savoir percussion ou aspiration
+			return -1;
 		}
-		else{
+		else if(m_game.aspiration(c)){
 			return 2;
 		}
-		
+		else if(m_game.percussion(c)){
+			return 1;
+		}
+		return 0;
 	}
 
 	public int _at(int l, int c){
