@@ -9,7 +9,7 @@ import java.lang.Character;
 public class IA_Controller extends Controller {
 
 	String m_hname;
-	private final int m_depth = 4;
+	private final int m_depth = 3;
 	Random r;
 	List<Grille> m_memory;
 
@@ -83,7 +83,6 @@ public class IA_Controller extends Controller {
 		}
 		catch(InvocationTargetException e){
 		}
-		//System.out.println("fit : " + ret);
 		return ret;
 	}
 	
@@ -105,59 +104,12 @@ public class IA_Controller extends Controller {
 			for(int j =0; j < config.colonne(); j++){
 				if(config.at(i,j) == (player==1?1:2)){
 					nbPL++;	
-					/*List<Coordonnees> adjs = state.casesAccessibles(i,j);
-
-					for(int id = 0; id < adjs.size(); id++){
-						Coordonnees dir = new Coordonnees(adjs.get(id).ligne()-i,adjs.get(id).colonne()-j);
-						int is,js;
-						is = i+2*dir.ligne(); 
-						js = j+2*dir.colonne();
-						while(config.caseExiste(is,js) && config.at(is,js) == (player==1?2:1)){
-							nbCapturablePL++;
-							is+= dir.ligne();
-							js+= dir.colonne();
-						}
-						is = i - dir.ligne();
-						js = j - dir.colonne();
-						while(config.caseExiste(is,js) && config.at(is,js) == (player==1?2:1)){
-							nbCapturablePL++;
-							is -= dir.ligne();
-							js -= dir.colonne();
-						}
-					}*/
-
-
-						
 				}
 				if(config.at(i,j) == (player==1?2:1)){
 					nbADV++;
-					/*List<Coordonnees> adjs = state.casesAccessibles(i,j);
-
-					for(int id = 0; id < adjs.size(); id++){
-						Coordonnees dir = new Coordonnees(adjs.get(id).ligne()-i,adjs.get(id).colonne()-j);
-						int is,js;
-						is = i+2*dir.ligne(); 
-						js = j+2*dir.colonne();
-						while(config.caseExiste(is,js) && config.at(is,js) == (player==1?1:2)){
-							nbCapturableADV++;
-							is+= dir.ligne();
-							js+= dir.colonne();
-						}
-						is = i - dir.ligne();
-						js = j - dir.colonne();
-						while(config.caseExiste(is,js) && config.at(is,js) == (player==1?1:2)){
-							nbCapturableADV++;
-							is -= dir.ligne();
-							js -= dir.colonne();
-						}
-					}*/
-
-				}
-				
+				}				
 			}
 		}
-			
-		//state.afficher();
 		if(nbADV ==0){
 			return Double.MAX_VALUE-1;
 		}
@@ -170,24 +122,28 @@ public class IA_Controller extends Controller {
 	}
 
 	public Pair<Double,Integer> minimax(Partie state,int horizon,int player){
-		MutableDouble alpha = new MutableDouble(-Double.MAX_VALUE); //val MAX
-		MutableDouble beta = new MutableDouble(Double.MAX_VALUE);//val MIN
 		m_memory.clear();
-		return minimax(state,horizon,player,"R",alpha,beta);
+		return minimax(state,horizon,player,"R",-Double.MAX_VALUE,Double.MAX_VALUE);
 	}
 
-	private Pair<Double,Integer> minimax(Partie state,int horizon,int player,String tree,MutableDouble alpha, MutableDouble beta){
-
+	private Pair<Double,Integer> minimax(Partie state,int horizon,int player,String tree,double f_alpha, double f_beta){
+		double alpha = f_alpha;
+		double beta = f_beta;
+		boolean printTree =false;
 		if(state.gagnant() != 0 || horizon == 0){
 			double ret = fitness(state,player);
-			//System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+") = " + ret  + "\tA : " + alpha.getValue() + "\tB : " + beta.getValue());
-			//state.afficher();
-
+			if(printTree){
+				System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+" - LEAF) = " + ret  + "\tA : " + alpha + "\tB : " + beta);
+				state.afficher();
+			}
 			return new Pair<Double,Integer>(ret,-2);
 		}
 		List<Coup> actions = state.listeCoupsValides() ;
 		if(actions.size() == 0){
 			return new Pair<Double,Integer>(-Double.MAX_VALUE+1,-3);
+		}
+		if(tree == "R" && r.nextInt(100) < 10){//RANDOM : 10% de chance sur les premiers noeuds
+			//return new Pair<Double,Integer>(1.,r.nextInt(actions.size()));
 		}
 		double ret;
 		if(player == m_player){
@@ -214,7 +170,8 @@ public class IA_Controller extends Controller {
 			//memoisation
 			Grille unique = state.getUniqueState();
 			if(m_memory.contains(unique)){
-				break;
+				//state.annuler();
+				//continue;
 			} 
 			else{
 				m_memory.add(unique);
@@ -225,43 +182,29 @@ public class IA_Controller extends Controller {
 			if(player == m_player){
 				ret = Math.max(ret,value);
 				if(nextPlayer != player){
-					if(beta.getValue() != Double.MAX_VALUE && value > beta.getValue()){
-						//System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+") = " + ret  + "\tA : " + alpha.getValue() + "\tB : " + beta.getValue());
-						//state.afficher();
-						if(ret != oldret){
-							id = i;
-							possibilities.clear();
-							possibilities.add(id);
-						}
-						else if(ret == value){
-							possibilities.add(i);
-						}
+					alpha = Math.max(alpha,value);
+					if(alpha > beta){
 						break;
-						//return new Pair<Double,Integer>(ret,i);
 					}
-					alpha.setValue(Math.max(alpha.getValue(),ret));
+					if(value > beta){
+						id = i;
+						possibilities.clear();
+						break;
+					}
 				}
 			}else{
 				ret = Math.min(ret,value);
 				if(nextPlayer != player){
-					if(alpha.getValue() != -Double.MAX_VALUE && ret < alpha.getValue()){
-						//System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+") = " + ret  + "\tA : " + alpha.getValue() + "\tB : " + beta.getValue());
-						//state.afficher();
-						
-						if(ret != oldret){
-							id = i;
-							possibilities.clear();
-							possibilities.add(id);
-						}
-						else if(ret == value){
-							possibilities.add(i);
-						}	
+					beta = Math.min(beta,value);
+					if(alpha > beta){
 						break;
-						//return new Pair<Double,Integer>(ret,i);
 					}
-					beta.setValue(Math.min(beta.getValue(),ret));
+					if(value < alpha){
+						id = i;
+						possibilities.clear();
+						break;
+					}
 				}
-				
 			}
 			if(ret != oldret){
 				id = i;
@@ -275,8 +218,10 @@ public class IA_Controller extends Controller {
 		if(possibilities.size() > 1){
 			id = possibilities.get(r.nextInt(possibilities.size()));
 		}
-		//System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+") = " + ret  + "\tA : " + alpha.getValue() + "\tB : " + beta.getValue());
-		//state.afficher();
+		if(printTree){
+			System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+") = " + ret  + "\tA : " + alpha + "\tB : " + beta);
+			state.afficher();
+		}
 		return new Pair<Double,Integer>(ret,id);
 	}
 
@@ -299,7 +244,6 @@ public class IA_Controller extends Controller {
 			if(id.getValue() <0){
 				System.out.println("IA : No actions");
 			}
-			//System.out.println("p : " + m_player +"  max : " + id.getKey());
 			return ret.get(id.getValue());
 		}
 		return null;
@@ -307,22 +251,3 @@ public class IA_Controller extends Controller {
 
 
 }
-
-class MutableDouble {
-  private double value;
-
-	public MutableDouble(double v){
-		value = v;
-	}
-
-  public double getValue() {
-    return value;
-  }
-
-  public void setValue(double value) {
-    this.value = value;
-  }
-
-}
-
-
