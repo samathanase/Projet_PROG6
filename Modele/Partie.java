@@ -52,13 +52,13 @@ public class Partie implements Serializable {
     }
 
 	//-------------------------------
-	public Partie(Partie copy){
+	public Partie(Partie copy){ //Copie de la grille
 		grille = new Grille(copy.grille);
 	 	tab = grille.tab();
 		parent = copy;
-    		joueur = copy.joueur; 
-    		rand = new Random(); 
-    		precedenteDirection = new Direction(copy.precedenteDirection); 
+    	joueur = copy.joueur; 
+    	rand = new Random(); 
+    	precedenteDirection = new Direction(copy.precedenteDirection); 
    		casesVisitees = new ArrayList<Coordonnees>();
 		for(int i = 0; i < copy.casesVisitees.size(); i++){
 			casesVisitees.add(new Coordonnees(copy.casesVisitees.get(i)));
@@ -597,8 +597,19 @@ public class Partie implements Serializable {
         return coups;
     }
 
-    //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
+    //Joue un coup en mettant fin au tour
     public boolean jouer(Coup coup) {
+        return jouer(coup,true);
+    }
+
+    //joue un coup et ne met pas fin automatiquement au tour
+    public boolean jouerSansFinTour(Coup coup) {
+        return jouer(coup,false);
+     }
+
+    //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
+    //Si finTour est vrai alors cela met directement fin au tour si possible
+    public boolean jouer(Coup coup, boolean finTour) {
         if(!coupValide(coup)) { //Coup invalide
             Configuration.instance().logger().warning("Partie:jouer - Coup impossible: "+coup);
             return false;
@@ -608,7 +619,13 @@ public class Partie implements Serializable {
             historique.ajouter(new CoupHistorique(coup,0,joueur,precedenteDirection,precedentPion));
             enleverPion(coup.pion()); //On enlève le pion joué
             placerPion(joueur(), coup.destination()); //On le place à l'endroit voulu
-            changerJoueur(); //C'est au joueur suivant
+            if(finTour) {
+                changerJoueur(); //C'est au joueur suivant
+            }
+            else {
+                precedentPion = coup.destination(); //Sauvegarde le pion qu'on vient de jouer
+                precedenteDirection = coup.direction(); //On sauvegarde la direction 
+            }
         }
         else { //Capture
             ArrayList<Coordonnees> listePions = new ArrayList<Coordonnees>();
@@ -636,15 +653,15 @@ public class Partie implements Serializable {
             precedenteDirection = coup.direction(); //On sauvegarde la direction
 
             casesVisitees.add(coup.pion());
-            if(casesAccessibles(coup.destination()).size()==0) { //On regarde si le joueur peut encore jouer le pion
-		if(gagnant() == 0){
+            if(finTour && casesAccessibles(coup.destination()).size()==0) { //On regarde si le joueur peut encore jouer le pion
                		changerJoueur(); //On change de joueur si aucun coup n'est possible
-		}
             }
 
         }
         return true;
     }
+
+
 
     // retourne vrai si le joueur peut annuler son coup
     public boolean peutAnnuler() {
@@ -702,7 +719,7 @@ public class Partie implements Serializable {
             Coup coup = historique.coupRefaire();
             Configuration.instance().logger().info("Refait le coup: "+coup);
             @SuppressWarnings("unchecked") //TODO régler plus proprement la gestion de refaire
-            ArrayList<CoupHistorique> c = (ArrayList<CoupHistorique>) historique.tabRefaire.clone(); //Alerte c'est du code dégueulasse
+            ArrayList<CoupHistorique> c = (ArrayList<CoupHistorique>) historique.tabRefaire.clone();
             jouer(coup); //Joue le coup a refaire
             historique().tabRefaire = c;
         }
@@ -737,14 +754,17 @@ public class Partie implements Serializable {
             l++;
             for(int j=0;j<colonne();j++) {
                 if(pionJoueur1(i, j)) {
-                    str+="● ";
+                    str+="●";
                 }
                 else if(pionJoueur2(i, j)) {
-                    str+="○ ";
+                    str+="○";
                 }
                 else {
-                    str+=". ";
-                } 
+                    str+=".";
+                }
+                if(j<colonne()-1) {
+                    str+=" ";
+                }
             }
             str+="\n";
         }
