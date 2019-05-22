@@ -25,14 +25,14 @@ public class BaseApp extends Application {
 		primaryStage.setTitle("Hello World!");
 
 
-		Partie game = new Partie(3,7);
+		Partie game = new Partie(5,9);
 		Grille grid = new Grille(game.grille());
 		for(int i =1; i < grid.ligne()-1; i++){
 			for(int j = 1; j < grid.colonne()-1; j++){
 			//	grid._set(0,i,j);
 			}
 		}
-		
+	/*	
 		grid.set(0,0,0);
 		grid.set(0,1,0);
 		grid.set(0,2,0);
@@ -42,7 +42,7 @@ public class BaseApp extends Application {
 		grid.set(1,1,1);
 		grid.set(1,1,2);
 		grid.set(1,1,3);
-			
+	*/		
 		game.setGrille(grid);
 		ResizableCanvas cnv = new ResizableCanvas();
 		GridView gv = new GridView(game);

@@ -9,7 +9,7 @@ import java.lang.Character;
 public class IA_Controller extends Controller {
 
 	String m_hname;
-	private final int m_depth = 3;
+	private final int m_depth = 2;
 	Random r;
 	Hashtable<Grille,Double> m_memory;
 
@@ -69,6 +69,10 @@ public class IA_Controller extends Controller {
 	static double h27(int nbPL,int nbADV){
 		return 100*h0(nbPL,nbADV) + 10*((nbPL-1.3)/(nbADV+0.4)) + 30*(1./(nbPL+nbADV));
 	}
+		
+	static double h28(int nbPL,int nbADV){
+		return 100*(nbPL/nbADV);
+	}
 
 	public double heuristique(String hname,int nbPL, int nbADV){
 		Method m;
@@ -96,7 +100,7 @@ public class IA_Controller extends Controller {
 			}
 		}
 	//Note une configuration	
-	public double fitness(Partie state,int player){
+	public double fitness(Partie state,int player,int nbCoups){
 		Grille config = state.grille();
 		int nbPL = 0, nbADV = 0;//, nbCapturablePL = 0,nbCapturableADV = 0;
 
@@ -110,7 +114,7 @@ public class IA_Controller extends Controller {
 				}				
 			}
 		}
-		if(nbADV ==0){
+		if(nbADV ==0 && nbCoups < 2 && player == m_player){
 			return Double.MAX_VALUE-1;
 		}
 		if(nbPL == 0){
@@ -123,10 +127,10 @@ public class IA_Controller extends Controller {
 
 	public Pair<Double,Integer> minimax(Partie state,int horizon,int player){
 		m_memory.clear();
-		return minimax(state,horizon,player,"R",-Double.MAX_VALUE,Double.MAX_VALUE);
+		return minimax(state,horizon,player,"R",-Double.MAX_VALUE,Double.MAX_VALUE,0);
 	}
 
-	private Pair<Double,Integer> minimax(Partie state,int horizon,int player,String tree,double f_alpha, double f_beta){
+	private Pair<Double,Integer> minimax(Partie state,int horizon,int player,String tree,double f_alpha, double f_beta,int nbCoups){
 		//memoisation
 		/*Grille unique = state.getUniqueState();
 		if(m_memory.containsKey(unique)){
@@ -136,12 +140,12 @@ public class IA_Controller extends Controller {
 
 			double alpha = f_alpha;
 			double beta = f_beta;
-			boolean printTree =false;
+			boolean printTree =true;
 			if(state.gagnant() != 0 || horizon == 0){
-				double ret = fitness(state,player);
+				double ret = fitness(state,player,nbCoups);
 				if(printTree){
 					System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+" - LEAF) = " + ret  + "\tA : " + alpha + "\tB : " + beta);
-					//state.afficher();
+					state.afficher();
 				}
 				return new Pair<Double,Integer>(ret,-2);
 			}
@@ -165,18 +169,30 @@ public class IA_Controller extends Controller {
 			for(int i = 0; i < actions.size(); i++){
 				double oldret = ret;
 
-				strtree = tree;
-				if(Character.isLetter(tree.charAt(tree.length()-1))){
-					strtree += String.valueOf(i); 
-				}
-				else{
-					strtree += (char)('A'+i);
-				}
-
 				state.jouer(actions.get(i));
 
 				int nextPlayer = (state.joueur()==1?1:-1);
-				double value = minimax(state,(nextPlayer==player?horizon:horizon-1),nextPlayer,strtree,alpha,beta).getKey();
+				int nbc = nbCoups + ((nextPlayer != player && player == m_player)?1:0);
+				strtree = tree;
+				if(Character.isLetter(tree.charAt(tree.length()-1))){
+					if(nextPlayer != player){
+						strtree += "/";
+						strtree += String.valueOf(i);
+					}else{
+						strtree += (char)('A'+i);
+					} 
+				}
+				else{
+					if(nextPlayer != player){
+						strtree += "/";
+						strtree += (char)('A'+i);
+					}else{
+						strtree += String.valueOf(i);
+					}
+				}
+
+
+				double value = minimax(state,(nextPlayer==player?horizon:horizon-1),nextPlayer,strtree,alpha,beta,nbc).getKey();
 				state.annuler();
 				if(player == m_player){
 					ret = Math.max(ret,value);
@@ -219,7 +235,7 @@ public class IA_Controller extends Controller {
 			}
 			if(printTree){
 				System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+") = " + ret  + "\tA : " + alpha + "\tB : " + beta);
-				//state.afficher();
+				state.afficher();
 			}
 			//m_memory.put(unique,ret);
 			return new Pair<Double,Integer>(ret,id);
