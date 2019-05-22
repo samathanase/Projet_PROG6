@@ -11,19 +11,19 @@ public class IA_Controller extends Controller {
 	String m_hname;
 	private final int m_depth = 3;
 	Random r;
-	List<Grille> m_memory;
+	Hashtable<Grille,Double> m_memory;
 
 	public IA_Controller(int player,String hname){
 		super(player);
 		m_hname = hname;
 		r = new Random();
-		m_memory = new ArrayList<Grille>();
+		m_memory = new Hashtable<Grille,Double>();
 	}
 	public IA_Controller(int player, Partie game,String hname){
 		super(player,game);
 		m_hname = hname;
 		r = new Random();
-		m_memory = new ArrayList<Grille>();
+		m_memory = new Hashtable<Grille,Double>();
 	}
 
 	static double h0(int nbPL,int nbADV){
@@ -41,7 +41,7 @@ public class IA_Controller extends Controller {
 	static double h18(int nbPL,int nbADV){
 		return h0(nbPL,nbADV) - 1/Math.exp(nbPL-2);
 	}
- 	static double h19(int nbPL,int nbADV){
+	static double h19(int nbPL,int nbADV){
 		return h0(nbPL,nbADV) - 1/Math.exp(nbPL-1);
 	}
 	static double h20(int nbPL,int nbADV){
@@ -65,7 +65,7 @@ public class IA_Controller extends Controller {
 	static double h26(int nbPL,int nbADV){
 		return 100*h0(nbPL,nbADV) + 10*((nbPL-1.3)/(nbADV+0.4));
 	}
-	
+
 	static double h27(int nbPL,int nbADV){
 		return 100*h0(nbPL,nbADV) + 10*((nbPL-1.3)/(nbADV+0.4)) + 30*(1./(nbPL+nbADV));
 	}
@@ -85,21 +85,21 @@ public class IA_Controller extends Controller {
 		}
 		return ret;
 	}
-	
+
 	@Override
-	public boolean jouer(Coup a){
-		if(a != null){
-			return m_game.jouer(a);
+		public boolean jouer(Coup a){
+			if(a != null){
+				return m_game.jouer(a);
+			}
+			else{
+				return false;
+			}
 		}
-		else{
-			return false;
-		}
-	}
 	//Note une configuration	
 	public double fitness(Partie state,int player){
 		Grille config = state.grille();
 		int nbPL = 0, nbADV = 0;//, nbCapturablePL = 0,nbCapturableADV = 0;
-		
+
 		for(int i = 0; i < config.ligne(); i++){
 			for(int j =0; j < config.colonne(); j++){
 				if(config.at(i,j) == (player==1?1:2)){
@@ -127,102 +127,104 @@ public class IA_Controller extends Controller {
 	}
 
 	private Pair<Double,Integer> minimax(Partie state,int horizon,int player,String tree,double f_alpha, double f_beta){
-		double alpha = f_alpha;
-		double beta = f_beta;
-		boolean printTree =false;
-		if(state.gagnant() != 0 || horizon == 0){
-			double ret = fitness(state,player);
-			if(printTree){
-				System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+" - LEAF) = " + ret  + "\tA : " + alpha + "\tB : " + beta);
-				state.afficher();
-			}
-			return new Pair<Double,Integer>(ret,-2);
-		}
-		List<Coup> actions = state.listeCoupsValides() ;
-		if(actions.size() == 0){
-			return new Pair<Double,Integer>(-Double.MAX_VALUE+1,-3);
-		}
-		if(tree == "R" && r.nextInt(100) < 10){//RANDOM : 10% de chance sur les premiers noeuds
-			//return new Pair<Double,Integer>(1.,r.nextInt(actions.size()));
-		}
-		double ret;
-		if(player == m_player){
-			ret = -Double.MAX_VALUE;
-		}else{
-			ret = Double.MAX_VALUE; 
-		}
-		int id = 0;
-		List<Integer> possibilities = new ArrayList<Integer>();		
-		String strtree ="";
+		//memoisation
+		/*Grille unique = state.getUniqueState();
+		if(m_memory.containsKey(unique)){
+			return new Pair<Double,Integer>(m_memory.get(unique),0);
+		} 
+		else{*/
 
-		for(int i = 0; i < actions.size(); i++){
-			double oldret = ret;
-
-			strtree = tree;
-			if(Character.isLetter(tree.charAt(tree.length()-1))){
-				strtree += String.valueOf(i); 
+			double alpha = f_alpha;
+			double beta = f_beta;
+			boolean printTree =false;
+			if(state.gagnant() != 0 || horizon == 0){
+				double ret = fitness(state,player);
+				if(printTree){
+					System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+" - LEAF) = " + ret  + "\tA : " + alpha + "\tB : " + beta);
+					//state.afficher();
+				}
+				return new Pair<Double,Integer>(ret,-2);
 			}
-			else{
-				strtree += (char)('A'+i);
+			List<Coup> actions = state.listeCoupsValides() ;
+			if(actions.size() == 0){
+				return new Pair<Double,Integer>(-Double.MAX_VALUE+1,-3);
 			}
-			
-			state.jouer(actions.get(i));
-			//memoisation
-			Grille unique = state.getUniqueState();
-			if(m_memory.contains(unique)){
-				//state.annuler();
-				//continue;
-			} 
-			else{
-				m_memory.add(unique);
+			if(tree == "R" && r.nextInt(100) < 10){//RANDOM : 10% de chance sur les premiers noeuds
+				//return new Pair<Double,Integer>(1.,r.nextInt(actions.size()));
 			}
-			int nextPlayer = (state.joueur()==1?1:-1);
-			double value = minimax(state,(nextPlayer==player?horizon:horizon-1),nextPlayer,strtree,alpha,beta).getKey();
-			state.annuler();
+			double ret;
 			if(player == m_player){
-				ret = Math.max(ret,value);
-				if(nextPlayer != player){
-					alpha = Math.max(alpha,value);
-					if(alpha > beta){
-						break;
-					}
-					if(value > beta){
-						id = i;
-						possibilities.clear();
-						break;
-					}
-				}
+				ret = -Double.MAX_VALUE;
 			}else{
-				ret = Math.min(ret,value);
-				if(nextPlayer != player){
-					beta = Math.min(beta,value);
-					if(alpha > beta){
-						break;
+				ret = Double.MAX_VALUE; 
+			}
+			int id = 0;
+			List<Integer> possibilities = new ArrayList<Integer>();		
+			String strtree ="";
+
+			for(int i = 0; i < actions.size(); i++){
+				double oldret = ret;
+
+				strtree = tree;
+				if(Character.isLetter(tree.charAt(tree.length()-1))){
+					strtree += String.valueOf(i); 
+				}
+				else{
+					strtree += (char)('A'+i);
+				}
+
+				state.jouer(actions.get(i));
+
+				int nextPlayer = (state.joueur()==1?1:-1);
+				double value = minimax(state,(nextPlayer==player?horizon:horizon-1),nextPlayer,strtree,alpha,beta).getKey();
+				state.annuler();
+				if(player == m_player){
+					ret = Math.max(ret,value);
+					if(nextPlayer != player){
+						alpha = Math.max(alpha,value);
+						if(alpha > beta){
+							break;
+						}
+						if(value > beta){
+							id = i;
+							possibilities.clear();
+							break;
+						}
 					}
-					if(value < alpha){
-						id = i;
-						possibilities.clear();
-						break;
+				}else{
+					ret = Math.min(ret,value);
+					if(nextPlayer != player){
+						beta = Math.min(beta,value);
+						if(alpha > beta){
+							break;
+						}
+						if(value < alpha){
+							id = i;
+							possibilities.clear();
+							break;
+						}
 					}
 				}
+				if(ret != oldret){
+					id = i;
+					possibilities.clear();
+					possibilities.add(id);
+				}
+				else if(ret == value){
+					possibilities.add(i);
+				}
 			}
-			if(ret != oldret){
-				id = i;
-				possibilities.clear();
-				possibilities.add(id);
+			if(possibilities.size() > 1){
+				id = possibilities.get(r.nextInt(possibilities.size()));
 			}
-			else if(ret == value){
-				possibilities.add(i);
+			if(printTree){
+				System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+") = " + ret  + "\tA : " + alpha + "\tB : " + beta);
+				//state.afficher();
 			}
-		}
-		if(possibilities.size() > 1){
-			id = possibilities.get(r.nextInt(possibilities.size()));
-		}
-		if(printTree){
-			System.out.println(tree +"("+(player==m_player?"MAX":"MIN")+") = " + ret  + "\tA : " + alpha + "\tB : " + beta);
-			state.afficher();
-		}
-		return new Pair<Double,Integer>(ret,id);
+			//m_memory.put(unique,ret);
+			return new Pair<Double,Integer>(ret,id);
+		//}
+		//return null;
 	}
 
 	public Coup think(int level){
