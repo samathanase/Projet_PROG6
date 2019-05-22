@@ -140,7 +140,7 @@ public class IA_Controller extends Controller {
 
 			double alpha = f_alpha;
 			double beta = f_beta;
-			boolean printTree =true;
+			boolean printTree =false;
 			if(state.gagnant() != 0 || horizon == 0){
 				double ret = fitness(state,player,nbCoups);
 				if(printTree){
