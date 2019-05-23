@@ -35,6 +35,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class FXMLDocumentController implements Initializable {
+    public static Partie game;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -45,7 +46,7 @@ public class FXMLDocumentController implements Initializable {
     private AnchorPane main_menu;
 
     @FXML
-    private Button quit_btn;
+    private ImageView quit_btn;
 
     @FXML
     private ImageView game_name;
@@ -64,9 +65,10 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     void PvA_btn(MouseEvent event) throws IOException {
+        game = new Partie();
         Stage stage = (Stage)PvA_btn.getScene().getWindow();
         
-        Parent root = FXMLLoader.load(getClass().getResource("board_PvA.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("IA_lvl.fxml"));
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
@@ -104,7 +106,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    void quit_btn(ActionEvent event) {
+    void quit_btn(MouseEvent event) {
         System.exit(0);
     }
 

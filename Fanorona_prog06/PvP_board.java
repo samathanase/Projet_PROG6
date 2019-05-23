@@ -33,17 +33,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class PvP_board implements Initializable {
-
+    
+    Partie game=new Partie();
+    
     public static String p1="joueur 1",p2="joueur 2";
         
     @FXML
     private AnchorPane pvp_scene;
-
-    @FXML
-    private Rectangle board_rect1;
-
-    @FXML
-    private Rectangle board_rect11;
 
     @FXML
     private Text player1_txt;
@@ -52,31 +48,18 @@ public class PvP_board implements Initializable {
     private Text player2_txt;
 
     @FXML
-    private Text score_txt;
+    private ImageView restart_board;
 
     @FXML
-    private Rectangle icone1;
+    private ImageView save_board;
+    
+    @FXML
+    void sauvegarder_pvp(MouseEvent event) {
+
+    }
 
     @FXML
-    private Rectangle icone2;
-
-    @FXML
-    private Text player_turn_txt;
-
-    @FXML
-    private Rectangle icone3;
-
-    @FXML
-    private Button restart_board;
-
-    @FXML
-    private Button save_board;
-
-    @FXML
-    private Button options_board;
-
-    @FXML
-    private Button return_to_main;
+    private ImageView return_to_main;
 
     @FXML
     private ImageView toggle_help;
@@ -86,7 +69,8 @@ public class PvP_board implements Initializable {
 
     
     @FXML
-    void restart_btn(ActionEvent event) throws IOException {
+    void restart_btn(MouseEvent event) throws IOException {
+        game.recommencer();
         Stage stage = (Stage)restart_board.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("board_PvP.fxml"));
         Scene scene = new Scene(root);
@@ -97,7 +81,7 @@ public class PvP_board implements Initializable {
     }
 
     @FXML
-    void return_to_main(ActionEvent event) throws IOException {
+    void return_to_main(MouseEvent event) throws IOException {
         Stage stage = (Stage)return_to_main.getScene().getWindow();
         
         Parent r1 = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
@@ -163,8 +147,7 @@ public class PvP_board implements Initializable {
 
     @FXML
     private ImageView icone_j2;
-    
-    
+   
     
     public void set_icons(){
         //if(j1==j2){}
@@ -175,13 +158,16 @@ public class PvP_board implements Initializable {
     }
     
     @FXML
+    public ImageView pion_encours1;
+
+    @FXML
+    public ImageView pion_encours2;
+    
+    @FXML
     private Pane r;
     
     @FXML
     private Canvas canv;
-    
-    @FXML
-    public Text game_player;
     
     @FXML
     private Pane encours_pane;
@@ -194,25 +180,30 @@ public class PvP_board implements Initializable {
     public void start_cnv() throws IOException{
         en_cours.setStyle("-fx-font-size: 30");
         //Stage stage = (Stage)options_board.getScene().getWindow();
-        Partie game = new Partie();
+        //game = new Partie();
         ResizableCanvas cnv = new ResizableCanvas();
         GridView gv = new GridView(game);
         
-        Image pion2 = new Image(getClass().getResourceAsStream("pions/pion_b.png"));
-        Image pion1 = new Image(getClass().getResourceAsStream("pions/pion_r.png"));
+        Image selected = new Image(getClass().getResourceAsStream("board_pics/turn.png"));
+        //Image pion1 = new Image(getClass().getResourceAsStream("pions/pion_r.png"));
         
         if (game.joueur==1){
             en_cours.setText(p1);
-            pion_encours.setImage(pion1);
+            pion_encours1.setImage(selected);
+            pion_encours2=null;
+            //pion_encours.setImage(pion1);
         }else{
             en_cours.setText(p2);
-            pion_encours.setImage(pion2);
+            pion_encours1=null;
+            pion_encours2.setImage(selected);
+            
+            //pion_encours.setImage(pion2);
         }
         Controller ctrl = new Controller(game.joueur,game);
 	//IA_Controller ia = new IA_Controller(-1,game);
         System.out.println(game.joueur());
 	
-        r.getChildren().addAll(cnv,en_cours);
+        r.getChildren().addAll(cnv);
         cnv.widthProperty().bind(r.widthProperty());
 	cnv.heightProperty().bind(r.heightProperty());	
 	cnv.widthProperty().addListener((Observable o) -> {gv.draw(cnv);});
@@ -230,7 +221,9 @@ public class PvP_board implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         player1_txt.setText(p1);
         player2_txt.setText(p2);
-        
+                
+
+        //set_pion();
         set_icons();
         try {
             start_cnv();

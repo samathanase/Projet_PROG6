@@ -124,7 +124,7 @@ public class PvA_board implements Initializable {
     @FXML
     void restart_btn(ActionEvent event) throws IOException {
         
-        FXMLDocumentController.game = new Partie();
+        FXMLDocumentController.game.recommencer();
         Stage stage = (Stage)restart_board.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("board_PvA.fxml"));
         Scene scene = new Scene(root);
@@ -226,5 +226,19 @@ public class PvA_board implements Initializable {
             Logger.getLogger(PvA_board.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    @FXML
+    private Button return_IA_choice;
+    
+    @FXML
+    void return_IA(ActionEvent event) throws IOException {
+        Stage stage = (Stage)return_IA_choice.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("IA_lvl.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        scene.getWindow().centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
+    }
+    
 }

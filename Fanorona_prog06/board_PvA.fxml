@@ -11,54 +11,35 @@
 
 <AnchorPane fx:id="pva_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="1140.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.PvA_board">
    <children>
-      <Rectangle fx:id="board_rect1" arcHeight="5.0" arcWidth="5.0" fill="#e94033" height="42.0" layoutX="933.0" layoutY="106.0" stroke="BLACK" strokeType="INSIDE" width="157.0" />
-      <Rectangle fx:id="board_rect11" arcHeight="5.0" arcWidth="5.0" fill="#ffd0d0" height="93.0" layoutX="933.0" layoutY="148.0" stroke="BLACK" strokeType="INSIDE" width="157.0" />
-      <Text fx:id="player1_txt" layoutX="988.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueuer 1 :">
+      <Rectangle fx:id="board_rect11" arcHeight="5.0" arcWidth="5.0" fill="#ffd0d0" height="93.0" layoutX="961.0" layoutY="23.0" stroke="BLACK" strokeType="INSIDE" width="157.0" />
+      <Text fx:id="player1_txt" layoutX="1016.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueuer 1 :">
          <font>
             <Font name="Berlin Sans FB" size="17.0" />
          </font>
       </Text>
-      <Text fx:id="player2_txt" layoutX="988.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ordinateur :">
+      <Text fx:id="player2_txt" layoutX="1016.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ordinateur :">
          <font>
             <Font name="Berlin Sans FB" size="17.0" />
          </font>
       </Text>
-      <Text fx:id="score_txt" layoutX="974.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="scores">
-         <font>
-            <Font name="Berlin Sans FB" size="31.0" />
-         </font>
-      </Text>
-      <Rectangle fx:id="icone1" arcHeight="5.0" arcWidth="5.0" fill="#1fff80" height="26.0" layoutX="948.0" layoutY="165.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
-      <Rectangle fx:id="icone2" arcHeight="5.0" arcWidth="5.0" fill="#bdb764" height="26.0" layoutX="948.0" layoutY="199.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
-      <Rectangle fx:id="board_rect12" arcHeight="5.0" arcWidth="5.0" fill="#e94033" height="42.0" layoutX="932.0" layoutY="252.0" stroke="BLACK" strokeType="INSIDE" width="157.0" />
-      <Rectangle fx:id="board_rect111" arcHeight="5.0" arcWidth="5.0" fill="#ffd0d0" height="42.0" layoutX="932.0" layoutY="294.0" stroke="BLACK" strokeType="INSIDE" width="157.0" />
-      <Text fx:id="turn_txt" layoutX="951.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="tour du joueur">
-         <font>
-            <Font name="Berlin Sans FB" size="20.0" />
-         </font>
-      </Text>
-      <Text fx:id="player_turn_txt" layoutX="984.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueuer 1 ">
-         <font>
-            <Font name="Berlin Sans FB" size="17.0" />
-         </font>
-      </Text>
-      <Rectangle fx:id="icone3" arcHeight="5.0" arcWidth="5.0" fill="#1fff80" height="26.0" layoutX="948.0" layoutY="303.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
-      <Button fx:id="restart_board" layoutX="932.0" layoutY="424.0" mnemonicParsing="false" onAction="#restart_btn" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="recommencer">
+      <Rectangle fx:id="icone1" arcHeight="5.0" arcWidth="5.0" fill="#1fff80" height="26.0" layoutX="976.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
+      <Rectangle fx:id="icone2" arcHeight="5.0" arcWidth="5.0" fill="#bdb764" height="26.0" layoutX="976.0" layoutY="74.0" stroke="BLACK" strokeType="INSIDE" width="26.0" />
+      <Button fx:id="restart_board" layoutX="960.0" layoutY="149.0" mnemonicParsing="false" onAction="#restart_btn" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="recommencer">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="save_board" layoutX="932.0" layoutY="480.0" mnemonicParsing="false" onAction="#save_game" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="sauvegarder">
+      <Button fx:id="save_board" layoutX="961.0" layoutY="213.0" mnemonicParsing="false" onAction="#save_game" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="sauvegarder">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="options_board" layoutX="932.0" layoutY="531.0" mnemonicParsing="false" onAction="#toggle_opt" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="options">
+      <Button fx:id="options_board" layoutX="960.0" layoutY="272.0" mnemonicParsing="false" onAction="#toggle_opt" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="options">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="return_to_main" layoutX="932.0" layoutY="615.0" mnemonicParsing="false" onAction="#return_to_main" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="quitter la partie">
+      <Button fx:id="return_to_main" layoutX="961.0" layoutY="415.0" mnemonicParsing="false" onAction="#return_to_main" prefHeight="42.0" prefWidth="157.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="quitter la partie">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -89,5 +70,10 @@
          </image>
       </ImageView>
       <Pane fx:id="r" layoutX="85.0" layoutY="114.0" prefHeight="559.0" prefWidth="812.0" />
+      <Button fx:id="return_IA_choice" layoutX="960.0" layoutY="353.0" mnemonicParsing="false" onAction="#return_IA" prefHeight="42.0" prefWidth="158.0" style="-fx-background-radius: 0; -fx-background-color: #E94033;" text="retour au choix de niveau">
+         <font>
+            <Font name="Berlin Sans FB" size="13.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
