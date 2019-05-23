@@ -74,6 +74,18 @@ public class IA_Controller extends Controller {
 		return 100*(nbPL/nbADV);
 	}
 
+	static double easy(int nbPL,int nbADV){
+		return h28(nbPL,nbADV); 
+	}
+
+	static double medium(int nbPL,int nbADV){
+		return h0(nbPL,nbADV); 
+	}
+
+	static double hard(int nbPL,int nbADV){
+		return h26(nbPL,nbADV);
+	}
+
 	public double heuristique(String hname,int nbPL, int nbADV){
 		Method m;
 		double ret = -1;
@@ -153,8 +165,8 @@ public class IA_Controller extends Controller {
 			if(actions.size() == 0){
 				return new Pair<Double,Integer>(-Double.MAX_VALUE+1,-3);
 			}
-			if(tree == "R" && r.nextInt(100) < 10){//RANDOM : 10% de chance sur les premiers noeuds
-				//return new Pair<Double,Integer>(1.,r.nextInt(actions.size()));
+			if(m_hname.charAt(0) != 'h' && tree == "R" && r.nextInt(100) < (m_hname=="easy"?35:15)){//RANDOM : 10% de chance sur les premiers noeuds
+				return new Pair<Double,Integer>(1.,r.nextInt(actions.size()));
 			}
 			double ret;
 			if(player == m_player){
@@ -243,6 +255,9 @@ public class IA_Controller extends Controller {
 		//return null;
 	}
 
+	public Coup think(){
+		return think(1);
+	}
 	public Coup think(int level){
 		if(level == 0){
 			List<Coup> ret = m_game.listeCoupsValides() ;

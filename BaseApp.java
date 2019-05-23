@@ -48,7 +48,7 @@ public class BaseApp extends Application {
 		GridView gv = new GridView(game);
 		Controller ctrl = new Controller(1,game);
 		IA_Controller tia = new IA_Controller(1,game,"h27");
-		IA_Controller ia = new IA_Controller(-1,game,"h26");
+		IA_Controller ia = new IA_Controller(-1,game,"hard");
 
 		System.out.println(game.joueur());
 		Pane root = new Pane();

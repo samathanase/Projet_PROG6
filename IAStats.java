@@ -18,11 +18,11 @@ public class IAStats {
 
 	public static void main(String[] args) {
 		Partie game = new Partie(5,9);
-		IA_Controller tia = new IA_Controller(1,game,"h25");
-		IA_Controller ia = new IA_Controller(-1,game,"h4");
+		IA_Controller tia = new IA_Controller(1,game,"medium");
+		IA_Controller ia = new IA_Controller(-1,game,"easy");
 
 		int vict = 0, total = 0;
-		int maxP = 40;
+		int maxP = 100;
 		while(total != maxP){
 			while(game.gagnant() == 0){
 				if(game.joueur() == 1){
