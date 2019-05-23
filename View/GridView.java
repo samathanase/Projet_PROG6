@@ -6,25 +6,27 @@ import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import Modele.*;
+import fanorona_prog06.Options_menuController;
 import fanorona_prog06.PvP_board;
 import static fanorona_prog06.PvP_board.en_cours;
 import static fanorona_prog06.PvP_board.p1;
 import static fanorona_prog06.PvP_board.p2;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 public class GridView{
-
+        PvP_board pvp;// = new PvP_board();
 	Partie m_game;
 	double tileSizeX,tileSizeY;
 
 	public GridView(){
 		m_game = new Partie();
+                
 	}
 
 	public GridView(Partie game){
 
 		m_game = game;
 	}
-	
 	//retourne les largeurs et longueurs des tiles, les pions sont au centre des tiles
 	public double getTileSizeX(){
 		return tileSizeX;
@@ -34,7 +36,7 @@ public class GridView{
 		return tileSizeY;
 	}
 	
-	
+
 
 	public void draw(Canvas cnv){
             int l_p = 0,l_c = 0;
@@ -45,13 +47,20 @@ public class GridView{
 		tileSizeY = (cnv.getHeight())/m_game.ligne() ;
 
 		gc.clearRect(0,0,cnv.getWidth(),cnv.getHeight());		
-
-                
+                if(PvP_board.annuler==1){
+                    
+                }
+                //Image selected = new Image(getClass().getResourceAsStream("pions/turn.png"));
                 //Affichage du nom du joueur qui a la main
                 if (m_game.joueur==1){
                     en_cours.setText(p1);
+                    
+                    //pvp.pion_encours1.setImage(selected);
+                    //pvp.pion_encours2=null;
                 }else{
                     en_cours.setText(p2);
+                    
+                    //pvp.pion_encours2.setImage(selected);
                 }
                 
                 
@@ -88,6 +97,7 @@ public class GridView{
                         }         
                     }
                 }
+                
                 //Affichages des cases accessibles
                 Image ac = new Image(getClass().getResourceAsStream("pions/accessible.png"));
                 for(int x = 0; x < m_game.colonne(); x++){
@@ -98,24 +108,26 @@ public class GridView{
                         }
                     }         
                 }
-                
+                if(Options_menuController.color_bool==0){
+                    if(Options_menuController.color_bool!=1 || Options_menuController.color_bool!=3){
+                        Options_menuController.p1 = new Image(getClass().getResourceAsStream("pions/pion_r.png"));
+                    }
+                    if(Options_menuController.color_bool!=2 || Options_menuController.color_bool!=3){
+                        Options_menuController.p2 = new Image(getClass().getResourceAsStream("pions/pion_b.png"));
+                    }
+                }
                 //public ArrayList<Coordonnees> pionsCapturables(int lPion,int cPion, int lDestination, int cDestination)
-                
-
-		Image pb = new Image(getClass().getResourceAsStream("pions/pion_b.png"));
-                Image pg = new Image(getClass().getResourceAsStream("pions/pion_r.png"));
-                
 
 		//Affichage des pions
 		for(int x = 0; x < m_game.colonne(); x++){
 			for(int y = 0; y < m_game.ligne(); y++){
 				if(m_game.pionJoueur1(y,x)){
-					gc.drawImage(pg,(x+0.25)*tileSizeX,(y+0.25)*tileSizeY, tileSizeX/2, tileSizeY/2);
+					gc.drawImage(Options_menuController.p1,(x+0.25)*tileSizeX,(y+0.25)*tileSizeY, tileSizeX/2, tileSizeY/2);
 					//gc.setFill(Color.RED);
 				}
 				if(m_game.pionJoueur2(y,x)){
 					//gc.setFill(Color.BLUE);
-					gc.drawImage(pb,(x+0.25)*tileSizeX,(y+0.25)*tileSizeY, tileSizeX/2, tileSizeY/2);
+					gc.drawImage(Options_menuController.p2,(x+0.25)*tileSizeX,(y+0.25)*tileSizeY, tileSizeX/2, tileSizeY/2);
 				}
                                 //Renvoie la liste des cases accessibles du pion donnÃ©
     //                          public ArrayList<Coordonnees> casesAccessibles(int l, int c)
