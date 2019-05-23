@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="scene_IA_lvl" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.IA_lvl">
+   <children>
+      <ImageView fitHeight="799.0" fitWidth="959.0" layoutX="-5.0" layoutY="-5.0">
+         <image>
+            <Image url="@buttons/fanorona_bg.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="moy_btn" fitHeight="194.0" fitWidth="301.0" layoutX="324.0" layoutY="266.0" onMouseClicked="#play_moy">
+         <image>
+            <Image url="@buttons/btn_ia_moy.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ez_btn" fitHeight="194.0" fitWidth="301.0" layoutX="324.0" layoutY="52.0" onMouseClicked="#play_ez">
+         <image>
+            <Image url="@buttons/btn_ia_ez.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="hard_btn" fitHeight="194.0" fitWidth="301.0" layoutX="324.0" layoutY="473.0" onMouseClicked="#play_hard">
+         <image>
+            <Image url="@buttons/btn_ia_dif.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="sortir_btn" fitHeight="70.0" fitWidth="162.0" layoutX="768.0" layoutY="690.0" onMouseClicked="#back_to_main">
+         <image>
+            <Image url="@buttons/btn_sortir.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

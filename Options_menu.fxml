@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="opt_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.Options_menuController">
+   <children>
+      <ImageView fitHeight="799.0" fitWidth="956.0" layoutX="-3.0" layoutY="-5.0">
+         <image>
+            <Image url="@buttons/fanorona_bg.png" />
+         </image>
+      </ImageView>
+      <RadioButton fx:id="j_radio1" layoutX="274.0" layoutY="102.0" mnemonicParsing="false" onAction="#j1_select" text="Joueur 1" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="22.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="j_radio2" layoutX="550.0" layoutY="102.0" mnemonicParsing="false" onAction="#j2_select" text="Joueur 2" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="22.0" />
+         </font>
+      </RadioButton>
+      <Text fx:id="opt_title" fill="#51120e" layoutX="376.0" layoutY="74.0" stroke="#874545" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-background-position: center; -fx-background-color: #E94033; -fx-background-size: cover, auto; -fx-background-repeat: stretch;" text="Options" textAlignment="CENTER" wrappingWidth="197.33682250976562">
+         <font>
+            <Font name="Bauhaus 93" size="48.0" />
+         </font>
+      </Text>
+      <Rectangle fx:id="rect_opt" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="82.0" layoutX="262.0" layoutY="310.0" stroke="BLACK" strokeType="INSIDE" width="444.0" />
+      <Text fx:id="lab_opt1" fill="WHITE" layoutX="54.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Ecrivez votre nom de joueur :" wrappingWidth="309.80519104003906">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="lab_opt2" fill="WHITE" layoutX="45.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Choisissez la couleur de votre pion :" wrappingWidth="359.40516471862793">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="red_click" fitHeight="70.0" fitWidth="70.0" layoutX="266.0" layoutY="317.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="green_click" fitHeight="70.0" fitWidth="70.0" layoutX="338.0" layoutY="317.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="blue_click" fitHeight="70.0" fitWidth="70.0" layoutX="410.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="white_click" fitHeight="70.0" fitWidth="70.0" layoutX="484.0" layoutY="317.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="black_click" fitHeight="70.0" fitWidth="70.0" layoutX="558.0" layoutY="317.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="yellow_click" fitHeight="70.0" fitWidth="70.0" layoutX="628.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="text_bar" layoutX="367.0" layoutY="178.0" prefHeight="38.0" prefWidth="310.0" />
+      <ImageView fx:id="color_red" fitHeight="60.0" fitWidth="60.0" layoutX="271.0" layoutY="322.0" onMouseClicked="#red_slct">
+         <image>
+            <Image url="@red.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="color_green" fitHeight="60.0" fitWidth="60.0" layoutX="343.0" layoutY="322.0" onMouseClicked="#green_slct">
+         <image>
+            <Image url="@green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="color_blue" fitHeight="60.0" fitWidth="60.0" layoutX="415.0" layoutY="321.0" onMouseClicked="#blue_slct">
+         <image>
+            <Image url="@blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="color_white" fitHeight="60.0" fitWidth="60.0" layoutX="489.0" layoutY="321.0" onMouseClicked="#white_slct">
+         <image>
+            <Image url="@white.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="color_black" fitHeight="60.0" fitWidth="60.0" layoutX="563.0" layoutY="321.0" onMouseClicked="#black_slct">
+         <image>
+            <Image url="@black.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="color_yellow" fitHeight="60.0" fitWidth="60.0" layoutX="632.0" layoutY="321.0" onMouseClicked="#yellow_slct">
+         <image>
+            <Image url="@yellow.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="lab_opt21" fill="WHITE" layoutX="54.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Choisissez votre icône :" wrappingWidth="230.60523796081543">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Rectangle fx:id="rect_opt1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="124.0" layoutX="138.0" layoutY="467.0" stroke="BLACK" strokeType="INSIDE" width="693.0" />
+      <ImageView fx:id="ic1" fitHeight="85.0" fitWidth="85.0" layoutX="164.0" layoutY="487.0" onMouseClicked="#ic1_selected">
+         <image>
+            <Image url="@icônes/profile1.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ic2" fitHeight="85.0" fitWidth="85.0" layoutX="279.0" layoutY="487.0" onMouseClicked="#ic2_selected">
+         <image>
+            <Image url="@icônes/profile2.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ic3" fitHeight="85.0" fitWidth="85.0" layoutX="391.0" layoutY="487.0" onMouseClicked="#ic3_selected">
+         <image>
+            <Image url="@icônes/profile3.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ic4" fitHeight="85.0" fitWidth="85.0" layoutX="500.0" layoutY="487.0" onMouseClicked="#ic4_selected">
+         <image>
+            <Image url="@icônes/profile4.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ic5" fitHeight="85.0" fitWidth="85.0" layoutX="610.0" layoutY="487.0" onMouseClicked="#ic5_selected">
+         <image>
+            <Image url="@icônes/profile5.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ic6" fitHeight="85.0" fitWidth="85.0" layoutX="721.0" layoutY="487.0" onMouseClicked="#ic6_selected">
+         <image>
+            <Image url="@icônes/profile6.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="annuler_opt_btn" fitHeight="80.0" fitWidth="200.0" layoutX="54.0" layoutY="659.0" onMouseClicked="#annuler_opt_btn">
+         <image>
+            <Image url="@buttons/btn_sortir.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="80.0" fitWidth="200.0" layoutX="376.0" layoutY="659.0">
+         <image>
+            <Image url="@buttons/btn_default.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="sauvegarder_opt_btn" fitHeight="80.0" fitWidth="200.0" layoutX="706.0" layoutY="659.0" onMouseClicked="#sauvegarder_opt_btn">
+         <image>
+            <Image url="@buttons/btn_save2.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
