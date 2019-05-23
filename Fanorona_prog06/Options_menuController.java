@@ -67,13 +67,13 @@ public class Options_menuController implements Initializable {
     private Rectangle rect_opt1;
 
     @FXML
-    private Button annuler_opt_btn;
+    private ImageView annuler_opt_btn;
 
     @FXML
-    private Button sauvegarder_opt_btn;
+    private ImageView sauvegarder_opt_btn;
 
     @FXML
-    void annuler_opt_btn(ActionEvent event) throws IOException {
+    void annuler_opt_btn(MouseEvent event) throws IOException {
         
         Stage stage = (Stage)annuler_opt_btn.getScene().getWindow();
         
@@ -90,7 +90,7 @@ public class Options_menuController implements Initializable {
     private TextField text_bar;
     
     @FXML
-    void sauvegarder_opt_btn(ActionEvent event) throws IOException {
+    void sauvegarder_opt_btn(MouseEvent event) throws IOException {
         Text p1_txt;
         Text p2_txt;
         p1_txt=new Text();

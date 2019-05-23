@@ -35,7 +35,7 @@ import javafx.stage.WindowEvent;
 public class PvP_board implements Initializable {
     
     Partie game=new Partie();
-    
+    public static int annuler=0;
     public static String p1="joueur 1",p2="joueur 2";
         
     @FXML
@@ -66,6 +66,17 @@ public class PvP_board implements Initializable {
 
     @FXML
     private Text pvp_title;
+    
+    @FXML
+    private ImageView annuler_btn;
+
+    @FXML
+    void annuler_coup(MouseEvent event) throws IOException {
+        //game.annuler();
+        annuler=1;
+        game.annuler();
+
+    }
 
     
     @FXML
