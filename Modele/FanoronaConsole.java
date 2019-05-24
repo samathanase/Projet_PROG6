@@ -31,16 +31,20 @@ public class FanoronaConsole {
         CommandeSimple cmd2 = new CommandeSimple(partie, 2);
 
         partie.afficher();
-        cmd1.interpreter("2 4 3 4");
-        cmd1.interpreter("fin");
-        cmd2.interpreter("1 3 1 2");
-        cmd2.interpreter("fin");
-        cmd1.interpreter("3 4 3 5");
-        cmd1.interpreter("fin");
-        cmd2.interpreter("1 2 1 1");
-        cmd2.interpreter("fin");
+        // cmd1.interpreter("2 4 3 4");
+        // cmd1.interpreter("fin");
+        // cmd2.interpreter("1 3 1 2");
+        // cmd2.interpreter("fin");
+        // cmd1.interpreter("3 4 3 5");
+        // cmd1.interpreter("fin");
+        // cmd2.interpreter("1 2 1 1");
+        // cmd2.interpreter("fin");
 
-        while(!partie.estFinie()) {
+        while(true) {
+            if(partie.estFinie()) {
+                System.out.println("Le joueur "+partie.gagnant()+" a gagné!");
+                System.out.println("Vous pouvez recommencer une partie en tapant recommencer ou quitter!");
+            }
             if(partie.joueur1()) {
                 System.out.println("Au joueur 1!");
                 do { //Tant que la commande n'est pas valide
@@ -56,12 +60,10 @@ public class FanoronaConsole {
                 do { //Tant que la commande n'est pas valide
                     System.out.print("Entrer une commande: ");
                     cmd = scan.nextLine(); //Récupère la commande de l'utilisateur
-                    cmd2.interpreter(cmd);      
+                    cmd2.interpreter(cmd);
+                    
                 } while(!cmd2.estValide());
             }
         }
-
-        System.out.println("Le joueur "+partie.gagnant()+" a gagné!");
-        scan.close();
     }
 }
