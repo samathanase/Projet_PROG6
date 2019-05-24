@@ -26,7 +26,6 @@ public class ChargerPartie {
             partie = (Partie) fluxObjet.readObject();
             Configuration.instance().logger().info("Partie chargée depuis: " + nomFichier);
             fichier.close();
-            System.out.println("Joueur:" + partie.joueur());
         } catch (Exception e) {
             Configuration.instance().logger().warning("Impossible de charger la partie: " + nomFichier);
         }

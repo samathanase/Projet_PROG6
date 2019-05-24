@@ -149,7 +149,7 @@ public abstract class Commande {
 		cPion = c;
 		pion = new Coordonnees(lPion,cPion);
 
-		if (partie.caseExiste(pion) && partie.pionJoueur(joueur, pion)) {
+		if (partie.caseExiste(pion)) {
             valide = true;
             ArrayList<Coordonnees> listAcc = partie.casesAccessibles(pion);
             StringBuffer strAcc = new StringBuffer(partie.toString());
@@ -243,30 +243,26 @@ public abstract class Commande {
         destination = new Coordonnees(lD,cD);
         capture = action;
         coup = new Coup(pion,destination);
-        if(partie.coupValide(coup)) {
-            if(partie.aspirationPercution(coup) && capture!=1 && capture!=2) { //Choix entre aspiration/percussion et le joueur n'a rien mis 
-                valide = false;
-                System.out.println("Vous devez indiquer la capture: Percussion:1 , Aspiration:2");
-                coup = null;
+        coup.changerAction(capture);
+        if(partie.aspirationPercution(coup) && capture!=1 && capture!=2) { //Choix entre aspiration/percussion et le joueur n'a rien mis 
+            valide = false;
+            System.out.println("Vous devez indiquer la capture: Percussion:1 , Aspiration:2");
+            coup = null;
+        }
+        else if(partie.coupValide(coup)) {
+            if(partie.aspiration(coup)) {
+                coup.actionAspiration();
             }
-            else {
-                if(partie.aspirationPercution(coup)) {
-                    coup.changerAction(capture);
-                }
-                else if(partie.aspiration(coup)) {
-                    coup.actionAspiration();
-                }
-                else if(partie.percussion(coup)) {
-                    coup.actionPercussion();
-                }
-                else {
-                    coup.actionPasCapture();
-                }
-                valide = true;
-                parcourtHistorique = false; //On ne parcourt plus l'historique
-                partie.jouerSansFinTour(coup);
-                System.out.print(partie);
+            else if(partie.percussion(coup)) {
+                coup.actionPercussion();
             }
+            else if (partie.pasCapture(coup)) {
+                coup.actionPasCapture();
+            }
+            valide = true;
+            parcourtHistorique = false; //On ne parcourt plus l'historique
+            partie.jouerSansFinTour(coup);
+            System.out.print(partie);
         }
         else {
             System.out.println("Coup impossible!");
@@ -342,7 +338,6 @@ public abstract class Commande {
         }
         if(partieCopie.historique().peutAnnuler()) {
             indiceAnnuler+=1; //Indice du coup courant
-            System.out.println(indiceAnnuler);
             partieCopie.annuler();
             System.out.println("Coups:"+(tailleHistorique-indiceAnnuler)+"|"+tailleHistorique);
             System.out.println("Joueur: "+partieCopie.joueur());
