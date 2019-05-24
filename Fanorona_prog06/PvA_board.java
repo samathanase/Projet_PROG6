@@ -3,10 +3,12 @@ package fanorona_prog06;
 import Controller.Controller;
 import Controller.IA_Controller;
 import Modele.ChargerPartie;
+import Modele.Grille;
 import Modele.Partie;
 import Modele.SauvegarderPartie;
 import View.GridView;
 import View.ResizableCanvas;
+import static fanorona_prog06.PvP_board.annuler;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.URL;
@@ -35,18 +37,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class PvA_board implements Initializable {
-    
+    Partie game = new Partie(5,9);
     
     public static String p1="joueur 1",p2="joueur 2";
 
     @FXML
     private AnchorPane pva_scene;
-
-    @FXML
-    private Rectangle board_rect1;
-
-    @FXML
-    private Rectangle board_rect11;
 
     @FXML
     private Text player1_txt;
@@ -55,37 +51,19 @@ public class PvA_board implements Initializable {
     private Text player2_txt;
 
     @FXML
-    private Text score_txt;
-
-    @FXML
-    private Rectangle icone1;
-
-    @FXML
-    private Rectangle icone2;
-
-    @FXML
-    private Rectangle board_rect12;
-
-    @FXML
-    private Rectangle board_rect111;
-
-    @FXML
-    private Text turn_txt;
-
-    @FXML
     private Text player_turn_txt;
 
     @FXML
     private Rectangle icone3;
 
     @FXML
-    private Button restart_board;
+    private ImageView restart_board;
 
     @FXML
-    private Button save_board;
+    private ImageView save_board;
     
     @FXML
-    void save_game(ActionEvent event) throws IOException, InterruptedException {
+    void save_game(MouseEvent event) throws IOException, InterruptedException {
         SauvegarderPartie s = new SauvegarderPartie(FXMLDocumentController.game,"testSave.txt");
         s.sauvegarder();
         Stage stage= new Stage();
@@ -100,14 +78,10 @@ public class PvA_board implements Initializable {
         stage.show();
         sleep(2400);
         stage.hide();
-
     }
 
     @FXML
-    private Button options_board;
-
-    @FXML
-    private Button return_to_main;
+    private ImageView return_to_main;
 
     @FXML
     private Text pvp_title;
@@ -122,9 +96,20 @@ public class PvA_board implements Initializable {
     private Pane r;
     
     @FXML
-    void restart_btn(ActionEvent event) throws IOException {
+    private ImageView annuler_btn;
+
+    @FXML
+    void annuler_coup(MouseEvent event) throws IOException {
+        //game.annuler();
+        annuler=1;
+        game.annuler();
+
+    }
+    
+    @FXML
+    void restart_btn(MouseEvent event) throws IOException {
         
-        FXMLDocumentController.game = new Partie();
+        FXMLDocumentController.game.recommencer();
         Stage stage = (Stage)restart_board.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("board_PvA.fxml"));
         Scene scene = new Scene(root);
@@ -136,7 +121,7 @@ public class PvA_board implements Initializable {
 
 
     @FXML
-    void return_to_main(ActionEvent event) throws IOException {
+    void return_to_main(MouseEvent event) throws IOException {
         Stage stage = (Stage)return_to_main.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         Scene scene = new Scene(root);
@@ -158,40 +143,32 @@ public class PvA_board implements Initializable {
         stage.show();
     }
 
-    @FXML
-    void toggle_opt(ActionEvent event) throws IOException {
-        Partie partieCharge = null;
-        ChargerPartie load = new ChargerPartie("testSave.txt");
-        partieCharge = load.charger();
-        FXMLDocumentController.game = partieCharge;
-        
-        Stage stage = (Stage)options_board.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("PvA_board.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        scene.getWindow().centerOnScreen();
-        stage.setResizable(false);
-        stage.show();
-        
-       
-        /*Stage stage= new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("Options_toggle.fxml"));
-        //System.out.println("root");
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        scene.getWindow().centerOnScreen();
-        stage.setResizable(false);
-        stage.show();*/
-    }
+  
     
     public void start_cnv() throws IOException{
         
+        String lvl="easy";
+        if(IA_lvl.ia_lvl==1){
+            lvl="easy";
+        }else if(IA_lvl.ia_lvl==2){
+            lvl="easy";
+        }else if(IA_lvl.ia_lvl==3){
+            lvl="hard";
+        }
         
+        
+		Grille grid = new Grille(game.grille());
+		for(int i =1; i < grid.ligne()-1; i++){
+			for(int j = 1; j < grid.colonne()-1; j++){
+			//	grid._set(0,i,j);
+			}
+		}
+        game.setGrille(grid);
 	ResizableCanvas cnv = new ResizableCanvas();
-	GridView gv = new GridView(FXMLDocumentController.game);
-	Controller ctrl = new Controller(1,FXMLDocumentController.game);
-	//IA_Controller ia = new IA_Controller(-1,game);
-        IA_Controller tia = new IA_Controller(1,FXMLDocumentController.game,"h22");
+		GridView gv = new GridView(game);
+		Controller ctrl = new Controller(1,game);
+		IA_Controller tia = new IA_Controller(1,game,"h27");
+		IA_Controller ia = new IA_Controller(-1,game,lvl);
 
 	System.out.println(FXMLDocumentController.game.joueur());
 	//Pane root = new Pane();
@@ -202,16 +179,21 @@ public class PvA_board implements Initializable {
 	cnv.heightProperty().addListener((Observable o) -> {gv.draw(cnv);});
 	gv.draw(cnv);
         
-	cnv.setOnMouseClicked((MouseEvent e) -> {
-            if(FXMLDocumentController.game.joueur1()){
-                ctrl.click(e,gv);
-                //tia.jouer(tia.think(1));
-            }else{
-                tia.jouer(tia.think(1));
-                //ctrl.click(e,gv);
-            }
-            gv.draw(cnv);
-        });
+	cnv.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent e){
+				if(game.gagnant() == 0){
+					if(game.joueur1()){
+						ctrl.click(e,gv);
+						//tia.jouer(tia.think(1));
+					}
+					else{
+						ia.jouer(ia.think(1));
+					}		
+					gv.draw(cnv);
+				}
+			}
+		});
         
     }
 
@@ -226,5 +208,19 @@ public class PvA_board implements Initializable {
             Logger.getLogger(PvA_board.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    @FXML
+    private ImageView return_IA_choice;
+    
+    @FXML
+    void return_IA(MouseEvent event) throws IOException {
+        Stage stage = (Stage)return_IA_choice.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("IA_lvl.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        scene.getWindow().centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
+    }
+    
 }

@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -21,8 +22,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Options_menuController implements Initializable {
-    public int j1=1,j2;
+    public static int j1=1,j2;
     public int i1,i2,i3,i4,i5,i6;
+    public static Image p1,p2;
+    public static int color_bool=0,color1 = 0 ,color2 = 0;
     
     @FXML
     private AnchorPane opt_scene;
@@ -64,13 +67,13 @@ public class Options_menuController implements Initializable {
     private Rectangle rect_opt1;
 
     @FXML
-    private Button annuler_opt_btn;
+    private ImageView annuler_opt_btn;
 
     @FXML
-    private Button sauvegarder_opt_btn;
+    private ImageView sauvegarder_opt_btn;
 
     @FXML
-    void annuler_opt_btn(ActionEvent event) throws IOException {
+    void annuler_opt_btn(MouseEvent event) throws IOException {
         
         Stage stage = (Stage)annuler_opt_btn.getScene().getWindow();
         
@@ -87,7 +90,7 @@ public class Options_menuController implements Initializable {
     private TextField text_bar;
     
     @FXML
-    void sauvegarder_opt_btn(ActionEvent event) throws IOException {
+    void sauvegarder_opt_btn(MouseEvent event) throws IOException {
         Text p1_txt;
         Text p2_txt;
         p1_txt=new Text();
@@ -106,6 +109,15 @@ public class Options_menuController implements Initializable {
            
         }
         
+        if(j1==1 && color1!=0){
+            color_bool=1;
+        }
+        if(j2==1 && color2!=0){
+            color_bool=2;
+        }
+        if((j1==1 && color1!=0) && (j2==1 && color2!=0)){
+            color_bool=3;
+        }
         
         System.out.println("j1:"+i1+"-j2:"+i2+"-j3:"+i3+"-j4:"+i4+"-j5:"+i5+"-j6:-"+i5);
         
@@ -121,9 +133,9 @@ public class Options_menuController implements Initializable {
             // code block
         }
         */
-        
+
     }
-    
+
     @FXML
     private RadioButton j_radio1;
 
@@ -134,12 +146,14 @@ public class Options_menuController implements Initializable {
     public void j1_select(ActionEvent event) {
         j1=1;
         j2=0;
+        text_bar.clear();
     }
 
     @FXML
     public void j2_select(ActionEvent event) {
         j1=0;
         j2=1;
+        text_bar.clear();
     }
 
     @Override
@@ -186,6 +200,7 @@ public class Options_menuController implements Initializable {
 
     @FXML
     public void ic2_selected(MouseEvent event) {
+        
         i1=0;
         i2=1;
         i3=0;
@@ -232,6 +247,140 @@ public class Options_menuController implements Initializable {
         i4=0;
         i5=0;
         i6=1;
+    }
+    
+    
+    @FXML
+    private ImageView red_click;
+
+    @FXML
+    private ImageView green_click;
+
+    @FXML
+    private ImageView blue_click;
+
+    @FXML
+    private ImageView white_click;
+
+    @FXML
+    private ImageView black_click;
+
+    @FXML
+    private ImageView yellow_click;    
+    
+    @FXML
+    void black_slct(MouseEvent event) {
+        Image icon2 = new Image(getClass().getResourceAsStream("buttons/btn_selected.png"));
+        black_click.setImage(icon2);
+        blue_click.setImage(null);
+        red_click.setImage(null);
+        green_click.setImage(null);
+        white_click.setImage(null);
+        yellow_click.setImage(null);
+        if(j1==1){
+            p1 = new Image(getClass().getResourceAsStream("pions/pion_n.png"));
+            color1=1;
+        }
+        if(j2==1){
+            color2=1;
+            p2 = new Image(getClass().getResourceAsStream("pions/pion_n.png"));
+        }
+        
+    }
+
+    @FXML
+    void blue_slct(MouseEvent event) {
+        Image icon2 = new Image(getClass().getResourceAsStream("buttons/btn_selected.png"));
+        blue_click.setImage(icon2);
+        black_click.setImage(null);
+        red_click.setImage(null);
+        green_click.setImage(null);
+        white_click.setImage(null);
+        yellow_click.setImage(null);
+        if(j1==1){
+            p1 = new Image(getClass().getResourceAsStream("pions/pion_b.png"));
+            color1=2;
+        }
+        if(j2==1){
+            color2=2;
+            p2 = new Image(getClass().getResourceAsStream("pions/pion_b.png"));
+        }
+    }
+
+    @FXML
+    void green_slct(MouseEvent event) {
+        Image icon2 = new Image(getClass().getResourceAsStream("buttons/btn_selected.png"));
+        green_click.setImage(icon2);
+        blue_click.setImage(null);
+        red_click.setImage(null);
+        black_click.setImage(null);
+        white_click.setImage(null);
+        yellow_click.setImage(null);
+        if(j1==1){
+            p1 = new Image(getClass().getResourceAsStream("pions/pion_g.png"));
+            color1=3;
+        }
+        if(j2==1){
+            color2=3;
+            p2 = new Image(getClass().getResourceAsStream("pions/pion_g.png"));
+        }
+    }
+    
+    @FXML
+    void white_slct(MouseEvent event) {
+        Image icon2 = new Image(getClass().getResourceAsStream("buttons/btn_selected.png"));
+        white_click.setImage(icon2);
+        blue_click.setImage(null);
+        red_click.setImage(null);
+        green_click.setImage(null);
+        black_click.setImage(null);
+        yellow_click.setImage(null);
+        if(j1==1){
+            p1 = new Image(getClass().getResourceAsStream("pions/pion_w.png"));
+            color1=4;
+        }
+        if(j2==1){
+            color2=4;
+            p2 = new Image(getClass().getResourceAsStream("pions/pion_w.png"));
+        }
+    }
+
+    @FXML
+    void yellow_slct(MouseEvent event) {
+        Image icon2 = new Image(getClass().getResourceAsStream("buttons/btn_selected.png"));
+        yellow_click.setImage(icon2);
+        blue_click.setImage(null);
+        red_click.setImage(null);
+        green_click.setImage(null);
+        white_click.setImage(null);
+        black_click.setImage(null);
+        if(j1==1){
+            p1 = new Image(getClass().getResourceAsStream("pions/pion_y.png"));
+            color1=5;
+        }
+        if(j2==1){
+            color2=5;
+            p1 = new Image(getClass().getResourceAsStream("pions/pion_y.png"));
+        }
+    }
+    
+    @FXML
+    void red_slct(MouseEvent event) {
+        Image icon2 = new Image(getClass().getResourceAsStream("buttons/btn_selected.png"));
+        red_click.setImage(icon2);
+        blue_click.setImage(null);
+        black_click.setImage(null);
+        green_click.setImage(null);
+        white_click.setImage(null);
+        yellow_click.setImage(null);
+        if(j1==1){
+            p1 = new Image(getClass().getResourceAsStream("pions/pion_r.png"));
+            color1=5;
+        }
+        if(j2==1){
+            color2=5;
+            p1 = new Image(getClass().getResourceAsStream("pions/pion_r.png"));
+        }
     }
 
 }
