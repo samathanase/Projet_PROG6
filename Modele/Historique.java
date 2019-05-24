@@ -46,6 +46,11 @@ public class Historique implements Serializable {
         return this.tabAnnuler.size();
     }
 
+    //Retourne le nombe de coup dans l'historique
+    public int tailleRefaire() {
+        return this.tabRefaire.size();
+    }
+
     //Récupère le coup à annuler
     public CoupHistorique coupAnnuler() {
         CoupHistorique c = tabAnnuler.remove(tabAnnuler.size()-1);//Enlève du tableau annuler
