@@ -103,6 +103,21 @@ public class Partie implements Serializable {
 	}
 	//-------------------------------
 
+    //Change toutes les valeurs de la partie courante avec la partie donnée
+    public void changer(Partie p) {
+        grille = p.grille;
+	 	tab = grille.tab();
+		parent = p.parent;
+    	joueur = p.joueur; 
+    	rand = p.rand; 
+    	precedenteDirection = p.precedenteDirection; 
+   		casesVisitees = p.casesVisitees;
+        precedentPion = p.precedentPion;
+        pionSelectionne = p.pionSelectionne;
+        historique = p.historique;
+    }
+
+
     //Initialiser la grille
     private void initGrille() {
         for(int i=0;i<ligne()/2;i++) {
@@ -418,7 +433,8 @@ public class Partie implements Serializable {
             coup = new Coup(C,cSuivant);
             dir = coup.direction();
             if( libre(cSuivant) && !dir.equals(precedenteDirection) && !casesVisitees.contains(listCasesAdj.get(i))
-             && (precedentPion==null || (precedentPion.equals(C) && ( aspiration(coup) || percussion(coup) )))) {
+             && (precedentPion==null ||  (precedentPion.equals(C) && historique.accederCoup(historique.taille()-1).pionsCaptures()>0 //= on a capturé un pion au précédent coup
+             && ( aspiration(coup) || percussion(coup) )))) {
                 listCases.add(new Coordonnees(lN,cN));
             }            
         }
@@ -432,6 +448,10 @@ public class Partie implements Serializable {
     public boolean coupValide(Coup coup) {
         if( !caseExiste(coup.pion()) ||(joueur1() && pionJoueur2(coup.pion())) || (joueur2() && pionJoueur1(coup.pion())) || libre(coup.pion()) )  { //Pion incorrecte
             Configuration.instance().logger().info("Partie:coupValide - Le coup "+coup+", pas un pion valide");
+            return false;
+        }
+        else if(aspirationPercution(coup) && !coup.aspiration() && !coup.percussion()) {
+            Configuration.instance().logger().info("Partie:coupValide - Le coup "+coup+", coup est une aspiration et une percussion! Il faut choisir!");
             return false;
         }
         ArrayList<Coordonnees> listCoord = casesAccessibles(coup.pion());
@@ -723,7 +743,11 @@ public class Partie implements Serializable {
             Configuration.instance().logger().info("Refait le coup: "+coup);
             @SuppressWarnings("unchecked") //TODO régler plus proprement la gestion de refaire
             ArrayList<CoupHistorique> c = (ArrayList<CoupHistorique>) historique.tabRefaire.clone();
-            jouer(coup); //Joue le coup a refaire
+            if(historique().tailleRefaire()==0) //Plus rien à refaire
+                jouerSansFinTour(coup); //Joue le coup a refaire sans mettre fin au tour
+            else
+                jouer(coup); //Joue le coup a refaire en mettant fin au tour si nécessaire
+
             historique().tabRefaire = c;
         }
         else {
