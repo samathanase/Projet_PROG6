@@ -10,6 +10,8 @@ import Configuration.Configuration;
     La base du jeu 
 */
 
+
+
 public class Partie implements Serializable {
     private static final long serialVersionUID = 696479903953286766L;
 
@@ -47,13 +49,13 @@ public class Partie implements Serializable {
     }
 
 	//-------------------------------
-	public Partie(Partie copy){
+	public Partie(Partie copy){ //Copie de la grille
 		grille = new Grille(copy.grille);
 	 	tab = grille.tab();
 		parent = copy;
-    		joueur = copy.joueur; 
-    		rand = new Random(); 
-    		precedenteDirection = new Direction(copy.precedenteDirection); 
+    	joueur = copy.joueur; 
+    	rand = new Random(); 
+    	precedenteDirection = new Direction(copy.precedenteDirection); 
    		casesVisitees = new ArrayList<Coordonnees>();
 		for(int i = 0; i < copy.casesVisitees.size(); i++){
 			casesVisitees.add(new Coordonnees(copy.casesVisitees.get(i)));
@@ -100,6 +102,21 @@ public class Partie implements Serializable {
 		return ret;
 	}
 	//-------------------------------
+
+    //Change toutes les valeurs de la partie courante avec la partie donnée
+    public void changer(Partie p) {
+        grille = p.grille;
+	 	tab = grille.tab();
+		parent = p.parent;
+    	joueur = p.joueur; 
+    	rand = p.rand; 
+    	precedenteDirection = p.precedenteDirection; 
+   		casesVisitees = p.casesVisitees;
+        precedentPion = p.precedentPion;
+        pionSelectionne = p.pionSelectionne;
+        historique = p.historique;
+    }
+
 
     //Initialiser la grille
     private void initGrille() {
@@ -282,19 +299,26 @@ public class Partie implements Serializable {
         changerJoueur();
     }
 
+    //retourne vrai si le joueur peut mettre fin à son tour
+    public boolean peutFinTour() {
+        boolean b=false;
+        if(listeCoupsValides().size()==0) { //Plus de coups possibles
+            b = true;
+        }
+        else if(precedentPion!=null) { //Le joueur arrète un enchainement de coups
+            b = true;
+        }
+        return b;
+    }
+
     //Placer le pion pour le joueur
     private void placerPionJouer1(int l,int c) {
         tab[l][c] = 1;
     }
-    private void placerPionJouer1(Coordonnees C) {
-        placerPionJouer1(C.ligne(),C.colonne());
-    }
     private void placerPionJouer2(int l,int c) {
         tab[l][c] = 2;
     }
-    private void placerPionJouer2(Coordonnees C) {
-        placerPionJouer2(C.ligne(),C.colonne());
-    }
+
     //Placer pion pour le joueur donné
     private void placerPion(int joueur,int l,int c) {
         if(joueur==1) {
@@ -404,7 +428,8 @@ public class Partie implements Serializable {
             coup = new Coup(C,cSuivant);
             dir = coup.direction();
             if( libre(cSuivant) && !dir.equals(precedenteDirection) && !casesVisitees.contains(listCasesAdj.get(i))
-             && (precedentPion==null || (precedentPion.equals(C) && ( aspiration(coup) || percussion(coup) )))) {
+             && (precedentPion==null ||  (precedentPion.equals(C) && historique.accederCoup(historique.taille()-1).nombrePionsCaptures()>0 //= on a capturé un pion au précédent coup
+             && ( aspiration(coup) || percussion(coup) )))) {
                 listCases.add(new Coordonnees(lN,cN));
             }            
         }
@@ -418,6 +443,10 @@ public class Partie implements Serializable {
     public boolean coupValide(Coup coup) {
         if( !caseExiste(coup.pion()) ||(joueur1() && pionJoueur2(coup.pion())) || (joueur2() && pionJoueur1(coup.pion())) || libre(coup.pion()) )  { //Pion incorrecte
             Configuration.instance().logger().info("Partie:coupValide - Le coup "+coup+", pas un pion valide");
+            return false;
+        }
+        else if(aspirationPercution(coup) && !coup.aspiration() && !coup.percussion()) {
+            Configuration.instance().logger().info("Partie:coupValide - Le coup "+coup+", coup est une aspiration et une percussion! Il faut choisir!");
             return false;
         }
         ArrayList<Coordonnees> listCoord = casesAccessibles(coup.pion());
@@ -472,22 +501,6 @@ public class Partie implements Serializable {
     public boolean aspirationPercution(Coup coup) {
         return percussion(coup) && aspiration(coup);
     }
-
-    // // Retourne vrai si le pion peut capturer des pions adverses
-    // public boolean peutCapturer(int lPion,int cPion) {
-    //     boolean b = false;
-    //     ArrayList<Coordonnees> listeDest;
-    //     listeDest = casesAdjacentes(lPion, cPion);
-    //     for (Coordonnees cDest: listeDest) { //Pour chaque destination
-    //         if(percussion(lPion, cPion, cDest.ligne(), cDest.colonne())) {
-    //             b = true;
-    //         }
-    //         else if (aspiration(lPion, cPion, cDest.ligne(), cDest.colonne()) {
-    //             b = true;
-    //         }
-    //     }
-    //     return b;
-    // }
 
     // Retourne la liste des pions capturables avec le coup donné
     public ArrayList<Coordonnees> pionsCapturables(Coup coup) {
@@ -555,6 +568,7 @@ public class Partie implements Serializable {
         ArrayList<Coup> coups = new ArrayList<Coup>(); //La liste des coups
         Coup coup ; 
         ArrayList<Coordonnees> casesAccess;
+	boolean jouePrecPion = false;
         if(joueur1()) {
             pions = listePionsJoueur1(); //Récupère la liste des pions du joueur courant
         }
@@ -563,6 +577,9 @@ public class Partie implements Serializable {
         }
 
         for(Coordonnees p : pions) { //Pour tous les pions
+		if(p == precedentPion){
+			jouePrecPion = true;
+		}
             casesAccess = casesAccessibles(p); //On récupère les cases accessibles
             for(Coordonnees caseS : casesAccess) { //Pour chaque case accessible
                 coup = new Coup(p,caseS);
@@ -577,26 +594,49 @@ public class Partie implements Serializable {
                 }
             }
         }
+	if(coups.size() == 0 || (precedentPion != null && jouePrecPion) ){
+		Coordonnees co = new Coordonnees(0,0);
+		coups.add(new Coup(co,co,0));
+	}
         return coups;
     }
 
-    //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
-    //Cpature: 0 si pas de capture, 1 si percussion, 2 si aspiration
+    //Joue un coup en mettant fin au tour
     public boolean jouer(Coup coup) {
+        return jouer(coup,true);
+    }
+
+    //joue un coup et ne met pas fin automatiquement au tour
+    public boolean jouerSansFinTour(Coup coup) {
+        return jouer(coup,false);
+     }
+
+    //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
+    //Si finTour est vrai alors cela met directement fin au tour si possible
+    public boolean jouer(Coup coup, boolean finTour) {
+	if(coup.passeTour()){
+		changerJoueur();
+		return true;
+	}
         if(!coupValide(coup)) { //Coup invalide
             Configuration.instance().logger().warning("Partie:jouer - Coup impossible: "+coup);
             return false;
         }
         Configuration.instance().logger().info("Partie:jouer - Coup effectué: "+coup);
+        ArrayList<Coordonnees> listePions = new ArrayList<Coordonnees>(); //Liste des pions capturés
         if(pasCapture(coup)) {//pas de capture
-            historique.ajouter(new CoupHistorique(coup,0,joueur,precedenteDirection,precedentPion));
+            historique.ajouter(new CoupHistorique(coup,listePions,joueur,precedenteDirection,precedentPion));
             enleverPion(coup.pion()); //On enlève le pion joué
             placerPion(joueur(), coup.destination()); //On le place à l'endroit voulu
-            changerJoueur(); //C'est au joueur suivant
+            if(finTour) {
+                changerJoueur(); //C'est au joueur suivant
+            }
+            else {
+                precedentPion = coup.destination(); //Sauvegarde le pion qu'on vient de jouer
+                precedenteDirection = coup.direction(); //On sauvegarde la direction 
+            }
         }
         else { //Capture
-            ArrayList<Coordonnees> listePions = new ArrayList<Coordonnees>();
-
             if(coup.percussion()) { //percussion
                 listePions = pionsCapturablesPercussion(coup);
             }
@@ -611,7 +651,7 @@ public class Partie implements Serializable {
                 enleverPion(pionAEnlever.l, pionAEnlever.c);
                 Configuration.instance().logger().info("Partie:jouer - Pion tué: "+pionAEnlever.l+" "+pionAEnlever.c);
             }
-            historique.ajouter(new CoupHistorique(coup,listePions.size(),joueur,precedenteDirection,precedentPion)); //Ajout du coup dans l'historique
+            historique.ajouter(new CoupHistorique(coup,listePions,joueur,precedenteDirection,precedentPion)); //Ajout du coup dans l'historique
 
             enleverPion(coup.pion()); //On enlève le pion joué
             placerPion(joueur(), coup.destination()); //On le place à l'endroit voulu
@@ -620,20 +660,29 @@ public class Partie implements Serializable {
             precedenteDirection = coup.direction(); //On sauvegarde la direction
 
             casesVisitees.add(coup.pion());
-            if(casesAccessibles(coup.destination()).size()==0) { //On regarde si le joueur peut encore jouer le pion
-		if(gagnant() == 0){
+            if(finTour && casesAccessibles(coup.destination()).size()==0) { //On regarde si le joueur peut encore jouer le pion
                		changerJoueur(); //On change de joueur si aucun coup n'est possible
-		}
             }
 
         }
         return true;
     }
 
-    // retourne vrai si le joueur peut annuler son coup
-    // A définir jusqu'a quel point les joueurs peuvent annuler les coup
+
+
+    // retourne vrai s'il y a un coup à annuler
     public boolean peutAnnuler() {
         return historique.peutAnnuler();
+    }
+
+    //Retourne vrai le joueur donné peut annuler le coup //Utilisé pour les parties réseaux
+    //Peut annuler si c'est son tour et qu'il a déjà joué un coup (ne peut pas annuler les coups de son adversaire)
+    public boolean peutAnnuler(int joueur) {
+        return historique.peutAnnuler() && joueur()==joueur && precedentPion!=null;
+    }
+
+    public boolean peutRefaire() {
+        return historique.peutRefaire();
     }
 
     //Annule le dernier coup joué
@@ -656,19 +705,8 @@ public class Partie implements Serializable {
                 casesVisitees.remove(coup.pion()); //Enlève la case visitée
             }
 
-            Direction dir = coup.direction();
-            Coordonnees coor = dir.coordonnees();
-            Coordonnees coorPion = null;
-            if(coup.aspiration()) {
-                coorPion = new Coordonnees(coup.pion());
-                coor.oppose();
-            }
-            else {
-                coorPion = new Coordonnees(coup.destination());
-            }
-            for(int i=0;i<coup.pionsCaptures();i++) { //Pour chaque pion capturé
-                coorPion.plus(coor); //Les coordonnées du pion à placer
-                placerPion(joueur==1 ? 2:1, coorPion); //On replace le pion adverse
+            for(Coordonnees pionCapture: coup.pionsCaptures()) { //Pour chaque pion capturé
+                placerPion(joueur==1 ? 2:1, pionCapture); //On replace le pion
             }
         }
         else {
@@ -677,11 +715,19 @@ public class Partie implements Serializable {
     }
 
     //Refaire le dernier coup annulé
+    //Modifie directement la partie
     public void refaire() {
         if (historique.peutRefaire()) {
             Coup coup = historique.coupRefaire();
             Configuration.instance().logger().info("Refait le coup: "+coup);
-            jouer(coup);
+            @SuppressWarnings("unchecked")
+            ArrayList<CoupHistorique> c = (ArrayList<CoupHistorique>) historique.tabRefaire.clone();
+            if(historique().tailleRefaire()==0) //Plus rien à refaire
+                jouerSansFinTour(coup); //Joue le coup a refaire sans mettre fin au tour
+            else
+                jouer(coup); //Joue le coup a refaire en mettant fin au tour si nécessaire
+
+            historique().tabRefaire = c;
         }
         else {
             Configuration.instance().logger().warning("Impossible de refaire le coup");
@@ -690,30 +736,122 @@ public class Partie implements Serializable {
 
 
 
-    //Affiche la grille dans la console
-    public void afficher() {
+
+    public String toString() {
+        if(Configuration.instance().lis("affichageConsole").equals("simple")) {
+            return toStringSimple();
+        }
+        else {
+            return toStringComplet();
+        }
+    }
+
+    //Convertit la grille en chaine de caractère
+    public String toStringSimple() {
+        String str = new String();
         int l=0;
         System.out.print("  ");
         for(int i=0;i<colonne();i++) { 
-            System.out.print(i+" ");
+            str+=i+" ";
         }
-        System.out.print("\n");
+        str+="\n";
         for(int i=0;i<ligne();i++) { 
-            System.out.print(l+" ");
+            str+=l+" ";
             l++;
             for(int j=0;j<colonne();j++) {
                 if(pionJoueur1(i, j)) {
-                    System.out.print("● ");
+                    str+="●";
                 }
                 else if(pionJoueur2(i, j)) {
-                    System.out.print("○ ");
+                    str+="○";
                 }
                 else {
-                    System.out.print(". ");
+                    str+=".";
+                }
+                if(j<colonne()-1) {
+                    str+=" ";
+                }
+            }
+            str+="\n";
+        }
+        str+="\n";        
+        return str;
+    }
+
+    //Affiche la grille dans la console
+    public void afficher() {
+        System.out.print(toString());
+    }
+
+    //Convertit la grille en chaine de caractère plus complexe
+    public String toStringComplet() {
+        String str = new String();
+        int l=0;
+        System.out.print("  ");
+        for(int i=0;i<colonne();i++) { 
+            str+=i+" ";
+        }
+        str+="\n";
+        for(int i=0;i<ligne();i++) { 
+            str+=l+" ";
+            l++;
+            for(int j=0;j<colonne();j++) {
+                if(pionJoueur1(i, j)) {
+                    str+="●";
+                    if(j<colonne()-1)
+                        str+="─";
+                }
+                else if(pionJoueur2(i, j)) {
+                    str+="○";
+                    if(j!=colonne()-1)
+                        str+="─";
+                }
+                else { //case vide
+                    if(i==0 && j==0)
+                        str+="┌─";
+                    else if(i==0 && j==colonne()-1)
+                        str+="┐";
+                    else if(i==ligne()-1 && j==0)
+                        str+="└─";
+                    else if(i==ligne()-1 && j==colonne()-1)
+                        str+="┘";
+                    else if(i==0)
+                        str+="┬─";
+                    else if(i==ligne()-1)
+                        str+="┴─";
+                    else if(j==colonne()-1)
+                        str+="┤";
+                    else if(j==0)
+                        str+="├─";
+                    else
+                        str+="┼─";
+
                 } 
             }
-            System.out.println();
+            if(i<ligne()-1) {//Affichage de l'interligne
+                str+="\n  ";
+                for(int j=0;j<colonne();j++) {
+                    if(i%2==0) {
+                        if(j%2==0 && j<colonne()-1)
+                            str+="│\\";
+                        else if(j%2==1 && j<colonne()-1)
+                            str+="│/";
+                        else
+                            str+="│";
+                    }
+                    else {
+                        if(j%2==0 && j<colonne()-1)
+                            str+="│/";
+                        else if(j%2==1 && j<colonne()-1)
+                            str+="│\\";
+                        else
+                            str+="│";
+                    }
+                }
+            }
+            str+="\n";        
         }
-        System.out.println();
+        str+="\n";        
+        return str;
     }
 }

@@ -1,7 +1,6 @@
 package Modele;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class TestPartie {
     static boolean verbeux;
@@ -321,7 +320,6 @@ public class TestPartie {
 
     public static boolean testJouerCoupsMultiples() {
         boolean b =true;
-        ArrayList<Coordonnees> listC;
         Partie partie = new Partie();
         int [][] t = {
             {0,0,0,0,0,0,1,0,0},
@@ -409,7 +407,6 @@ public class TestPartie {
 
     public static boolean testJouer() {
         boolean b =true;
-        ArrayList<Coordonnees> listC;
         Partie partie = new Partie();
         int [][] t = {
             {1,1,1,1,1,1,1,1,1},
@@ -446,7 +443,6 @@ public class TestPartie {
     //test partie avex taille 3x5
     public static boolean partie35() {
         boolean b =true;
-        ArrayList<Coordonnees> listC;
         Partie partie = new Partie(3,5);
         int [][] t = {
             {1,2,1,1,1},

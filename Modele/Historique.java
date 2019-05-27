@@ -32,9 +32,27 @@ public class Historique implements Serializable {
         return tabRefaire.size()>0;
     }
 
+    //Retourne le coup demandé
+    public CoupHistorique accederCoup(int i) {
+        CoupHistorique c = null;
+        if(tabAnnuler.size()>i) {
+            c = tabAnnuler.get(i);
+        }
+        return c;
+    }
+
+    //Retourne le nombe de coup dans l'historique
+    public int taille() {
+        return this.tabAnnuler.size();
+    }
+
+    //Retourne le nombe de coup dans l'historique
+    public int tailleRefaire() {
+        return this.tabRefaire.size();
+    }
+
     //Récupère le coup à annuler
     public CoupHistorique coupAnnuler() {
-        tabRefaire.clear(); //Vide le tableau refaire
         CoupHistorique c = tabAnnuler.remove(tabAnnuler.size()-1);//Enlève du tableau annuler
         tabRefaire.add(c); //Ajoute au tableau refaire
         return c;
@@ -43,12 +61,14 @@ public class Historique implements Serializable {
     //Récupère le coup à refaire
     public CoupHistorique coupRefaire() {
         CoupHistorique c = tabRefaire.remove(tabRefaire.size()-1);//Enlève du tableau refaire
-        tabAnnuler.add(c); //Ajoute au tableau annuler
+        //Ajoute au tableau annuler dans la méthode jouer de la classe partie
         return c;
     }
     
+    //Quand on joue un coup on le met dans le tableau annuler et on vide le tableau refaire
     public void ajouter(CoupHistorique coup) {
         tabAnnuler.add(coup);
+        tabRefaire.clear();
     }
 
 

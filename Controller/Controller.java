@@ -50,7 +50,7 @@ public class Controller{
                 System.out.println(m_game.joueur());
                 //coord.c--;
 		//printCoord(coord);
-		if(m_game.grille().at(coord) == m_player){
+		if(m_game.grille().at(coord) == (m_player==1?1:2)){
 			clickHist.clear();
 			clickHist.add(coord);
 			m_game.selectionnerPion(coord);

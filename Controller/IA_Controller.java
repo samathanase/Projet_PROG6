@@ -159,7 +159,7 @@ public class IA_Controller extends Controller {
 		if(actions.size() == 0){
 			return new Pair<Double,Integer>(-Double.MAX_VALUE+1,-3);
 		}
-		if(m_hname.charAt(0) != 'h' && tree == "R" && r.nextInt(100) < (m_hname=="easy"?35:15)){//RANDOM : easy, 35% ; med., 15%
+		if(m_hname.charAt(0) != 'h' && /*(m_hname == "easy" ||*/ tree == "R" && r.nextInt(100) < (m_hname=="easy"?35:15)){//RANDOM : easy, 35% ; med., 15%
 			return new Pair<Double,Integer>(1.,r.nextInt(actions.size()));
 		}
 		double ret;
@@ -176,8 +176,8 @@ public class IA_Controller extends Controller {
 			double oldret = ret;
 
 			state.jouer(actions.get(i));
-
 			int nextPlayer = (state.joueur()==1?1:-1);
+
 			int nbc = nbCoups + ((nextPlayer != player && player == m_player)?1:0);
 			strtree = tree;
 			if(Character.isLetter(tree.charAt(tree.length()-1))){
@@ -196,7 +196,6 @@ public class IA_Controller extends Controller {
 					strtree += String.valueOf(i);
 				}
 			}
-
 
 			double value = minimax(state,(nextPlayer==player?horizon:horizon-1),nextPlayer,strtree,alpha,beta,nbc).getKey();
 			state.annuler();

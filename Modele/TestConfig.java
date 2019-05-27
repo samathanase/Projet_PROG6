@@ -1,5 +1,5 @@
 package Modele;
-import Configuration.Configuration; //Penser à importer la classe
+import Configuration.Configuration; 
 
 //Petit test de la classe config
 
@@ -17,7 +17,6 @@ public class TestConfig {
 
         Configuration.instance().changerPropriete("nomJoueur1", "Djoko");
         System.out.println("Nom joueur 1: "+Configuration.instance().lis("nomJoueur1"));
-        Configuration.instance().sauvegarderPropriete();
 
     }
 }
