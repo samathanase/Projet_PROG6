@@ -135,15 +135,17 @@ public class Configuration {
 		}
 	}
 
-	//Création de .fanorona dans le répertoire courant
+	//Création de .fanorona dans le répertoire courant (s'il n'existe pas) et renvoie le nom du répertoire courant
 	public String repertoireCourant() {
 		String chemin = System.getProperty("user.home");
 		String repertoire = chemin+"/.fanorona";
 		File dossier = new File(repertoire);
 		if(!dossier.exists()) {
 			dossier.mkdir(); //Création du répertoire
-			File dossierSave = new File(repertoire+"/sauvegarde"); //Création du répertoire de sauvegarde
-			dossierSave.mkdir();
+		}
+		File dossierSave = new File(repertoire+"/sauvegarde"); 
+		if(!dossierSave.exists()) { //Création du répertoire de sauvegarde
+			dossierSave.mkdir(); //Création du répertoire
 		}
 		return repertoire;
 	} 

@@ -158,7 +158,7 @@ public class Partie implements Serializable {
         historique = new Historique();
     }
 
-    //Retourne 0 si la partie n'est pas finie
+    //Retourne vrai si la partie est pas finie
     public boolean estFinie() {
         if(gagnant()==0) {
             return false;
@@ -294,7 +294,6 @@ public class Partie implements Serializable {
     }
 
     //Pour mettre fin au tour
-    // Le joueur peut-il passer son tour sans avoir joué?
     public void finTour() {
         changerJoueur();
     }
