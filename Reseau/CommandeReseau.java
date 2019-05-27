@@ -70,7 +70,7 @@ public class CommandeReseau extends Commande {
         if(!peutJouer()) {
             System.out.println("Ce n'est pas à votre tour!");
         }
-        else if (partie.peutFinTour()){
+        else if (!partie.peutFinTour()){
             System.out.println("Vous ne pouvez pas mettre fin au tour");
         }
         else{
