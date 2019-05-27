@@ -10,12 +10,13 @@ public class ReceptionCommande implements Runnable {
     int joueur;
     Partie partie;
 
+    //Prend le canal de communication sur lequel le thread lira les commandes
+    //Le joueur qui et la partie
     public ReceptionCommande(Communication communication,Partie partie,int joueur) {
         this.communication = communication;
         this.joueur = joueur;
         this.partie = partie;
     }
-
 
     @Override
     public void run() {
@@ -27,10 +28,9 @@ public class ReceptionCommande implements Runnable {
             if(action.joueur()) {
                 partie.joueur = action.typeCommande; //Récupère le joueur qui commence
                 System.out.println(joueur==partie.joueur ? "C'est à vous de commencer" : "C'est à l'adversaire de commencer");                
-                
             }
             else if(action.coup()!=null) {
-                partie.jouerSansFinTour(action.coup());
+                partie.jouerSansFinTour(action.coup()); //Joue le coup fait par l'adversaire
                 partie.afficher();
                 if(partie.estFinie()) {
                     System.out.println("Le joueur "+partie.gagnant()+" a gagné!");
@@ -59,7 +59,7 @@ public class ReceptionCommande implements Runnable {
             }
 
             else if(action.partie()) { //Chargement d'une partie
-                partie.changer(action.partie);
+                partie.changer(action.partie); //On change la partie avec celle envoyée
                 System.out.println("Partie chargée!");
                 partie.afficher();
                 System.out.println(joueur==partie.joueur ? "C'est à vous de commencer" : "C'est à l'adversaire de commencer");                

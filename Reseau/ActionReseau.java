@@ -17,6 +17,7 @@ public class ActionReseau implements Serializable{
     // 7: message
     // 8: recommencer
     // 9: quitter
+    // 10: la partie envoyé par l'adversaire (quand on en charge une)
     int typeCommande;
 
     Boolean reponse;

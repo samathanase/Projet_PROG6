@@ -1,24 +1,22 @@
 package Reseau;
 
-import java.io.Console;
-import java.io.IOException;
+
 import java.util.Scanner;
 import Modele.Partie;
 
-//Utilisé dans un thread pour lire les commandes
+//Utilisé dans un thread pour lire les commandes dans la console
 
 public class LectureCommande implements Runnable {
     Partie partie;
     Scanner scan;
     CommandeReseau cmd;
 
-    // Besoin de la partie, d'un scanner pour lire les commande, et de
+    // Besoin de la partie, d'un scanner pour lire les commandes, et de
     // l'interpréteur de commandeReseau
     public LectureCommande(Partie partie, Scanner scan, CommandeReseau cmd) {
         this.partie = partie;
         this.scan = scan;
         this.cmd = cmd;
-
     }
 
     @Override

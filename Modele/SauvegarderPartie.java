@@ -27,6 +27,8 @@ public class SauvegarderPartie {
         this.nomFichier = chemin+"/sauvegarde/"+"save_"+dateFormat.format(date);
     }
 
+    //Sauvegarde la partie dans le fichier
+    //Renvoie vrai si la sauvegarde s'est bien passé
     public boolean sauvegarder() {
         FileOutputStream fichier;
         ObjectOutputStream fluxObjet;

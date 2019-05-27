@@ -6,21 +6,20 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Scanner;
 
-import Modele.Coup;
 import Modele.Partie;
 
 // Joueur: client est le joueur 2, l'hote est le joueur 1
 
-public class TestReseauHote {
+public class ReseauHote {
 
     public static void main(String args[]) {
         Hote hote = new Hote(49153); //Création du serveur
         System.out.println("Bienvenue sur le jeu Fanorona!");
-        System.out.println("Pour savoir la liste des commandes: tapez aide");
         System.out.println("L'adresse ip: "+adresseIp()+" et le port: 49153");
-        System.out.println("En attente de la connection de l'adversaire!");
+        System.out.println("En attente de la connexion de l'adversaire!");
 
-        hote.ouvrir(); //Met le serveur en attente d'une connection
+        hote.ouvrir(); //Met le serveur en attente d'une connexion
+        System.out.println("Pour savoir la liste des commandes: tapez aide");
         System.out.println("Adversaire connecté!");
         System.out.println("Vous jouez les pions: ●");
         
@@ -29,17 +28,11 @@ public class TestReseauHote {
         hote.envoyerAction(new ActionReseau(partie.joueur())); //On envoie au client le joueur qui commence
 
         partie.afficher();
-        if(partie.joueur1()) //C'est à l'hôte de commencer
-            System.out.println("C'est à vous de commencer!");
-        else
-            System.out.println("C'est à l'adversaire de commencer!");
+        System.out.println(partie.joueur1() ? "C'est à vous de commencer" : "C'est à l'adversaire de commencer");                
+
         
-
         Scanner scan = new Scanner(System.in);
-
-        CommandeReseau cmd1 = new CommandeReseau(partie, 1,hote.communication());
-
-
+        CommandeReseau cmd1 = new CommandeReseau(partie, 1,hote.communication()); //Interpréteur de commande
         
         //Thread réception des commandes de l'adversaire
         ReceptionCommande receptionCommande = new ReceptionCommande(hote.communication(), partie, 1);
@@ -54,7 +47,7 @@ public class TestReseauHote {
 
     }
 
-    //Récupérer l'adresse IP
+    //Récupérer l'adresse IP de la machine
     public static String adresseIp() {
         String ip="";
         String bonneIp="";

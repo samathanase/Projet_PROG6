@@ -7,19 +7,19 @@ import Modele.*;
     // Joueur: client est le joueur 2, l'hote est le joueur 1
 
 
-public class TestReseauClient {
+public class ReseauClient {
     public static void main(String args[]) {
         String ip;
         String portS; int port=49153;
 
         Scanner scan = new Scanner(System.in); //Lecture des commandes de l'utilisateur
 
-        System.out.print("Entrer l'adresse ip: "); //Récupère l'adresse IP
+        System.out.print("Entrer l'adresse ip de l'hôte: "); //Récupère l'adresse IP
         ip = scan.nextLine();
         if(ip.length()==0) {
             ip = "localhost";
         }
-        System.out.print("Entrer le port: ");
+        System.out.print("Entrer le port: "); //Récupère le port
         portS = scan.nextLine();
         if(portS.length()>0) {
             port = Integer.parseInt(portS);
@@ -34,8 +34,7 @@ public class TestReseauClient {
         partie.afficher();
 
 
-        CommandeReseau cmd2 = new CommandeReseau(partie, 2, client.communication());
-
+        CommandeReseau cmd2 = new CommandeReseau(partie, 2, client.communication()); //L'interpréteur de commande
 
 
         //Thread réception des commandes de l'adversaire

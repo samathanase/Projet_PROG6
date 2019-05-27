@@ -3,11 +3,9 @@ package Reseau;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import Modele.*;
-
-
 import Configuration.Configuration;
 
+//le serveur
 public class Hote {
     ServerSocket socketHote;
     Socket socketCliente;
@@ -15,7 +13,7 @@ public class Hote {
 
     public Hote(int port) {
         try {
-            socketHote = new ServerSocket(port);
+            socketHote = new ServerSocket(port); //Création du serveur sur le port donné
         } catch (Exception e) {
             Configuration.instance().logger().severe("Impossible de lancer le serveur: " + e);
         }
@@ -26,7 +24,7 @@ public class Hote {
         try {
             socketCliente = socketHote.accept(); //Attend la connexion d'un client
             Configuration.instance().logger().info("Connexion client réussie");
-            communication = new Communication(socketCliente); //Création de la communication
+            communication = new Communication(socketCliente); //Création de la communication entre le serveur et le client
   
            
         } catch (IOException e) {

@@ -2,6 +2,7 @@ package Modele;
 
 import java.util.Scanner;
 
+
 /*
 Une version ultra basique en console
 */
@@ -13,32 +14,11 @@ public class FanoronaConsole {
         Partie partie = new Partie();
         partie.joueur = 1;
 
-
-        Grille g = new Grille(5, 9);
-        int [][] t = {
-            {0,0,0,0,2,0,0,0,0},
-            {0,0,0,2,0,2,0,0,0},
-            {0,0,0,0,1,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-        };
-        g.tab = t;
-        partie.setGrille(g);
-        partie.tab = t;
-
         String cmd;
         CommandeSimple cmd1 = new CommandeSimple(partie, 1);
         CommandeSimple cmd2 = new CommandeSimple(partie, 2);
 
         partie.afficher();
-        // cmd1.interpreter("2 4 3 4");
-        // cmd1.interpreter("fin");
-        // cmd2.interpreter("1 3 1 2");
-        // cmd2.interpreter("fin");
-        // cmd1.interpreter("3 4 3 5");
-        // cmd1.interpreter("fin");
-        // cmd2.interpreter("1 2 1 1");
-        // cmd2.interpreter("fin");
 
         while(true) {
             if(partie.estFinie()) {

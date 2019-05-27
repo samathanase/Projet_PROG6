@@ -2,7 +2,6 @@ package Modele;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import Configuration.Configuration;
 
@@ -16,6 +15,7 @@ public class ChargerPartie {
         this.nomFichier = chemin + "/sauvegarde/" + nomFichier;
     }
 
+    //Renvoie la partie chargée ou null si le chargement a échoué
     public Partie charger() {
         Partie partie = null;
         FileInputStream fichier;
@@ -23,7 +23,7 @@ public class ChargerPartie {
         try {
             fichier = new FileInputStream(nomFichier);
             fluxObjet = new ObjectInputStream(fichier);
-            partie = (Partie) fluxObjet.readObject();
+            partie = (Partie) fluxObjet.readObject(); //On lit l'objet
             Configuration.instance().logger().info("Partie chargée depuis: " + nomFichier);
             fichier.close();
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class ChargerPartie {
         return partie;
     }
 
-    // Retourne la liste des parties sauvegardées
+    // Retourne la liste des noms des parties sauvegardées
     public static String [] listeSauvegarde() {
         String dossierNom = Configuration.instance().repertoireCourant() + "/sauvegarde/";
         File dossier = new File(dossierNom);
