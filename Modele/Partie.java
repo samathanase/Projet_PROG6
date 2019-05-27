@@ -302,7 +302,7 @@ public class Partie implements Serializable {
     //retourne vrai si le joueur peut mettre fin à son tour
     public boolean peutFinTour() {
         boolean b=false;
-        if(listeCoupsValides().size()==0) { //Plus de coup possibles
+        if(listeCoupsValides().size()==0) { //Plus de coups possibles
             b = true;
         }
         else if(precedentPion!=null) { //Le joueur arrète un enchainement de coups
@@ -315,15 +315,10 @@ public class Partie implements Serializable {
     private void placerPionJouer1(int l,int c) {
         tab[l][c] = 1;
     }
-    private void placerPionJouer1(Coordonnees C) {
-        placerPionJouer1(C.ligne(),C.colonne());
-    }
     private void placerPionJouer2(int l,int c) {
         tab[l][c] = 2;
     }
-    private void placerPionJouer2(Coordonnees C) {
-        placerPionJouer2(C.ligne(),C.colonne());
-    }
+
     //Placer pion pour le joueur donné
     private void placerPion(int joueur,int l,int c) {
         if(joueur==1) {
@@ -433,7 +428,7 @@ public class Partie implements Serializable {
             coup = new Coup(C,cSuivant);
             dir = coup.direction();
             if( libre(cSuivant) && !dir.equals(precedenteDirection) && !casesVisitees.contains(listCasesAdj.get(i))
-             && (precedentPion==null ||  (precedentPion.equals(C) && historique.accederCoup(historique.taille()-1).pionsCaptures()>0 //= on a capturé un pion au précédent coup
+             && (precedentPion==null ||  (precedentPion.equals(C) && historique.accederCoup(historique.taille()-1).nombrePionsCaptures()>0 //= on a capturé un pion au précédent coup
              && ( aspiration(coup) || percussion(coup) )))) {
                 listCases.add(new Coordonnees(lN,cN));
             }            
@@ -506,22 +501,6 @@ public class Partie implements Serializable {
     public boolean aspirationPercution(Coup coup) {
         return percussion(coup) && aspiration(coup);
     }
-
-    // // Retourne vrai si le pion peut capturer des pions adverses
-    // public boolean peutCapturer(int lPion,int cPion) {
-    //     boolean b = false;
-    //     ArrayList<Coordonnees> listeDest;
-    //     listeDest = casesAdjacentes(lPion, cPion);
-    //     for (Coordonnees cDest: listeDest) { //Pour chaque destination
-    //         if(percussion(lPion, cPion, cDest.ligne(), cDest.colonne())) {
-    //             b = true;
-    //         }
-    //         else if (aspiration(lPion, cPion, cDest.ligne(), cDest.colonne()) {
-    //             b = true;
-    //         }
-    //     }
-    //     return b;
-    // }
 
     // Retourne la liste des pions capturables avec le coup donné
     public ArrayList<Coordonnees> pionsCapturables(Coup coup) {
@@ -632,8 +611,9 @@ public class Partie implements Serializable {
             return false;
         }
         Configuration.instance().logger().info("Partie:jouer - Coup effectué: "+coup);
+        ArrayList<Coordonnees> listePions = new ArrayList<Coordonnees>(); //Liste des pions capturés
         if(pasCapture(coup)) {//pas de capture
-            historique.ajouter(new CoupHistorique(coup,0,joueur,precedenteDirection,precedentPion));
+            historique.ajouter(new CoupHistorique(coup,listePions,joueur,precedenteDirection,precedentPion));
             enleverPion(coup.pion()); //On enlève le pion joué
             placerPion(joueur(), coup.destination()); //On le place à l'endroit voulu
             if(finTour) {
@@ -645,8 +625,6 @@ public class Partie implements Serializable {
             }
         }
         else { //Capture
-            ArrayList<Coordonnees> listePions = new ArrayList<Coordonnees>();
-
             if(coup.percussion()) { //percussion
                 listePions = pionsCapturablesPercussion(coup);
             }
@@ -661,7 +639,7 @@ public class Partie implements Serializable {
                 enleverPion(pionAEnlever.l, pionAEnlever.c);
                 Configuration.instance().logger().info("Partie:jouer - Pion tué: "+pionAEnlever.l+" "+pionAEnlever.c);
             }
-            historique.ajouter(new CoupHistorique(coup,listePions.size(),joueur,precedenteDirection,precedentPion)); //Ajout du coup dans l'historique
+            historique.ajouter(new CoupHistorique(coup,listePions,joueur,precedenteDirection,precedentPion)); //Ajout du coup dans l'historique
 
             enleverPion(coup.pion()); //On enlève le pion joué
             placerPion(joueur(), coup.destination()); //On le place à l'endroit voulu
@@ -715,19 +693,8 @@ public class Partie implements Serializable {
                 casesVisitees.remove(coup.pion()); //Enlève la case visitée
             }
 
-            Direction dir = coup.direction();
-            Coordonnees coor = dir.coordonnees();
-            Coordonnees coorPion = null;
-            if(coup.aspiration()) {
-                coorPion = new Coordonnees(coup.pion());
-                coor.oppose();
-            }
-            else {
-                coorPion = new Coordonnees(coup.destination());
-            }
-            for(int i=0;i<coup.pionsCaptures();i++) { //Pour chaque pion capturé
-                coorPion.plus(coor); //Les coordonnées du pion à placer
-                placerPion(joueur==1 ? 2:1, coorPion); //On replace le pion adverse
+            for(Coordonnees pionCapture: coup.pionsCaptures()) { //Pour chaque pion capturé
+                placerPion(joueur==1 ? 2:1, pionCapture); //On replace le pion
             }
         }
         else {
@@ -741,7 +708,7 @@ public class Partie implements Serializable {
         if (historique.peutRefaire()) {
             Coup coup = historique.coupRefaire();
             Configuration.instance().logger().info("Refait le coup: "+coup);
-            @SuppressWarnings("unchecked") //TODO régler plus proprement la gestion de refaire
+            @SuppressWarnings("unchecked")
             ArrayList<CoupHistorique> c = (ArrayList<CoupHistorique>) historique.tabRefaire.clone();
             if(historique().tailleRefaire()==0) //Plus rien à refaire
                 jouerSansFinTour(coup); //Joue le coup a refaire sans mettre fin au tour
