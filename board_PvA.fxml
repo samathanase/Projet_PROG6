@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="pva_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="1140.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.PvA_board">
+   <children>
+      <ImageView fitHeight="714.0" fitWidth="1153.0" layoutX="-6.0" layoutY="-6.0">
+         <image>
+            <Image url="@buttons/fanorona_bg.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="pvp_title" fill="#51120e" layoutX="198.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur VS ordinateur" wrappingWidth="553.3367462158203">
+         <font>
+            <Font name="Bauhaus 93" size="61.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="help_img" fitHeight="26.0" fitWidth="26.0" layoutX="24.0" layoutY="23.0" onMouseClicked="#toggle_help">
+         <image>
+            <Image url="@board_pics/help.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="602.0" fitWidth="874.0" layoutX="54.0" layoutY="93.0">
+         <image>
+            <Image url="@board_pics/wood1_board.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="602.0" fitWidth="874.0" layoutX="63.0" layoutY="95.0">
+         <image>
+            <Image url="@board_pics/lines.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="r" layoutX="85.0" layoutY="114.0" prefHeight="559.0" prefWidth="812.0" />
+      <ImageView fitHeight="57.0" fitWidth="273.0" layoutX="43.0" layoutY="643.0">
+         <image>
+            <Image url="@board_pics/wood.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="57.0" fitWidth="281.0" layoutX="39.0" layoutY="71.0">
+         <image>
+            <Image url="@board_pics/wood.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="player1_txt" layoutX="85.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueuer 1 :">
+         <font>
+            <Font name="Berlin Sans FB" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="player2_txt" layoutX="85.0" layoutY="676.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ordinateur :">
+         <font>
+            <Font name="Berlin Sans FB" size="27.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="return_IA_choice" fitHeight="95.0" fitWidth="200.0" layoutX="927.0" layoutY="353.0" onMouseClicked="#return_IA">
+         <image>
+            <Image url="@buttons/btn_ia_lvl.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="restart_board" fitHeight="87.0" fitWidth="200.0" layoutX="928.0" layoutY="80.0" onMouseClicked="#restart_btn">
+         <image>
+            <Image url="@buttons/btn_restart.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="annuler_btn" fitHeight="95.0" fitWidth="218.0" layoutX="917.0" layoutY="163.0" onMouseClicked="#annuler_coup">
+         <image>
+            <Image url="@buttons/btn_cancel.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="save_board" fitHeight="87.0" fitWidth="200.0" layoutX="931.0" layoutY="254.0" onMouseClicked="#save_game">
+         <image>
+            <Image url="@buttons/btn_save.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="return_to_main" fitHeight="76.0" fitWidth="200.0" layoutX="924.0" layoutY="590.0" onMouseClicked="#return_to_main">
+         <image>
+            <Image url="@buttons/btn_quitGame.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

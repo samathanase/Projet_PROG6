@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="pvp_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="1140.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.PvP_board">
+   <children>
+      <ImageView fx:id="img_scene" fitHeight="712.0" fitWidth="1151.0" layoutX="-7.0" layoutY="-5.0">
+         <image>
+            <Image url="@buttons/fanorona_bg.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="pvp_title" fill="#51120e" layoutX="197.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur VS Joueur" wrappingWidth="553.3367462158203">
+         <font>
+            <Font name="Bauhaus 93" size="61.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="602.0" fitWidth="874.0" layoutX="44.0" layoutY="80.0">
+         <image>
+            <Image url="@board_pics/wood1_board.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="pion_encours" fitHeight="34.0" fitWidth="36.0" layoutX="75.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="602.0" fitWidth="874.0" layoutX="53.0" layoutY="82.0">
+         <image>
+            <Image url="@board_pics/lines.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="r" layoutX="75.0" layoutY="101.0" prefHeight="559.0" prefWidth="812.0">
+         <children>
+            <ImageView fx:id="pion_encours2" fitHeight="69.0" fitWidth="225.0" layoutX="235.0" layoutY="525.0" pickOnBounds="true" preserveRatio="true" />
+         </children></Pane>
+      <ImageView fitHeight="57.0" fitWidth="273.0" layoutX="33.0" layoutY="633.0">
+         <image>
+            <Image url="@board_pics/wood.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="57.0" fitWidth="281.0" layoutX="29.0" layoutY="61.0">
+         <image>
+            <Image url="@board_pics/wood.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="icone_j2" fitHeight="26.0" fitWidth="26.0" layoutX="59.0" layoutY="644.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="player2_txt" layoutX="93.0" layoutY="666.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 2">
+         <font>
+            <Font name="Berlin Sans FB" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="player1_txt" layoutX="93.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 1" wrappingWidth="93.70486450195312">
+         <font>
+            <Font name="Berlin Sans FB" size="27.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="restart_board" fitHeight="69.0" fitWidth="182.0" layoutX="927.0" layoutY="91.0" onMouseClicked="#restart_btn">
+         <image>
+            <Image url="@buttons/btn_restart.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="save_board" fitHeight="69.0" fitWidth="191.0" layoutX="927.0" layoutY="253.0" onMouseClicked="#sauvegarder_pvp">
+         <image>
+            <Image url="@buttons/btn_save.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="return_to_main" fitHeight="69.0" fitWidth="182.0" layoutX="921.0" layoutY="558.0" onMouseClicked="#return_to_main">
+         <image>
+            <Image url="@buttons/btn_quitGame.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="pion_encours1" fitHeight="69.0" fitWidth="225.0" layoutX="310.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="icone_j1" fitHeight="26.0" fitWidth="26.0" layoutX="61.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="annuler_btn" fitHeight="77.0" fitWidth="198.0" layoutX="918.0" layoutY="169.0" onMouseClicked="#annuler_coup">
+         <image>
+            <Image url="@buttons/btn_cancel.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="help_img" fitHeight="45.0" fitWidth="45.0" layoutX="31.0" layoutY="13.0" onMouseClicked="#toggle_help">
+         <image>
+            <Image url="@buttons/btn_help.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="pass_turn_btn" fitHeight="60.0" fitWidth="191.0" layoutX="924.0" layoutY="342.0" onMouseClicked="#pass_turn">
+         <image>
+            <Image url="@buttons/btn_passTurn.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="music_btn" fitHeight="60.0" fitWidth="63.0" layoutX="1052.0" layoutY="16.0" onMouseClicked="#music_on_off">
+         <image>
+            <Image url="@buttons/music_on.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

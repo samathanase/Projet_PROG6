@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="tuto_menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="739.0" style="-fx-background-color: #FCFFC9; -fx-background-position: center;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.Tuto_menu">
+   <children>
+      <Text fx:id="tuto_title" fill="#e94033" layoutX="299.0" layoutY="69.0" stroke="#874545" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-background-position: center; -fx-background-color: #E94033; -fx-background-size: cover, auto; -fx-background-repeat: stretch;" text="Tutoriel" textAlignment="CENTER" wrappingWidth="141.33682250976562">
+         <font>
+            <Font name="Bauhaus 93" size="30.0" />
+         </font>
+      </Text>
+      <Button fx:id="return_to_main" layoutX="268.0" layoutY="322.0" mnemonicParsing="false" onAction="#return_to_main" prefHeight="70.0" prefWidth="202.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="retour">
+         <font>
+            <Font name="Berlin Sans FB" size="17.0" />
+         </font>
+      </Button>
+      <Button fx:id="rules_btn" layoutX="269.0" layoutY="233.0" mnemonicParsing="false" onAction="#rules_btn" prefHeight="70.0" prefWidth="202.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="règles du jeu ">
+         <font>
+            <Font name="Berlin Sans FB" size="17.0" />
+         </font>
+      </Button>
+      <Button fx:id="how_to_btn" layoutX="269.0" layoutY="144.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="201.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="comment jouer ?">
+         <font>
+            <Font name="Berlin Sans FB" size="17.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
