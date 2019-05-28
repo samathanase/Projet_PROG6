@@ -1,42 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="scene_IA_lvl" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.IA_lvl">
+<AnchorPane fx:id="scene_IA_lvl" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.IA_lvl">
    <children>
-      <ImageView fx:id="img_billes" fitHeight="702.0" fitWidth="832.0" layoutX="60.0" layoutY="-24.0">
+      <ImageView fitHeight="799.0" fitWidth="959.0" layoutX="-5.0" layoutY="-5.0">
          <image>
-            <Image url="@icônes/billes.png" />
+            <Image url="@buttons/fanorona_bg.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="game_name" fitHeight="91.0" fitWidth="439.0" layoutX="256.0" layoutY="31.0">
+      <ImageView fx:id="moy_btn" fitHeight="194.0" fitWidth="301.0" layoutX="324.0" layoutY="266.0" onMouseClicked="#play_moy">
          <image>
-            <Image url="@icônes/fan_logo.png" />
+            <Image url="@buttons/btn_ia_moy.png" />
          </image>
       </ImageView>
-      <Button fx:id="return_to_main" layoutX="38.0" layoutY="634.0" mnemonicParsing="false" onAction="#return_to_main" prefHeight="41.0" prefWidth="107.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="sortir">
-         <font>
-            <Font name="Berlin Sans FB" size="21.0" />
-         </font>
-      </Button>
-      <Button fx:id="moyen_btn" layoutX="354.0" layoutY="327.0" mnemonicParsing="false" prefHeight="102.0" prefWidth="251.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="intermédiaire">
-         <font>
-            <Font name="Berlin Sans FB" size="35.0" />
-         </font>
-      </Button>
-      <Button fx:id="facile_btn" layoutX="353.0" layoutY="178.0" mnemonicParsing="false" onAction="#PvA_btn" prefHeight="102.0" prefWidth="251.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="Facile">
-         <font>
-            <Font name="Berlin Sans FB" size="35.0" />
-         </font>
-      </Button>
-      <Button fx:id="difficile_btn" layoutX="354.0" layoutY="470.0" mnemonicParsing="false" prefHeight="102.0" prefWidth="251.0" style="-fx-background-radius: 1px; -fx-background-color: #E94033;" text="Difficile">
-         <font>
-            <Font name="Berlin Sans FB" size="35.0" />
-         </font>
-      </Button>
+      <ImageView fx:id="ez_btn" fitHeight="194.0" fitWidth="301.0" layoutX="324.0" layoutY="52.0" onMouseClicked="#play_ez">
+         <image>
+            <Image url="@buttons/btn_ia_ez.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="hard_btn" fitHeight="194.0" fitWidth="301.0" layoutX="324.0" layoutY="473.0" onMouseClicked="#play_hard">
+         <image>
+            <Image url="@buttons/btn_ia_dif.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="sortir_btn" fitHeight="70.0" fitWidth="162.0" layoutX="768.0" layoutY="690.0" onMouseClicked="#back_to_main">
+         <image>
+            <Image url="@buttons/btn_sortir.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

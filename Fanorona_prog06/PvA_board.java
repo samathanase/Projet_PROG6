@@ -12,6 +12,7 @@ import static fanorona_prog06.PvP_board.annuler;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,16 +24,22 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -123,12 +130,33 @@ public class PvA_board implements Initializable {
     @FXML
     void return_to_main(MouseEvent event) throws IOException {
         Stage stage = (Stage)return_to_main.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        scene.getWindow().centerOnScreen();
-        stage.setResizable(false);
-        stage.show();
+        Region veil = new Region();
+        veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3)");
+        veil.setVisible(false);
+        ButtonType Oui = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
+        ButtonType Non = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert a = new Alert(Alert.AlertType.WARNING,
+        "etes vous sur de vouloir quitter la partie ?",
+        Oui,
+        Non);
+        veil.visibleProperty().bind(a.showingProperty());
+        a.setTitle("attention");
+        a.setX(stage.getWidth()/1.5);
+        a.setY(stage.getHeight()/2);
+        Optional<ButtonType> result = a.showAndWait();
+        if(!result.isPresent()){
+        
+        }else if(result.get() == Oui){
+            stage= new Stage();
+            Parent r1 = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+            
+            Scene scene = new Scene(r1);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+            ((Node)(event.getSource())).getScene().getWindow().hide();
+            
+        }
     }
 
     @FXML
@@ -140,7 +168,8 @@ public class PvA_board implements Initializable {
         stage.setScene(scene);
         scene.getWindow().centerOnScreen();
         stage.setResizable(false);
-        stage.show();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
 
   
@@ -215,12 +244,35 @@ public class PvA_board implements Initializable {
     @FXML
     void return_IA(MouseEvent event) throws IOException {
         Stage stage = (Stage)return_IA_choice.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("IA_lvl.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        scene.getWindow().centerOnScreen();
-        stage.setResizable(false);
-        stage.show();
+        
+        Region veil = new Region();
+        veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3)");
+        veil.setVisible(false);
+        ButtonType Oui = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
+        ButtonType Non = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert a = new Alert(Alert.AlertType.WARNING,
+        "etes vous sur de vouloir quitter la partie ?",
+        Oui,
+        Non);
+        veil.visibleProperty().bind(a.showingProperty());
+        a.setTitle("attention");
+        a.setX(stage.getWidth()/1.5); 
+        a.setY(stage.getHeight()/2);
+        Optional<ButtonType> result = a.showAndWait();
+        if(!result.isPresent()){
+        
+        }else if(result.get() == Oui){
+            stage= new Stage();
+            Parent r1 = FXMLLoader.load(getClass().getResource("IA_lvl.fxml"));
+            
+            Scene scene = new Scene(r1);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+            ((Node)(event.getSource())).getScene().getWindow().hide();
+            
+        }  
+        
     }
     
 }

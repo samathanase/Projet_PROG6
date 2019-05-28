@@ -106,7 +106,8 @@ public class Options_menuController implements Initializable {
                 PvP_board.p2=text_bar.getText();
                 PvA_board.p2=text_bar.getText();
             }
-           
+           //j1=1;
+           //j2=0
         }
         
         if(j1==1 && color1!=0){

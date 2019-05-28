@@ -9,7 +9,7 @@
 
 <AnchorPane fx:id="pvp_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="1140.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.PvP_board">
    <children>
-      <ImageView fitHeight="712.0" fitWidth="1151.0" layoutX="-7.0" layoutY="-5.0">
+      <ImageView fx:id="img_scene" fitHeight="712.0" fitWidth="1151.0" layoutX="-7.0" layoutY="-5.0">
          <image>
             <Image url="@buttons/fanorona_bg.png" />
          </image>
@@ -80,6 +80,16 @@
       <ImageView fx:id="help_img" fitHeight="45.0" fitWidth="45.0" layoutX="31.0" layoutY="13.0" onMouseClicked="#toggle_help">
          <image>
             <Image url="@buttons/btn_help.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="pass_turn_btn" fitHeight="60.0" fitWidth="191.0" layoutX="924.0" layoutY="342.0" onMouseClicked="#pass_turn">
+         <image>
+            <Image url="@buttons/btn_passTurn.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="music_btn" fitHeight="60.0" fitWidth="63.0" layoutX="1052.0" layoutY="16.0" onMouseClicked="#music_on_off">
+         <image>
+            <Image url="@buttons/music_on.png" />
          </image>
       </ImageView>
    </children>
