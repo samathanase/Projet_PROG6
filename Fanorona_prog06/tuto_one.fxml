@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tuto_scene1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.Tuto_one">
+<AnchorPane fx:id="tuto_scene1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_one">
    <children>
       <ImageView fitHeight="803.0" fitWidth="958.0" layoutX="-4.0" layoutY="-9.0">
          <image>

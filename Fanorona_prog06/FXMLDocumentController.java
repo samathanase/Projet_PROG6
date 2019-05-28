@@ -8,7 +8,7 @@
 
 
 
-package fanorona_prog06;
+package Fanorona_prog06;
 
 import Controller.Controller;
 import Controller.IA_Controller;

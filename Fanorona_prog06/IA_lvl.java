@@ -1,7 +1,7 @@
-package fanorona_prog06;
+package Fanorona_prog06;
 
 import Modele.Partie;
-import static fanorona_prog06.FXMLDocumentController.game;
+import static Fanorona_prog06.FXMLDocumentController.game;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

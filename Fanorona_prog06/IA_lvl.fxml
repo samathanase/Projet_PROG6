@@ -4,7 +4,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="scene_IA_lvl" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.IA_lvl">
+<AnchorPane fx:id="scene_IA_lvl" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.IA_lvl">
    <children>
       <ImageView fitHeight="799.0" fitWidth="959.0" layoutX="-5.0" layoutY="-5.0">
          <image>

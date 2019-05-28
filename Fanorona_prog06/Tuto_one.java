@@ -1,4 +1,4 @@
-package fanorona_prog06;
+package Fanorona_prog06;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;

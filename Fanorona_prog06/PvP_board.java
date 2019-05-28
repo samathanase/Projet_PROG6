@@ -1,4 +1,4 @@
-package fanorona_prog06;
+package Fanorona_prog06;
 
 import Controller.Controller;
 import Controller.IA_Controller;
@@ -254,8 +254,8 @@ public class PvP_board implements Initializable {
     
     public void set_icons(){
         //if(j1==j2){}
-        //Image icon1 = new Image(getClass().getResourceAsStream("icônes/profile1.jpg"));
-        //Image icon2 = new Image(getClass().getResourceAsStream("icônes/profile2.jpg"));
+        //Image icon1 = new Image(getClass().getResourceAsStream("icnes/profile1.jpg"));
+        //Image icon2 = new Image(getClass().getResourceAsStream("icnes/profile2.jpg"));
         //icone_j1.setImage(icon1);
         //icone_j2.setImage(icon2);
     }

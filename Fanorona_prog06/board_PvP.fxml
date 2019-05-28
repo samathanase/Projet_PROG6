@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="pvp_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="1140.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.PvP_board">
+<AnchorPane fx:id="pvp_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="1140.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.PvP_board">
    <children>
       <ImageView fx:id="img_scene" fitHeight="712.0" fitWidth="1151.0" layoutX="-7.0" layoutY="-5.0">
          <image>

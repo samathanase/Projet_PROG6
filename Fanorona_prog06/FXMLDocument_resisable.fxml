@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<AnchorPane fx:id="main_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.FXMLDocumentController">
+<AnchorPane fx:id="main_scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.FXMLDocumentController">
    <children>
       <VBox fx:id="vbox_menu" alignment="CENTER" layoutX="284.0" prefHeight="788.0" prefWidth="311.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="284.0" AnchorPane.rightAnchor="283.6" AnchorPane.topAnchor="0.0">
          <children>

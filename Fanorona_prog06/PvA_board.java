@@ -1,4 +1,4 @@
-package fanorona_prog06;
+package Fanorona_prog06;
 
 import Controller.Controller;
 import Controller.IA_Controller;
@@ -8,7 +8,7 @@ import Modele.Partie;
 import Modele.SauvegarderPartie;
 import View.GridView;
 import View.ResizableCanvas;
-import static fanorona_prog06.PvP_board.annuler;
+import static Fanorona_prog06.PvP_board.annuler;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.URL;
