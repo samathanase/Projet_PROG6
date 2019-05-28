@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -25,10 +26,10 @@ public class Tuto_zero {
     private Rectangle rect_tuto1;
 
     @FXML
-    private Button return_to_tuto;
+    private ImageView return_to_tuto;
 
     @FXML
-    private Button next_btn;
+    private ImageView next_btn;
 
     @FXML
     private Text tutor1;
@@ -49,7 +50,7 @@ public class Tuto_zero {
     private ImageView tuto0_img;
 
     @FXML
-    void next_btn(ActionEvent event) throws IOException {
+    void next_btn(MouseEvent event) throws IOException {
         Stage stage = (Stage)next_btn.getScene().getWindow();
         
         Parent root = FXMLLoader.load(getClass().getResource("tuto_one.fxml"));
@@ -62,7 +63,7 @@ public class Tuto_zero {
     }
 
     @FXML
-    void return_to_tuto(ActionEvent event) throws IOException {
+    void return_to_tuto(MouseEvent event) throws IOException {
         Stage stage = (Stage)return_to_tuto.getScene().getWindow();
         
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));

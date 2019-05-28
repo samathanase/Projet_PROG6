@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tuto_menu_toggle" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="693.0" style="-fx-background-color: #FCFFC9; -fx-background-position: center; -fx-border-radius: 0 0 0 0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto2_toggle">
+<AnchorPane fx:id="tuto_menu_toggle" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="693.0" style="-fx-background-color: #FCFFC9; -fx-background-position: center; -fx-border-radius: 0 0 0 0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fanorona_prog06.Tuto2_toggle">
    <children>
       <Text fx:id="tuto_title_toggle" fill="#e94033" layoutX="276.0" layoutY="53.0" stroke="#874545" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-background-position: center; -fx-background-color: #E94033; -fx-background-size: cover, auto; -fx-background-repeat: stretch;" text="Tutoriel" textAlignment="CENTER" wrappingWidth="141.33682250976562">
          <font>

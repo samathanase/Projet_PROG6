@@ -1,9 +1,10 @@
-package Fanorona_prog06;
+package fanorona_prog06;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -47,9 +48,13 @@ public class Tuto1_toggle {
     }
 
     @FXML
-    void return_to_main_toggle(ActionEvent event) {
+    void return_to_main_toggle(ActionEvent event) throws IOException {
+        PvP_board pvp = new PvP_board() ;
         Stage stage = (Stage)return_to_main_toggle.getScene().getWindow();
         stage.close();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
+        ((Node)(event.getSource())).getScene().getWindow().hide();
+        pvp.fermer_scene();
     }
 
 }
