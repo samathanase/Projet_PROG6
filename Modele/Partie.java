@@ -594,9 +594,9 @@ public class Partie implements Serializable {
                 }
             }
         }
-	if(coups.size() == 0 || (precedentPion != null && jouePrecPion) ){
+	if(coups.size() == 0 ){
 		Coordonnees co = new Coordonnees(0,0);
-		coups.add(new Coup(co,co,0));
+		coups.add(0,new Coup(co,co,0));
 	}
         return coups;
     }

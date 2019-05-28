@@ -159,9 +159,7 @@ public class IA_Controller extends Controller {
 		if(actions.size() == 0){
 			return new Pair<Double,Integer>(-Double.MAX_VALUE+1,-3);
 		}
-		if(m_hname.charAt(0) != 'h' && /*(m_hname == "easy" ||*/ tree == "R" && r.nextInt(100) < (m_hname=="easy"?35:15)){//RANDOM : easy, 35% ; med., 15%
-			return new Pair<Double,Integer>(1.,r.nextInt(actions.size()));
-		}
+		
 		double ret;
 		if(player == m_player){
 			ret = -Double.MAX_VALUE;
@@ -173,6 +171,7 @@ public class IA_Controller extends Controller {
 		String strtree ="";
 
 		for(int i = 0; i < actions.size(); i++){
+			
 			double oldret = ret;
 
 			state.jouer(actions.get(i));
@@ -266,6 +265,14 @@ public class IA_Controller extends Controller {
 			Pair<Double,Integer> id = minimax(new Partie(m_game),m_depth,m_player);
 			if(id.getValue() <0){
 				System.out.println("IA : No actions");
+			}
+				
+			if(m_hname.charAt(0) != 'h' && m_game.historique().taille() > 0  && m_game.historique().accederCoup(m_game.historique().taille()-1).joueur() == (m_player==1?1:2) && r.nextInt(100) < (m_hname=="easy"?60:20)){
+				Coordonnees co = new Coordonnees(0,0);
+				return new Coup(co,co,0);
+			}
+			if(m_hname.charAt(0) != 'h' && r.nextInt(100) < (m_hname=="easy"?20:10)){//RANDOM : easy, 35% ; med., 15%
+				return ret.get(r.nextInt(ret.size()));
 			}
 			return ret.get(id.getValue());
 		}
