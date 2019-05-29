@@ -448,11 +448,11 @@ public class Partie implements Serializable {
             Configuration.instance().logger().info("Partie:coupValide - Le coup "+coup+", coup est une aspiration et une percussion! Il faut choisir!");
             return false;
         }
-        else if(percussion(coup) && coup.aspiration()) {
+        else if(!aspirationPercution(coup) && percussion(coup) && coup.aspiration()) {
             Configuration.instance().logger().info("Partie:coupValide - Le coup "+coup+", est une percussion et vous evez choisi aspiration");
             return false;
         }
-        else if(aspiration(coup) && coup.percussion()) {
+        else if(!aspirationPercution(coup) && aspiration(coup) && coup.percussion()) {
             Configuration.instance().logger().info("Partie:coupValide - Le coup "+coup+", est une aspiration et vous avez choisi percussion");
             return false;
         }
