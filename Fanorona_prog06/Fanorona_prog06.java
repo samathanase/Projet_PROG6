@@ -20,7 +20,7 @@ import javafx.stage.StageStyle;
  * @author Sami
  */
 public class Fanorona_prog06 extends Application {
-    public static AudioClip ost;
+    public static AudioClip st;
     public static int music_mode;
 
     @Override
@@ -42,10 +42,10 @@ public class Fanorona_prog06 extends Application {
         stage.initStyle(StageStyle.DECORATED.UNDECORATED);
         //stage.setMaximized(true);
         stage.show();
-        ost = new AudioClip(this.getClass().getResource("board_pics/fanorona_OST.wav").toString());
-        ost.setCycleCount(5);
-        ost.play();
-        //music_mode=1;
+        st = new AudioClip(this.getClass().getResource("board_pics/fanorona_OST.wav").toString());
+        st.setCycleCount(500);
+        st.play();
+        music_mode=1;
         String image = Fanorona_prog06.class.getResource("buttons/fanorona_bg.png").toExternalForm();
         root.setStyle("-fx-background-image: url('" + image + "'); "
                 + "-fx-background-size: 950 788 ; "

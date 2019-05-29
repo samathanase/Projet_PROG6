@@ -52,9 +52,9 @@ public class Tuto1_toggle {
         PvP_board pvp = new PvP_board() ;
         Stage stage = (Stage)return_to_main_toggle.getScene().getWindow();
         stage.close();
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
+        //System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
         ((Node)(event.getSource())).getScene().getWindow().hide();
-        pvp.fermer_scene();
+        //pvp.fermer_scene();
     }
 
 }

@@ -9,6 +9,7 @@ import Modele.SauvegarderPartie;
 import View.GridView;
 import View.ResizableCanvas;
 import static Fanorona_prog06.PvP_board.annuler;
+import static Fanorona_prog06.PvP_board.en_cours;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.URL;
@@ -32,6 +33,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -45,8 +47,8 @@ import javafx.stage.StageStyle;
 
 public class PvA_board implements Initializable {
     Partie game = new Partie(5,9);
-    
-    public static String p1="joueur 1",p2="joueur 2";
+    //String lvl="easy";
+    public static String p1="joueur 1",p2="ordinateur";
 
     @FXML
     private AnchorPane pva_scene;
@@ -71,13 +73,13 @@ public class PvA_board implements Initializable {
     
     @FXML
     void save_game(MouseEvent event) throws IOException, InterruptedException {
+        
+        FXMLDocumentController.charge_game=2;
+        
         SauvegarderPartie s = new SauvegarderPartie(FXMLDocumentController.game,"testSave.txt");
         s.sauvegarder();
         Stage stage= new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("save.fxml"));
-        //System.out.println("root");
-        //stage.initStyle(StageStyle.UNDECORATED);
-        //stage.initStyle(StageStyle.UTILITY);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         scene.getWindow().centerOnScreen();
@@ -135,28 +137,63 @@ public class PvA_board implements Initializable {
         veil.setVisible(false);
         ButtonType Oui = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
         ButtonType Non = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
-        Alert a = new Alert(Alert.AlertType.WARNING,
+        Alert a = new Alert(Alert.AlertType.NONE,
         "etes vous sur de vouloir quitter la partie ?",
         Oui,
         Non);
         veil.visibleProperty().bind(a.showingProperty());
         a.setTitle("attention");
         a.setX(stage.getWidth()/1.5);
-        a.setY(stage.getHeight()/2);
+        a.setY(stage.getHeight()/1.5);
         Optional<ButtonType> result = a.showAndWait();
         if(!result.isPresent()){
         
         }else if(result.get() == Oui){
             stage= new Stage();
-            Parent r1 = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+            Parent r1 = FXMLLoader.load(getClass().getResource("FXMLDocument_resisable.fxml"));
             
             Scene scene = new Scene(r1);
             stage.setScene(scene);
-            stage.setResizable(false);
+            //stage.setResizable(false);
+            stage.initStyle(StageStyle.DECORATED.UNDECORATED);
             stage.show();
             ((Node)(event.getSource())).getScene().getWindow().hide();
             
+            String image = Fanorona_prog06.class.getResource("buttons/fanorona_bg.png").toExternalForm();
+            r1.setStyle("-fx-background-image: url('" + image + "'); "
+                + "-fx-background-size: 950 788 ; "
+                + "-fx-background-position: center center; "
+                + "-fx-background-size: cover, auto;"
+                + "-fx-background-repeat: stretch;");
+            
         }
+        
+    }
+    
+    @FXML
+    private ImageView music_btn;
+    
+    @FXML
+    void music_on_off(MouseEvent event){
+        
+        Image btn_off = new Image(getClass().getResourceAsStream("buttons/music_off.png"));
+        Image btn_on = new Image(getClass().getResourceAsStream("buttons/music_on.png"));
+        //music_mode = 1 -> on ... music_mode = 2 -> off
+        switch(Fanorona_prog06.music_mode){
+            case 1:
+                music_btn.setImage(btn_off);
+                Fanorona_prog06.st.stop();
+                Fanorona_prog06.music_mode=2;
+                break;
+            case 2:
+                music_btn.setImage(btn_on);
+                Fanorona_prog06.st.play();
+                Fanorona_prog06.music_mode=1;
+                break;
+            
+        }
+        
+        
     }
 
     @FXML
@@ -168,24 +205,27 @@ public class PvA_board implements Initializable {
         stage.setScene(scene);
         scene.getWindow().centerOnScreen();
         stage.setResizable(false);
+        stage.initStyle(StageStyle.DECORATED.UNDECORATED);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
     }
 
-  
+    
     
     public void start_cnv() throws IOException{
         
-        String lvl="easy";
-        if(IA_lvl.ia_lvl==1){
-            lvl="easy";
-        }else if(IA_lvl.ia_lvl==2){
-            lvl="easy";
-        }else if(IA_lvl.ia_lvl==3){
-            lvl="hard";
+        if(FXMLDocumentController.charge_game==2){
+            //Partie partieCharge = null;
+            ChargerPartie load = new ChargerPartie("testSave.txt");
+            game = load.charger();
+            game.afficher();
+            
         }
         
-        
+        en_cours.setStyle("-fx-font-size: 22");
+        en_cours.setLayoutX(600);
+        en_cours.setLayoutY(0);
+        //System.out.println("++++++++++++"+IA_lvl.lvl);
 		Grille grid = new Grille(game.grille());
 		for(int i =1; i < grid.ligne()-1; i++){
 			for(int j = 1; j < grid.colonne()-1; j++){
@@ -196,12 +236,12 @@ public class PvA_board implements Initializable {
 	ResizableCanvas cnv = new ResizableCanvas();
 		GridView gv = new GridView(game);
 		Controller ctrl = new Controller(1,game);
-		IA_Controller tia = new IA_Controller(1,game,"h27");
-		IA_Controller ia = new IA_Controller(-1,game,lvl);
+		//IA_Controller tia = new IA_Controller(1,game,"h27");
+		IA_Controller ia = new IA_Controller(-1,game,IA_lvl.lvl);
 
 	System.out.println(FXMLDocumentController.game.joueur());
 	//Pane root = new Pane();
-	r.getChildren().add(cnv);
+	r.getChildren().addAll(en_cours,cnv);
 	cnv.widthProperty().bind(r.widthProperty());
 	cnv.heightProperty().bind(r.heightProperty());	
 	cnv.widthProperty().addListener((Observable o) -> {gv.draw(cnv);});

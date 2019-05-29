@@ -38,10 +38,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class PvP_board implements Initializable {
@@ -67,10 +69,12 @@ public class PvP_board implements Initializable {
     
     @FXML
     void sauvegarder_pvp(MouseEvent event) throws IOException, InterruptedException {
+        FXMLDocumentController.charge_game=1;
         SauvegarderPartie s = new SauvegarderPartie(game,"testSave.txt");
         s.sauvegarder();
         Stage stage= new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("save.fxml"));
+        //FXMLDocumentController.charge_bool=1;
         //System.out.println("root");
         //stage.initStyle(StageStyle.UNDECORATED);
         //stage.initStyle(StageStyle.UTILITY);
@@ -126,51 +130,48 @@ public class PvP_board implements Initializable {
     private Button ext_no;
     
     @FXML
+    private VBox v_box1;
+    
+    @FXML
+    private VBox v_box2;
+    
+    @FXML
     void return_to_main(MouseEvent event) throws IOException {
-        /*Stage stage_main=(Stage)return_to_main.getScene().getWindow();
-        Stage stage = new Stage();
-        
-        Parent r1 = FXMLLoader.load(getClass().getResource("exit_scene.fxml"));
-        Scene scene = new Scene(r1);
-        
-        stage.setScene(scene);
-        scene.getWindow().centerOnScreen();
-        stage.setResizable(false);
-        stage.show();
-        
-        
-            Parent r2 = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-            Scene scene2 = new Scene(r2);
-            stage_main.setScene(scene2);
-            stage_main.setResizable(false);
-            stage_main.show();
-        */
+
         Stage stage = (Stage)return_to_main.getScene().getWindow();
         Region veil = new Region();
         veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3)");
         veil.setVisible(false);
         ButtonType Oui = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
         ButtonType Non = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
-        Alert a = new Alert(AlertType.WARNING,
+        Alert al = new Alert(AlertType.NONE,
         "etes vous sur de vouloir quitter la partie ?",
-        Oui,
-        Non);
-        veil.visibleProperty().bind(a.showingProperty());
-        a.setTitle("attention");
-        a.setX(stage.getWidth()/1.5); 
-        a.setY(stage.getHeight()/2);
-        Optional<ButtonType> result = a.showAndWait();
-        if(!result.isPresent()){
+        Non,
+        Oui);
+        veil.visibleProperty().bind(al.showingProperty());
+        al.setTitle("attention");
+        al.setX(stage.getWidth()/1.5); 
+        al.setY(stage.getHeight()/1.5);
+        Optional<ButtonType> res = al.showAndWait();
+        if(!res.isPresent()){
         
-        }else if(result.get() == Oui){
+        }else if(res.get() == Oui){
             stage= new Stage();
-            Parent r1 = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+            Parent r1 = FXMLLoader.load(getClass().getResource("FXMLDocument_resisable.fxml"));
             
             Scene scene = new Scene(r1);
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.initStyle(StageStyle.DECORATED.UNDECORATED);
             stage.show();
             ((Node)(event.getSource())).getScene().getWindow().hide();
+            
+            String image = Fanorona_prog06.class.getResource("buttons/fanorona_bg.png").toExternalForm();
+            r1.setStyle("-fx-background-image: url('" + image + "'); "
+                + "-fx-background-size: 950 788 ; "
+                + "-fx-background-position: center center; "
+                + "-fx-background-size: cover, auto;"
+                + "-fx-background-repeat: stretch;");
             
         }  
     }
@@ -184,20 +185,20 @@ public class PvP_board implements Initializable {
         Image btn_off = new Image(getClass().getResourceAsStream("buttons/music_off.png"));
         Image btn_on = new Image(getClass().getResourceAsStream("buttons/music_on.png"));
         //music_mode = 1 -> on ... music_mode = 2 -> off
-       /* switch(Fanorona_prog06.music_mode){
+        switch(Fanorona_prog06.music_mode){
             case 1:
                 music_btn.setImage(btn_off);
-                Fanorona_prog06.ost.stop();
+                Fanorona_prog06.st.stop();
                 Fanorona_prog06.music_mode=2;
                 break;
             case 2:
                 music_btn.setImage(btn_on);
-                Fanorona_prog06.ost.play();
+                Fanorona_prog06.st.play();
                 Fanorona_prog06.music_mode=1;
                 break;
             
         }
-        */
+        
         
     }
    
@@ -209,22 +210,12 @@ public class PvP_board implements Initializable {
         Scene scene = new Scene(r1);
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.initStyle(StageStyle.DECORATED.UNDECORATED);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
         //stage.show();
     }
     
-    public void fermer_scene() throws IOException{
-        
-        /*Stage stage = (Stage)restart_board.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        scene.getWindow().centerOnScreen();
-        stage.setResizable(false);
-        stage.show();*/
-        
-    }
 
     @FXML
     private AnchorPane exit_scene;
@@ -274,7 +265,8 @@ public class PvP_board implements Initializable {
     
     @FXML
     private Pane encours_pane;
-   
+    
+    @FXML
     public static Text en_cours = new Text();
     
     @FXML
@@ -282,35 +274,46 @@ public class PvP_board implements Initializable {
     
     
     public void set_turn (){
-        Image selected = new Image(getClass().getResourceAsStream("board_pics/turn.png"));
+        //Image selected = new Image(getClass().getResourceAsStream("board_pics/turn.png"));
         //Image pion1 = new Image(getClass().getResourceAsStream("pions/pion_r.png"));
         
         if (game.joueur==1){
-            //en_cours.setText(p1);
-            pion_encours1.setImage(selected);
+            en_cours.setText(p1);
+            pion_encours1=null;//.setImage(selected);
             pion_encours2=null;
             //pion_encours.setImage(pion1);
         }else{
-            //en_cours.setText(p2);
+            en_cours.setText(p2);
             pion_encours1=null;
-            pion_encours2.setImage(selected);
+            pion_encours2=null;//.setImage(selected);
             //pion_encours.setImage(pion2);
         }
     }
     
+    
+    
+    public static int gagn=0;
     public void start_cnv() throws IOException{
-        //en_cours.setStyle("-fx-font-size: 30");
+        /*ImageView im1 = null;
+        im1.setImage(GridView.selected1);
+        ImageView im2 = null;
+        im2.setImage(GridView.selected2);
+        v_box1.getChildren().add(im1);
+        v_box2.getChildren().add(im2);*/
+        en_cours.setStyle("-fx-font-size: 22");
+        en_cours.setLayoutX(600);
+        en_cours.setLayoutY(0);
         //Stage stage = (Stage)options_board.getScene().getWindow();
         //game = new Partie();
         ResizableCanvas cnv = new ResizableCanvas();
         GridView gv = new GridView(game);
         set_turn();
-        
+       
         Controller ctrl = new Controller(game.joueur,game);
 	//IA_Controller ia = new IA_Controller(-1,game);
         System.out.println(game.joueur());
 	
-        r.getChildren().addAll(cnv);
+        r.getChildren().addAll(en_cours,cnv); 
         cnv.widthProperty().bind(r.widthProperty());
 	cnv.heightProperty().bind(r.heightProperty());	
 	cnv.widthProperty().addListener((Observable o) -> {gv.draw(cnv);});
@@ -320,13 +323,30 @@ public class PvP_board implements Initializable {
         cnv.setOnMouseClicked((MouseEvent e) -> {
             ctrl.click(e,gv);
             gv.draw(cnv);
+            if(game.estFinie()){
+                gagn=game.gagnant();
+                Stage s= new Stage();
+                Parent r1 = null;
+                try {
+                    r1 = FXMLLoader.load(getClass().getResource("victoire.fxml"));
+                } catch (IOException ex) {
+                    Logger.getLogger(PvP_board.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            
+                Scene scene = new Scene(r1);
+                s.setScene(scene);
+                s.setResizable(false);
+                s.show();
+                ((Node)(e.getSource())).getScene().getWindow().hide();
+            }
         });
+        
 
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if(FXMLDocumentController.charge_game==0){
+        if(FXMLDocumentController.charge_game!=1){
             game=new Partie();
         }else{
             //Partie partieCharge = null;
