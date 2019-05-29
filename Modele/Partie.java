@@ -598,7 +598,7 @@ public class Partie implements Serializable {
                 }
             }
         }
-	if(coups.size() == 0 ){
+	if(coups.size() == 0 ){ //Coups passé le tour
 		Coordonnees co = new Coordonnees(0,0);
 		coups.add(0,new Coup(co,co,0));
 	}

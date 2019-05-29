@@ -197,7 +197,7 @@ public abstract class Commande {
         typeCmd = 4;
         valide = true;
         ArrayList<Coup> listCoups = partie.listeCoupsValides();
-        if(listCoups.size()==0) {
+        if(listCoups.size()==0 || listCoups.get(0).passeTour()){
             System.out.println("Pas de coups possibles! Terminer votre tour!");
         }
         else {
