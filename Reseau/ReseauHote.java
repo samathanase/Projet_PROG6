@@ -24,7 +24,6 @@ public class ReseauHote {
         System.out.println("Vous jouez les pions: ●");
         
         Partie partie = new Partie();
-        partie.joueur = 1;
         hote.envoyerAction(new ActionReseau(partie.joueur())); //On envoie au client le joueur qui commence
 
         partie.afficher();
