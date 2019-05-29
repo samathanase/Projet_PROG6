@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tuto_scene0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_zero">
+<AnchorPane fx:id="tuto_scene0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_zero">
    <children>
       <ImageView fitHeight="800.0" fitWidth="962.0" layoutX="-6.0" layoutY="-5.0">
          <image>
@@ -24,25 +29,25 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Text>
-      <Rectangle fx:id="rect_tuto1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="138.0" layoutX="190.0" layoutY="607.0" stroke="BLACK" strokeType="INSIDE" width="570.0" />
-      <Text fx:id="tutor1" fill="WHITE" layoutX="199.0" layoutY="641.0" strokeType="OUTSIDE" strokeWidth="0.0" text="pour bouger un pion il suffit de suivre les étapes suivantes:">
+      <Rectangle fx:id="rect_tuto1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="140.0" layoutX="177.0" layoutY="607.0" stroke="BLACK" strokeType="INSIDE" width="591.0" />
+      <Text fx:id="tutor1" fill="WHITE" layoutX="180.0" layoutY="639.0" strokeType="OUTSIDE" strokeWidth="0.0" text="pour bouger un pion il suffit de suivre les étapes suivantes:">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
-      <Text fx:id="tutor2" fill="WHITE" layoutX="219.0" layoutY="671.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1). choisissez le pion et cliquez dessus pour le selectionner">
+      <Text fx:id="tutor2" fill="WHITE" layoutX="200.0" layoutY="669.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1). choisissez le pion et cliquez dessus pour le selectionner">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
-      <Text fx:id="tutor3" fill="WHITE" layoutX="215.0" layoutY="698.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2). cilquez sur case accessible à ce pion" wrappingWidth="504.5556640625">
+      <Text fx:id="tutor3" fill="WHITE" layoutX="196.0" layoutY="696.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2). cilquez sur case accessible à ce pion" wrappingWidth="504.5556640625">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="216.0" layoutY="729.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3).cliquez sur le(s) pion(s) à mangé(s)">
+      <Text fill="WHITE" layoutX="197.0" layoutY="727.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3).cliquez sur le(s) pion(s) à mangé(s)">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
       <ImageView fitHeight="520.0" fitWidth="776.0" layoutX="79.0" layoutY="79.0">

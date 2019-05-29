@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tuto_scene3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_three">
+<AnchorPane fx:id="tuto_scene3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_three">
    <children>
       <ImageView fitHeight="799.0" fitWidth="956.0" layoutX="-3.0" layoutY="-6.0">
          <image>
@@ -20,12 +25,12 @@
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <Text fx:id="tuto2_r4" fill="WHITE" layoutX="208.0" layoutY="697.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Et pour finir, chaque joueur est obligé de jouer, même si le tour suivant le mène forcément à un coup perdant." wrappingWidth="555.7198486328125">
+      <Text fx:id="tuto2_r4" fill="WHITE" layoutX="213.0" layoutY="683.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Et pour finir, chaque joueur est obligé de jouer, même si le tour suivant le mène forcément à un coup perdant." wrappingWidth="555.7198486328125">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <Rectangle fx:id="rect_tuto21" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="72.0" layoutX="197.0" layoutY="665.0" stroke="BLACK" strokeType="INSIDE" width="556.0" />
+      <Rectangle fx:id="rect_tuto21" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="90.0" layoutX="196.0" layoutY="656.0" stroke="BLACK" strokeType="INSIDE" width="556.0" />
       <Text fx:id="page_num" fill="WHITE" layoutX="461.0" layoutY="780.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4/4">
          <font>
             <Font name="System Bold" size="17.0" />

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.victoire">
+   <children>
+      <ImageView fitHeight="788.0" fitWidth="958.0">
+         <image>
+            <Image url="@buttons/fanorona_bg.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="331.0" fitWidth="852.0" layoutX="49.0" layoutY="48.0">
+         <image>
+            <Image url="@board_pics/fin.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="241.0" fitWidth="604.0" layoutX="173.0" layoutY="379.0">
+         <image>
+            <Image url="@board_pics/gagnant.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="return_to_main" fitHeight="79.0" fitWidth="211.0" layoutX="711.0" layoutY="695.0" onMouseClicked="#return_to_main">
+         <image>
+            <Image url="@buttons/menu_princ.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="gagnant" layoutX="223.0" layoutY="533.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font size="49.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

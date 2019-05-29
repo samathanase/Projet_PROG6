@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tuto_scene1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_one">
+<AnchorPane fx:id="tuto_scene1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="950.0" style="-fx-background-color: #FCFFC9;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fanorona_prog06.Tuto_one">
    <children>
       <ImageView fitHeight="803.0" fitWidth="958.0" layoutX="-4.0" layoutY="-9.0">
          <image>
@@ -19,15 +24,15 @@
             <Font name="Bauhaus 93" size="48.0" />
          </font>
       </Text>
-      <Rectangle fx:id="rect_tuto" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="71.0" layoutX="53.0" layoutY="106.0" stroke="BLACK" strokeType="INSIDE" width="844.0" />
-      <Text fx:id="tuto_r1" fill="WHITE" layoutX="70.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Le but du jeu est de capturer toutes les pierres adverses. Une pierre ennemie est capturée">
+      <Rectangle fx:id="rect_tuto" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="71.0" layoutX="30.0" layoutY="106.0" stroke="BLACK" strokeType="INSIDE" width="891.0" />
+      <Text fx:id="tuto_r1" fill="WHITE" layoutX="44.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Le but du jeu est de capturer toutes les pions adverses. Un pion ennemie est capturé">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
-      <Text fx:id="tuto_r2" fill="WHITE" layoutX="64.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" en s'en approchant (percussion) ou en s'en éloignant (aspiration)">
+      <Text fx:id="tuto_r2" fill="WHITE" layoutX="38.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" en s'en approchant (percussion) ou en s'en éloignant (aspiration)">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
       <Text fx:id="tuto_perc" fill="WHITE" layoutX="188.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Percussion :">
@@ -40,25 +45,25 @@
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <Rectangle fx:id="rect_tuto1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="145.0" layoutX="162.0" layoutY="604.0" stroke="BLACK" strokeType="INSIDE" width="605.0" />
-      <Text fx:id="tuto_r3" fill="WHITE" layoutX="163.0" layoutY="635.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Il doit donc y avoir une case libre devant ou derrière la pierre ">
+      <Rectangle fx:id="rect_tuto1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="155.0" layoutX="162.0" layoutY="604.0" stroke="BLACK" strokeType="INSIDE" width="605.0" />
+      <Text fx:id="tuto_r3" fill="WHITE" layoutX="163.0" layoutY="624.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Il doit donc y avoir une case libre devant ou derrière le pion ">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
-      <Text fx:id="tuto_r5" fill="WHITE" layoutX="163.0" layoutY="699.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Le joueur capture alors toutes les pierres adverses situées sur l'axe" wrappingWidth="598.4189453125">
+      <Text fx:id="tuto_r5" fill="WHITE" layoutX="163.0" layoutY="675.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Le joueur capture alors toutes les pierres adverses situées sur l'axe" wrappingWidth="598.4189453125">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
-      <Text fx:id="tutor4" fill="WHITE" layoutX="164.0" layoutY="666.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" à avancer. ">
+      <Text fx:id="tutor4" fill="WHITE" layoutX="164.0" layoutY="647.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" à avancer. ">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
-      <Text fx:id="tuto_r6" fill="WHITE" layoutX="164.0" layoutY="730.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" sur lequel il a fait avancer ou reculer sa pierre " wrappingWidth="425.5302734375">
+      <Text fx:id="tuto_r6" fill="WHITE" layoutX="164.0" layoutY="726.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" sur lequel il a fait avancer ou reculer son pion" wrappingWidth="425.5302734375">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font size="19.0" />
          </font>
       </Text>
       <Text fx:id="page_num" fill="WHITE" layoutX="460.0" layoutY="780.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2/4">
