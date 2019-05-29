@@ -6,11 +6,11 @@ import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import Modele.*;
-import fanorona_prog06.Options_menuController;
-import fanorona_prog06.PvP_board;
-import static fanorona_prog06.PvP_board.en_cours;
-import static fanorona_prog06.PvP_board.p1;
-import static fanorona_prog06.PvP_board.p2;
+import Fanorona_prog06.Options_menuController;
+import Fanorona_prog06.PvP_board;
+import static Fanorona_prog06.PvP_board.en_cours;
+import static Fanorona_prog06.PvP_board.p1;
+import static Fanorona_prog06.PvP_board.p2;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 public class GridView{
