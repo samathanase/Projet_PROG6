@@ -48,7 +48,7 @@ public class IA_Controller extends Controller {
 		return 5/Math.exp(nbADV)-3/Math.exp(nbPL-2);
 	}
 	static double h22(int nbPL,int nbADV){
-		return 5*(1/Math.exp(nbADV)) + nbPL + 0 /* 0.5*(1/Math.exp(nbCapADV)) + 0.25*nbCapPL*/;
+		return 5*(1/Math.exp(nbADV)) + nbPL; 
 	}
 	static double h23(int nbPL,int nbADV){
 		return 2*h0(nbPL,nbADV) + 2*(nbPL/nbADV);
