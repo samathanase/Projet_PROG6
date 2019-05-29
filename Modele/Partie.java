@@ -575,7 +575,6 @@ public class Partie implements Serializable {
         ArrayList<Coup> coups = new ArrayList<Coup>(); //La liste des coups
         Coup coup ; 
         ArrayList<Coordonnees> casesAccess;
-	boolean jouePrecPion = false;
         if(joueur1()) {
             pions = listePionsJoueur1(); //Récupère la liste des pions du joueur courant
         }
@@ -584,9 +583,7 @@ public class Partie implements Serializable {
         }
 
         for(Coordonnees p : pions) { //Pour tous les pions
-		if(p == precedentPion){
-			jouePrecPion = true;
-		}
+
             casesAccess = casesAccessibles(p); //On récupère les cases accessibles
             for(Coordonnees caseS : casesAccess) { //Pour chaque case accessible
                 coup = new Coup(p,caseS);
