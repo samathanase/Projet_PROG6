@@ -56,6 +56,9 @@ public class Coup implements Serializable{
         return arrivee;
     }
 
+	public boolean passeTour(){
+		return depart==arrivee;
+	}
     //Change l'action
     public void changerAction (int a) {
         action = a;

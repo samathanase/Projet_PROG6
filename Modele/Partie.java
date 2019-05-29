@@ -567,6 +567,7 @@ public class Partie implements Serializable {
         ArrayList<Coup> coups = new ArrayList<Coup>(); //La liste des coups
         Coup coup ; 
         ArrayList<Coordonnees> casesAccess;
+	boolean jouePrecPion = false;
         if(joueur1()) {
             pions = listePionsJoueur1(); //Récupère la liste des pions du joueur courant
         }
@@ -575,6 +576,9 @@ public class Partie implements Serializable {
         }
 
         for(Coordonnees p : pions) { //Pour tous les pions
+		if(p == precedentPion){
+			jouePrecPion = true;
+		}
             casesAccess = casesAccessibles(p); //On récupère les cases accessibles
             for(Coordonnees caseS : casesAccess) { //Pour chaque case accessible
                 coup = new Coup(p,caseS);
@@ -589,6 +593,10 @@ public class Partie implements Serializable {
                 }
             }
         }
+	if(coups.size() == 0 ){
+		Coordonnees co = new Coordonnees(0,0);
+		coups.add(0,new Coup(co,co,0));
+	}
         return coups;
     }
 
@@ -605,6 +613,10 @@ public class Partie implements Serializable {
     //Joue un pion vers une case, renvoie vrai si le coup s'est fait correctement, faux s'il y a eu un problème
     //Si finTour est vrai alors cela met directement fin au tour si possible
     public boolean jouer(Coup coup, boolean finTour) {
+	if(coup.passeTour()){
+		changerJoueur();
+		return true;
+	}
         if(!coupValide(coup)) { //Coup invalide
             Configuration.instance().logger().warning("Partie:jouer - Coup impossible: "+coup);
             return false;
