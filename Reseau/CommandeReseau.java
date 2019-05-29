@@ -1,16 +1,15 @@
 
 package Reseau;
 
+import Modele.ChargerPartie;
+import Modele.Commande;
+import Modele.Coup;
+import Modele.Partie;
 
-import Modele.*;
 /*
     Interprète une chaine de caractères écrite par l'utilisateur
     Les commandes sont pour le réseau
 */
-
-
-
-
 
 public class CommandeReseau extends Commande {
 
@@ -81,7 +80,6 @@ public class CommandeReseau extends Commande {
         }
 
     }
-
 
     //Il faut pour chaque commande l'exécuter pour l'utilisateur et envoyer la commande à l'adversaire
     @Override

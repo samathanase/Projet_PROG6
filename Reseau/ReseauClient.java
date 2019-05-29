@@ -4,8 +4,7 @@ import java.util.Scanner;
 
 import Modele.*;
 
-    // Joueur: client est le joueur 2, l'hote est le joueur 1
-
+// Joueur: client est le joueur 2, l'hote est le joueur 1
 
 public class ReseauClient {
     public static void main(String args[]) {

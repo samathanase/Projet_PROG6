@@ -11,7 +11,7 @@ public class ReceptionCommande implements Runnable {
     Partie partie;
 
     //Prend le canal de communication sur lequel le thread lira les commandes
-    //Le joueur qui et la partie
+    //Le joueur qui joue et la partie
     public ReceptionCommande(Communication communication,Partie partie,int joueur) {
         this.communication = communication;
         this.joueur = joueur;

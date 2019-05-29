@@ -5,7 +5,6 @@ import java.util.Scanner;
 import Modele.Partie;
 
 //Utilisé dans un thread pour lire les commandes dans la console
-
 public class LectureCommande implements Runnable {
     Partie partie;
     Scanner scan;
@@ -25,7 +24,7 @@ public class LectureCommande implements Runnable {
         while(true) {
             do { //Tant que la commande n'est pas valide
                 str = scan.nextLine(); //Récupère la commande de l'utilisateur
-                cmd.interpreter(str);  //L'interprète
+                cmd.interpreter(str); //L'interprète
             } while(!cmd.estValide());
         }
     }

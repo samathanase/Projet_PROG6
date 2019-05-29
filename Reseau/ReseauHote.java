@@ -42,8 +42,6 @@ public class ReseauHote {
         LectureCommande lectureCommande = new LectureCommande(partie, scan,cmd1);
         Thread lectureCommandeThread = new Thread(lectureCommande);
         lectureCommandeThread.start();
-
-
     }
 
     //Récupérer l'adresse IP de la machine

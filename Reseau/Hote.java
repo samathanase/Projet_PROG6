@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import Configuration.Configuration;
 
-//le serveur
+//Le serveur
 public class Hote {
     ServerSocket socketHote;
     Socket socketCliente;
@@ -25,8 +25,6 @@ public class Hote {
             socketCliente = socketHote.accept(); //Attend la connexion d'un client
             Configuration.instance().logger().info("Connexion client réussie");
             communication = new Communication(socketCliente); //Création de la communication entre le serveur et le client
-  
-           
         } catch (IOException e) {
             Configuration.instance().logger().severe("Impossible de se connecter au client: " + e);
         }
@@ -46,5 +44,4 @@ public class Hote {
     public Communication communication() {
         return communication;
     }
-     
 }

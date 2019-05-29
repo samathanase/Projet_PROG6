@@ -7,7 +7,7 @@ import java.net.Socket;
 import Configuration.Configuration;
 
 
-//Communication entre 2 joueurs
+//Communication entre 2 joueurs (client hôte)
 public class Communication {
     ObjectInputStream entree;
     ObjectOutputStream sortie;
